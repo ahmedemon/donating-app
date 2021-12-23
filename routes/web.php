@@ -14,9 +14,8 @@ use App\Http\Controllers\User\DashboardController;
 |
 */
 Auth::routes();
-Route::group(['prefix'=>'user'], function(){
-	Route::get('/', [DashboardController::class, 'index'])->name('user.dashboard');
-});
+
+Route::get('/', [DashboardController::class, 'index'])->name('user.frontend');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
