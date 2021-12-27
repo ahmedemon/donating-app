@@ -11,40 +11,40 @@
       <div class="collapse navbar-collapse" id="headerMenu">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1 {{ Request::is('/') ? 'active' : '' }}" href="{{ route('user.frontend') }}">
+            <a class="btn btn-sm shadow-none {{ Request::is('/') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('user.frontend') }}">
               Home
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1" href="#">
+            <a class="btn btn-sm shadow-none btn-outline-dark text-light mx-1" href="#">
               Register
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1" href="#">
+            <a class="btn btn-sm shadow-none btn-outline-dark text-light mx-1" href="#">
               About Us
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1" href="#">
+            <a class="btn btn-sm shadow-none btn-outline-dark text-light mx-1" href="#">
               Free Shelf
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1" href="#">
+            <a class="btn btn-sm shadow-none btn-outline-dark text-light mx-1" href="#">
               Sponsored Shop
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-sm btn-outline-dark text-light mx-1" href="#">
+            <a class="btn btn-sm shadow-none btn-outline-dark text-light mx-1" href="#">
               How It Works
             </a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <a href="javascript:void()" class="btn btn-outline-success mx-1 rounded-sm text-white">Login</a>
-          <a href="javascript:void()" class="btn btn-outline-success mx-1 rounded-sm active">Register</a>
+          <a href="{{ route('login') }}" class="btn btn-outline-success mx-1 rounded-sm text-white">Login</a>
+          <a href="{{ route('register') }}" class="btn btn-outline-success mx-1 rounded-sm active">Register</a>
         </ul>
       </div>
     </nav>

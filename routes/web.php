@@ -17,5 +17,4 @@ Auth::routes();
 
 Route::get('/', [DashboardController::class, 'index'])->name('user.frontend');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 Auth::routes();
