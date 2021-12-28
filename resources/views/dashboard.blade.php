@@ -1,9 +1,9 @@
-@extends('layouts.partials.frontend.app')
+@extends('layouts.frontend.app')
 @push('css')
 	<link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}">
 @endpush
 @section('content')
-	@include('layouts/partials/animated_perticles')
+	@include('layouts/frontend/animated_perticles')
 	<div class="container-fluid">
 		<div class="loop owl-carousel">
 			<div class="item card rounded-0">
