@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="{{ asset('backend/css/plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('backend/img/favicon.png') }}">
+    <style>
+        .sub-icon{
+            margin-right: 5px !important;
+        }
+    </style>
 </head>
 
 <body class="layout-dark side-menu overlayScroll">
