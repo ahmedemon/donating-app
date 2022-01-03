@@ -1,4 +1,4 @@
-@extends('layouts.user.app')
+@extends('layouts.user.app', ['pageTitle'=>'User Dashboard'])
 @section('content')
     <div class="card bg-dark text-white">
         <div class="card-header bg-dark">Dashboard</div>
