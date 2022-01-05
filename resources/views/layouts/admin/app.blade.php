@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin | Dashboard</title>
+    <title>{{ $pageTitle }} | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/css/plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
@@ -17,25 +17,28 @@
 </head>
 
 <body class="layout-dark side-menu overlayScroll">
-    <div class="mobile-search"></div>
-    <div class="mobile-author-actions"></div>
-    <header class="header-top">
-        @include('layouts.admin.topbar')
-    </header>
+    @auth
+        <div class="mobile-search"></div>
+        <div class="mobile-author-actions"></div>
+        <header class="header-top">
+            @include('layouts.user.topbar')
+        </header>
+    @endauth
 
     <main class="main-content">
-        <aside class="sidebar">
-            @include('layouts.admin.sidebar')
-        </aside>
+        @auth
+            <aside class="sidebar">
+                @include('layouts.user.sidebar')
+            </aside>
+        @endauth
 
-        <div class="contents">
+        @yield('content-without-menubar')
+
+        <div class="contents vh-100">
             <div class="container-fluid">
                 <div class="social-dash-wrap">
-                    <div class="row">
+                    <div class="row pt-4">
                         <div class="col-lg-12">
-                            <div class="breadcrumb-main">
-                                <h4 class="text-capitalize breadcrumb-title">Social Media Dashboard</h4>
-                            </div>
                             @yield('content')
                         </div>
                     </div>

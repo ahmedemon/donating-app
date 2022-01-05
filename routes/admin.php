@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,12 @@ use App\Http\Controllers\Admin\AdminController;
 | contains the "admin" middleware group. Now create something great!
 |
 */
-Route::group(['prefix'=>'admin','middleware' => 'auth'], function () {
-	Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::get('login', [LoginController::class, 'viewLogin'])->name('login.index');
+Route::post('login', [LoginController::class, 'login'])->name('login');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::group(['middleware' => 'admin'], function () {
+
+	Route::get('/', [AdminController::class, 'index'])->name('index');
+
 });
