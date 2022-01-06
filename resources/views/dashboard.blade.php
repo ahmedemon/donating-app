@@ -10,7 +10,7 @@
 				<a class="text-decoration-none" href="">
 					<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
 					    <div class="">
-					        <img class="d-block" height="280" src="http://localhost/multi-auth/public/storage/uploads/1/DonatedProducts/non-asperiores-non-s-2021-12-23.jpg" alt="">
+					        <img class="d-block" height="280" src="{{ asset('frontend/img/avatar.svg') }}" alt="">
 					    </div>
 					    <div class="bbb_viewed_content text-center py-2 mt-0">
 					        <div class="bbb_viewed_price">Points to get : 45</div>
@@ -24,7 +24,7 @@
 				<a class="text-decoration-none" href="">
 					<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
 					    <div class="">
-					        <img class="d-block" height="280" src="http://localhost/multi-auth/public/storage/uploads/1/DonatedProducts/non-asperiores-non-s-2021-12-23.jpg" alt="">
+					        <img class="d-block" height="280" src="{{ asset('frontend/img/avatar.svg') }}" alt="">
 					    </div>
 					    <div class="bbb_viewed_content text-center py-2 mt-0">
 					        <div class="bbb_viewed_price">Points to get : 45</div>

@@ -1,127 +1,41 @@
-            <div class="sidebar__menu-group">
-                <ul class="sidebar_nav">
-                    <li class="">
-                        <a href="{{ route('user.dashboard') }}" class="{{ route('user.dashboard') ? 'active' : '' }}">
-                            <span data-feather="home" class="nav-icon"></span>
-                            <span class="menu-text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#" class="">
-                            <span data-feather="user-check" class="nav-icon"></span>
-                            <span class="menu-text">Register</span>
-                        </a>
-                    </li>
-                    <li class="has-child">
-                        <a href="#" class="">
-                            <span data-feather="layers" class="nav-icon"></span>
-                            <span class="menu-text">Shelf</span>
-                            <span class="toggle-icon"></span>
-                        </a>
-                        <ul class="bg-dark">
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Mobiles
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Laptops
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Accessories
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Extras
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="has-child">
-                        <a href="#" class="">
-                            <span data-feather="gift" class="nav-icon"></span>
-                            <span class="menu-text">Donate</span>
-                            <span class="toggle-icon"></span>
-                        </a>
-                        <ul class="bg-dark">
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="plus-circle" class="nav-icon sub-icon"></span> Add
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="list" class="nav-icon sub-icon"></span> Donated Products
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="has-child">
-                        <a href="#" class="">
-                            <span data-feather="shopping-bag" class="nav-icon"></span>
-                            <span class="menu-text">Ordered List</span>
-                            <span class="toggle-icon"></span>
-                        </a>
-                        <ul class="bg-dark">
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="pause" class="nav-icon sub-icon"></span> Pending
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="check-square" class="nav-icon sub-icon"></span> Success
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="x" class="nav-icon sub-icon"></span> Rejected
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="has-child">
-                        <a href="#" class="">
-                            <span data-feather="message-square" class="nav-icon"></span>
-                            <span class="menu-text">Buyer Request</span>
-                            <span class="toggle-icon"></span>
-                        </a>
-                        <ul class="bg-dark">
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="pause" class="nav-icon sub-icon"></span> Pending
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="check-square" class="nav-icon sub-icon"></span> Success
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="x" class="nav-icon sub-icon"></span> Rejected
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="#" class="">
-                            <span data-feather="shopping-cart" class="nav-icon"></span>
-                            <span class="menu-text">Sponsored Shop</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <span data-feather="log-out" class="nav-icon"></span>
-                            <span class="menu-text">Sign out</span>
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
+<div class="dlabnav">
+    <div class="dlabnav-scroll">
+        <div class="dropdown header-profile2" style="margin-left: 20px !important;">
+            <div class="header-info2 d-inline-flex align-items-center">
+                <img class="rounded-circle" src="{{ Auth::user()->image == !null ? asset('storage/user/' . Auth::user()->image) : asset('frontend/img/avatar.svg') }}" alt="" />
+                <div class="d-flex align-items-center sidebar-info">
+                    <div>
+                        <span class="font-w400 d-block">{{ Auth::user()->name }}</span>
+                        <small class="d-block text-danger"><strong>{{ Auth::user()->is_active ? 'Active' : 'Inactive Account' }}</strong></small>
+                        <small class="font-w400 d-block">User ID: {{ Auth::user()->username }}</small>
+                        <small class="font-w400 d-none d-lg-block">E-mail: {{ Auth::user()->email }}</small>
+                    </div>
+                </div>
             </div>
+        </div>
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{{ route('user.dashboard') }}">
+                    <span data-feather="user-check" class="nav-icon"></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void();" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-text">Create Account</span>
+                </a>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Menu</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="javascript:void();">Sub Menu</a></li>
+                    <li><a href="javascript:void();">Sub Menu</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
