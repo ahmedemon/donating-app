@@ -1,0 +1,6 @@
+.login-panel {
+	height: 100vh !important;
+	align-items: center;
+	overflow: hidden !important;
+	position: relative;
+}

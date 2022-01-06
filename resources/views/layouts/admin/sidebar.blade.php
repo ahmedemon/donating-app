@@ -6,56 +6,26 @@
                             <span class="menu-text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="#" class="">
-                            <span data-feather="user-check" class="nav-icon"></span>
-                            <span class="menu-text">Register</span>
-                        </a>
-                    </li>
-                    <li class="has-child">
-                        <a href="#" class="">
-                            <span data-feather="layers" class="nav-icon"></span>
-                            <span class="menu-text">Shelf</span>
-                            <span class="toggle-icon"></span>
-                        </a>
-                        <ul class="bg-dark">
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Mobiles
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Laptops
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Accessories
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Extras
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="has-child">
                         <a href="#" class="">
                             <span data-feather="gift" class="nav-icon"></span>
-                            <span class="menu-text">Donate</span>
+                            <span class="menu-text">Donated Products</span>
                             <span class="toggle-icon"></span>
                         </a>
                         <ul class="bg-dark">
                             <li>
                                 <a href="javascript:void();" class="">
-                                    <span data-feather="plus-circle" class="nav-icon sub-icon"></span> Add
+                                    <span data-feather="pause" class="nav-icon sub-icon"></span> Pending
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript:void();" class="">
-                                    <span data-feather="list" class="nav-icon sub-icon"></span> Donated Products
+                                    <span data-feather="check-square" class="nav-icon sub-icon"></span> Success
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void();" class="">
+                                    <span data-feather="x" class="nav-icon sub-icon"></span> Rejected
                                 </a>
                             </li>
                         </ul>
@@ -86,33 +56,46 @@
                     </li>
                     <li class="has-child">
                         <a href="#" class="">
-                            <span data-feather="message-square" class="nav-icon"></span>
-                            <span class="menu-text">Buyer Request</span>
+                            <span data-feather="layers" class="nav-icon"></span>
+                            <span class="menu-text">Categories</span>
                             <span class="toggle-icon"></span>
                         </a>
                         <ul class="bg-dark">
                             <li>
                                 <a href="javascript:void();" class="">
-                                    <span data-feather="pause" class="nav-icon sub-icon"></span> Pending
+                                    <span data-feather="plus-circle" class="nav-icon sub-icon"></span> Add
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript:void();" class="">
-                                    <span data-feather="check-square" class="nav-icon sub-icon"></span> Success
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void();" class="">
-                                    <span data-feather="x" class="nav-icon sub-icon"></span> Rejected
+                                    <span data-feather="list" class="nav-icon sub-icon"></span> Category List
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li class="">
+                    <li class="has-child">
                         <a href="#" class="">
                             <span data-feather="shopping-cart" class="nav-icon"></span>
-                            <span class="menu-text">Sponsored Shop</span>
+                            <span class="menu-text">Sponsor</span>
+                            <span class="toggle-icon"></span>
                         </a>
+                        <ul class="bg-dark">
+                            <li>
+                                <a href="javascript:void();" class="">
+                                    <span data-feather="menu" class="nav-icon sub-icon"></span> Sponsor List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void();" class="">
+                                    <span data-feather="plus-circle" class="nav-icon sub-icon"></span> Add Items
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void();" class="">
+                                    <span data-feather="list" class="nav-icon sub-icon"></span> Sponsored Items
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

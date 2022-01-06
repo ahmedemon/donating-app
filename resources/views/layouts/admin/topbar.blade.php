@@ -5,7 +5,7 @@
                     <img class="svg" src="{{ asset('backend/img/svg/bars.svg') }}" alt="img">
                 </a>
                 <a class="navbar-brand" href="#">
-                    User Dashboard
+                    Admin Dashboard
                 </a>
                 <form action="https://demo.jsnorm.com/" class="search-form">
                     <span data-feather="search"></span>
@@ -19,9 +19,8 @@
                     <li class="nav-notification">
                         <div class="dropdown-custom">
                             <a href="javascript:void();" class="nav-item-toggle">
-                                <span data-feather="bell"></span>
-                            </a>
-                            <div class="dropdown-wrapper bg-dark rounded">
+                                <span data-feather="bell"></span></a>
+                            <div class="dropdown-wrapper bg-dark">
                                 <h2 class="dropdown-wrapper__title bg-dark border border-light text-white">Notifications <span class="badge-circle badge-warning ml-1">4</span></h2>
                                 <ul>
                                     <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
@@ -52,7 +51,7 @@
                                         <img src="{{ asset('backend/img/author-nav.jpg') }}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6 class="text-white">{{ Auth::user()->name ?? '' }}</h6>
+                                        <h6 class="text-white">{{ Auth::user()->name }}</h6>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">
