@@ -19,6 +19,11 @@
                 <div class="card border" style="background-color: #090f289e !important;">
                     <div class="card-body">
                         <h2 class="text-white text-center py-2">Register</h2>
+                         @if ($errors->any())
+                             @foreach ($errors->all() as $error)
+                                 <div>{{$error}}</div>
+                             @endforeach
+                         @endif
                         <div class="row justify-content-center">
                             <div class="col-md-12 mb-3">
                                 <form method="POST" action="{{ route('register') }}">
@@ -39,7 +44,7 @@
                                             <label for="username" class="col-form-label text-white small text-md-right">Username</label>
                                             <input id="username" type="text" class="form-control bg-transparent text-white @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
-                                            @error('name')
+                                            @error('username')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -48,9 +53,9 @@
 
                                         <div class="col-md-6 px-4">
                                             <label for="phone" class="col-form-label text-white small text-md-right">Phone</label>
-                                            <input id="phone" type="text" class="form-control bg-transparent text-white @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                            <input id="phone" type="number" class="form-control bg-transparent text-white @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
 
-                                            @error('name')
+                                            @error('phone')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -82,6 +87,17 @@
                                         <div class="col-md-6 px-4">
                                             <label for="password-confirm" class="col-form-label text-white small text-md-right">Confirm Password</label>
                                             <input id="password-confirm" type="password" class="form-control bg-transparent text-white" name="password_confirmation" required autocomplete="new-password">
+                                        </div>
+
+                                        <div class="col-md-6 px-4">
+                                            <label for="address" class="col-form-label text-white small text-md-right">address</label>
+                                            <input id="address" type="text" class="form-control bg-transparent text-white @error('address') is-invalid @enderror" name="address" required autocomplete="new-address">
+
+                                            @error('address')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6 px-4 text-white">
