@@ -46,7 +46,6 @@
         .card-body {
             z-index: 0 !important;
         }
-
     </style>
 
     @stack('css')
@@ -151,7 +150,7 @@
 
     @stack('js')
 
-{{--     @if (!Request::is('login') && !Request::is('password/*'))
+    @if (!Request::is('login') && !Request::is('password/*'))
         <script>
             jQuery(document).ready(function() {
                 setTimeout(function() {
@@ -160,7 +159,7 @@
                 }, 500)
             });
         </script>
-    @endif --}}
+    @endif
 
     {{-- @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"]) --}}
     {{-- @include('sweetalert::alert') --}}
