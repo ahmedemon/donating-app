@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSponsorItemsTable extends Migration
+class CreateDonationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,19 @@ class CreateSponsorItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sponsor_items', function (Blueprint $table) {
+        Schema::create('donations', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
             $table->string('title');
-            // $table->integer('sponsor_id');
             $table->integer('price');
-            $table->integer('reward_point');
+            $table->integer('point');
+            $table->string('category');
             $table->text('description');
             $table->string('shipping_address');
-            $table->string('image');
+            $table->string('images');
+            $table->integer('used_duration');
             $table->string('status')->default('pending');
-            // $table->integer('request_user_id');
-            $table->string('created_by');
-            $table->string('edited_by');
-
-            $table->foreignId('sponsor_id')->references('id')->on('sponsors');
-            // $table->foreign('request_user_id')->references('id')->on('users');
+            $table->string('requested_user')->nullable();
             $table->timestamps();
         });
     }
@@ -40,6 +37,6 @@ class CreateSponsorItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sponsor_items');
+        Schema::dropIfExists('donations');
     }
 }

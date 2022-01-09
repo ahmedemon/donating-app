@@ -21,20 +21,65 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void();" aria-expanded="false">
-                    <i class="fas fa-user"></i>
-                    <span class="nav-text">Create Account</span>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Shelf</span>
                 </a>
+                <ul aria-expanded="false">
+                    <li><a href="javascript:void();">Mobile</a></li>
+                    <li><a href="javascript:void();">Laptop</a></li>
+                    <li><a href="javascript:void();">CPU</a></li>
+                    <li><a href="javascript:void();">Accessories</a></li>
+                </ul>
             </li>
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Menu</span>
+                    <span class="nav-text">Ordered Items</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Sub Menu</a></li>
-                    <li><a href="javascript:void();">Sub Menu</a></li>
+                    <li><a href="javascript:void();">Pending</a></li>
+                    <li><a href="javascript:void();">Approved</a></li>
+                    <li><a href="javascript:void();">Rejected</a></li>
                 </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Donate</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="javascript:void();">Donate Product</a></li>
+                    <li><a href="javascript:void();">Pending</a></li>
+                    <li><a href="javascript:void();">Approved</a></li>
+                    <li><a href="javascript:void();">Rejected</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Buyer Request</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="javascript:void();">Pending</a></li>
+                    <li><a href="javascript:void();">Completed</a></li>
+                    <li><a href="javascript:void();">Rejected</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void();" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-text">Sponsored Shop</span>
+                </a>
+            </li>
+            <li>
+                <a href="#logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="ms-2">Logout </span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </li>
         </ul>
     </div>

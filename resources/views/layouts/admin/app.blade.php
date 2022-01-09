@@ -1,68 +1,163 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $pageTitle }} | Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('backend/css/plugin.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('backend/img/favicon.png') }}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- PAGE TITLE HERE -->
+    <title>{{ ($pageTitle ?? 'Admin Panel')}} Forex E-coin</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
+    <link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
+
+    <!-- Style css -->
+    <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
     <style>
-        .sub-icon{
-            margin-right: 5px !important;
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
+
+        ::-webkit-scrollbar-track {
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgb(87, 87, 87);
+            border-radius: 10px;
+        }
+
+        .form-control.is-invalid {
+            border-top-right-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+        }
+
+        [data-sidebar-style="full"][data-layout="vertical"] .dlabnav .metismenu>li>a {
+            padding: 0.75rem 2.1875rem;
+        }
+
     </style>
+
+    @stack('css')
+
+    {{-- @if (Auth::guard('admin')->check())
+        <script>
+            var timeout = ({{ config('session.lifetime') }} * 60000) - 5000;
+            setTimeout(function() {
+                window.location.reload(1);
+            }, timeout);
+        </script>
+    @endif --}}
 </head>
 
-<body class="layout-dark side-menu overlayScroll">
-    @auth
-        <div class="mobile-search"></div>
-        <div class="mobile-author-actions"></div>
-        <header class="header-top">
-            @include('layouts.user.topbar')
-        </header>
-    @endauth
+<body class="{{ Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login') ? 'vh-100' : '' }}">
 
-    <main class="main-content">
-        @auth
-            <aside class="sidebar">
-                @include('layouts.user.sidebar')
-            </aside>
-        @endauth
+    @if (!Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login'))
+        {{-- Preloader start --}}
+        {{-- <div id="preloader">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div> --}}
+        {{-- Preloader end --}}
 
-        @yield('content-without-menubar')
+        <!-- Main wrapper start -->
+        <div id="main-wrapper">
 
-        <div class="contents vh-100">
-            <div class="container-fluid">
-                <div class="social-dash-wrap">
-                    <div class="row pt-4">
-                        <div class="col-lg-12">
-                            @yield('content')
+            <!-- Nav header start -->
+                <div class="nav-header">
+                    <a href="{{ route('admin.index') }}" class="brand-logo">
+                        <img style="height: 60%; width: 100%;" class="border rounded" src="{{ asset('logo.png') }}" alt="Logo">
+                    </a>
+                    <div class="nav-control d-lg-none">
+                        <div class="hamburger">
+                            <span class="line"></span><span class="line"></span><span class="line"></span>
                         </div>
                     </div>
                 </div>
+            <!-- Nav header end -->
+
+            <!-- Header start -->
+            <div class="header">
+                <div class="header-content">
+                    <nav class="navbar navbar-expand">
+                        <div class="collapse navbar-collapse justify-content-between">
+                            <div class="header-left">
+                            </div>
+                            @include('layouts.admin.header-right')
+                        </div>
+                    </nav>
+                </div>
             </div>
+            <!-- Header end ti-comment-alt -->
+
+            <!-- Sidebar start -->
+            @include('layouts.admin.sidebar')
+            <!-- Sidebar end -->
+
+            <!-- Content body start -->
+            <div class="content-body">
+                @yield('content')
+            </div>
+            <!-- Content body end -->
+
+            <div class="footer"></div>
+
         </div>
-    </main>
 
-    <div id="overlayer">
-        <span class="loader-overlay">
-            <div class="atbd-spin-dots spin-lg">
-                <span class="spin-dot badge-dot dot-success"></span>
-                <span class="spin-dot badge-dot dot-success"></span>
-                <span class="spin-dot badge-dot dot-success"></span>
-                <span class="spin-dot badge-dot dot-success"></span>
-            </div>
-        </span>
-    </div>
+    @else
+        @yield('content')
+    @endif
 
-    <div class="overlay-dark-sidebar"></div>
-    <div class="customizer-overlay"></div>
+    <!-- Required vendors -->
+    <script src="{{ asset('backend/vendor/global/global.min.js') }}"></script>
 
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
-    <script src="{{ asset('backend/js/plugins.min.js') }}"></script>
-    <script src="{{ asset('backend/js/script.min.js') }}"></script>
+    @if (!Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login'))
+
+        {{-- <script src="{{ asset('backend/vendor/chart.js/Chart.bundle.min.js') }}"></script> --}}
+        <script src="{{ asset('backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
+
+        {{-- <!-- Apex Chart --> --}}
+        {{-- <script src="{{ asset('backend/vendor/apexchart/apexchart.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/chart.js/Chart.bundle.min.js') }}"></script> --}}
+
+        {{-- <!-- Chart piety plugin files --> --}}
+        {{-- <script src="{{ asset('backend/vendor/peity/jquery.peity.min.js') }}"></script> --}}
+
+        <!-- Dashboard 1 -->
+        <script src="{{ asset('backend/js/dashboard/dashboard-1.js') }}"></script>
+
+        {{-- <script src="{{ asset('backend/vendor/owl-carousel/owl.carousel.js') }}"></script> --}}
+
+    @endif
+
+
+    <script src="{{ asset('backend/js/custom.min.js') }}"></script>
+    <script src="{{ asset('backend/js/dlabnav-init.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/toastr/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
+    {{-- {!! Toastr::message() !!} --}}
+
+    @stack('js')
+
+    {{-- @if (!Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login')) --}}
+    <script>
+        jQuery(document).ready(function() {
+            dlabSettingsOptions.version = 'dark';
+            new dlabSettings(dlabSettingsOptions);
+        });
+    </script>
+    {{-- @endif --}}
+
 </body>
+
 </html>
