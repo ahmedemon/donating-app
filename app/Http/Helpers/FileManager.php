@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Helpers;
+namespace App\Http\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -11,15 +11,15 @@ use Illuminate\Support\Str;
 class FileManager
 {
     private $public_root = 'storage/';
-    private $root_path = 'public/';
+    private $root_path = 'public';
     private $sub_folder = null;
     private $name_prefix = null;
     private $name_postfix = null;
     private $file_name = null;
 
-    public function __construct(string $root_path = 'public/')
+    public function __construct(string $root_path = 'public')
     {
-        $this->root_path = $root_path;
+        $this->root($root_path);
     }
 
     private function date()
@@ -59,7 +59,8 @@ class FileManager
         $separator = '-';
         $prefix = !empty($this->name_prefix) ? $this->name_prefix . $separator : '';
         $postfix = !empty($this->name_postfix) ? $this->name_postfix . $separator : '';
-        return $prefix . Str::uuid() . $separator . $postfix .  $this->date();
+        $uniqueid = uniqid() ?? Str::uuid();
+        return $prefix . $uniqueid . $separator . $postfix .  $this->date();
     }
 
     public function prefix($prefix)
@@ -87,7 +88,7 @@ class FileManager
         if ($file)
             $extension = $file->getClientOriginalExtension();
         else
-            dd("No file method passed");
+            throw new \Exception("Passed argument is not a file");
 
         $upload_path = $this->root_path . $this->sub_folder;
         $this->file_name = $this->genFileName() . '.' . $extension;

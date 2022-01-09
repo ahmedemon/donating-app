@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\FileManager;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+
 class RegisterController extends Controller
 {
     /*
@@ -50,12 +55,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:50'],
-            'phone' => ['required', 'integer', 'min:11'],
-            'gender' => ['required'],
-            // 'image' => ['nullable'],
+            'phone'    => ['required', 'integer', 'min:11'],
+            'gender'   => ['required'],
+            'image' => ['nullable'],
             'address' => ['nullable', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -67,18 +72,46 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    // protected function create(array $data)
-    protected function create(array $data)
+    protected function create(Request $request)
     {
+        if ($request->hasFile('image')) {
+            $file = new FileManager();
+            $image = $request->file('image');
+            $file->folder('user')
+                ->prefix($request->username)
+                ->postfix(Str::random(10))
+                ->upload($image);
+            $request->image = $file->getName();
+        }
+
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'username' => $data['username'],
-            'phone' => $data['phone'],
-            'gender' => $data['gender'],
-            // 'image' => $data['image'],
-            'address' => $data['address'],
-            'password' => Hash::make($data['password']),
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'username' => $request->username,
+            'phone'    => $request->phone,
+            'gender'   => $request->gender,
+            'image' => $request->image,
+            'address'  => $request->address,
+            'password' => Hash::make($request->password),
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $user = $this->create($request);
+
+        event(new Registered($user));
+
+        $this->guard()->login($user);
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath());
     }
 }
