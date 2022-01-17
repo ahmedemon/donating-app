@@ -49,7 +49,8 @@
                     <span class="nav-text">Donate</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Donate Product</a></li>
+                    <li><a href="{{ route('donations.create') }}">Donate Product</a></li>
+                    <li><a href="{{ route('donations.index') }}">All</a></li>
                     <li><a href="javascript:void();">Pending</a></li>
                     <li><a href="javascript:void();">Approved</a></li>
                     <li><a href="javascript:void();">Rejected</a></li>

@@ -26,7 +26,7 @@
                          @endif
                         <div class="row justify-content-center">
                             <div class="col-md-12 mb-3">
-                                <form method="POST" action="{{ route('register') }}">
+                                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6 px-4">
@@ -103,13 +103,13 @@
                                         <div class="col-md-6 px-4 text-white">
                                             <label class="col-form-label text-white small text-md-right">Gender</label><br>
 
-                                            <input id="male" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender[]" value="Male">
+                                            <input id="male" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Male">
                                             <label for="male" class="form-check-label text-white text-md-right">Male</label>&nbsp;
 
-                                            <input id="female" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender[]" value="Female">
+                                            <input id="female" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Female">
                                             <label for="female" class="form-check-label text-white text-md-right">Female</label>&nbsp;
 
-                                            <input id="others" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender[]" value="Others">
+                                            <input id="others" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Others">
                                             <label for="others" class="form-check-label text-white text-md-right">Others</label>&nbsp;
 
                                             @error('gender')
