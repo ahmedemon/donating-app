@@ -14,7 +14,7 @@ class DonationController extends Controller
      */
     public function index()
     {
-        //
+        return view('user.donation.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class DonationController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.donation.create');
     }
 
     /**
@@ -33,9 +33,11 @@ class DonationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DonationRequest $request)
     {
-        //
+        $donation = new Donation($request->all());
+        $donation->save();
+        return redirect();
     }
 
     /**

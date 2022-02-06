@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\DonationController;
 /*
 |--------------------------------------------------------------------------
 | User Routes
@@ -15,4 +16,5 @@ use App\Http\Controllers\User\UserController;
 
 Route::group(['prefix'=>'user','middleware' => 'auth'], function () {
 	Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
+	Route::resource('donations', DonationController::class);
 });
