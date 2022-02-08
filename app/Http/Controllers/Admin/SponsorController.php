@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Sponsor;
 use Yajra\DataTables\DataTables;
-class CategoryController extends Controller
+class SponsorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $headerTitle = "Categories";
+        $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Category::latest()->get();
+            $data = Sponsor::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($data) {
@@ -28,7 +27,7 @@ class CategoryController extends Controller
                     if ($data->status == 0) {
                         return $status = '
                             <span class="badge">Dective</span>
-                            <a href="' . route("admin.category.active", $data->id) . '" onClick="' . "return confirm('You want to active ({$data->name}`s)?');" . '" class="badge badge-primary">
+                            <a href="' . route("admin.sponsor.active", $data->id) . '" onClick="' . "return confirm('You want to active ({$data->company_name}`s)?');" . '" class="badge badge-primary">
                                 Active
                             </a>
                         ';
@@ -36,7 +35,7 @@ class CategoryController extends Controller
                     if ($data->status == 1) {
                         return $status = '
                             <span class="badge">Active</span>
-                            <a href="' . route("admin.category.deactive", $data->id) . '" onClick="' . "return confirm('You want to deactivate ({$data->name}`s)?');" . '" class="badge badge-danger">
+                            <a href="' . route("admin.sponsor.deactive", $data->id) . '" onClick="' . "return confirm('You want to deactivate ({$data->company_name}`s)?');" . '" class="badge badge-danger">
                                 Deactive
                             </a>
                         ';
@@ -44,15 +43,15 @@ class CategoryController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->name . '">
+                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->company_name . '">
                             <i class="fa fa-trash"></i>
                         </a>
-                        <form id="delete-form-' . $data->id . '" action="' . route("admin.category.destroy", $data->id) . '" method="POST" class="d-none">
+                        <form id="delete-form-' . $data->id . '" action="' . route("admin.sponsor.destroy", $data->id) . '" method="POST" class="d-none">
                             ' . @csrf_field() . '
                             ' . @method_field("DELETE") . '
                         </form>
 
-                        <a href="' . route("admin.category.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->name}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
+                        <a href="' . route("admin.sponsor.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->company_name}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
                             <i class="flaticon-381-edit-1"></i>
                         </a>
                     ';
@@ -61,7 +60,7 @@ class CategoryController extends Controller
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }        
-        return view('admin.categories.index', compact('headerTitle'));
+        return view('admin.sponsor.index', compact('headerTitle'));
     }
 
     /**
@@ -71,8 +70,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $headerTitle = 'Add Category';
-        return view('admin.categories.create', compact('headerTitle'));
+        $headerTitle = 'Add Sponsor';
+        return view('admin.sponsor.create', compact('headerTitle'));
     }
 
     /**
@@ -84,15 +83,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string',
+            'company_name' => 'required|string',
             'description' => 'nullable|string',
+            'phone' => 'required|numeric',
+            'address' => 'required|string',
         ]);
-        $category = new Category($request->all());
-        $category->created_by = Auth::guard('admin')->user()->id;
-        $category->status = 1;
-        $category->save();
-        toastr()->success('Category added suceessfully!', 'Success');
-        return redirect()->route('admin.category.index');
+        $sponsor = new Sponsor($request->all());
+        $sponsor->status = 0;
+        $sponsor->save();
+        toastr()->success('Sponsor Added Successfully!', 'Success!');
+        return redirect()->route('admin.sponsor.index');
     }
 
     /**
@@ -114,9 +114,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        $headerTitle = "Edit Category | " . $category->name;
-        return view('admin.categories.edit', compact('category', 'headerTitle'));
+        $sponsor = Sponsor::find($id);
+        $headerTitle = "Edit Sponsor | " . $sponsor->company_name;
+        return view('admin.sponsor.edit', compact('sponsor', 'headerTitle'));
     }
 
     /**
@@ -129,17 +129,17 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|string',
+            'company_name' => 'required|string',
             'description' => 'nullable|string',
+            'phone' => 'required|numeric',
+            'address' => 'required|string',
         ]);
-        $category = Category::find($id);
-        $category->name = $request->name;
-        $category->description = $request->description;
-        $category->created_by = Auth::guard('admin')->user()->id;
-        $category->status = 1;
-        $category->save();
-        toastr()->success('Category updated suceessfully!', 'Success');
-        return redirect()->route('admin.category.index');
+
+        $sponsor = Sponsor::find($id);
+        $sponsor->update($request->except('_token', '_method'));
+        $sponsor->save();
+        toastr()->success('Sponsor Updated Successfully!', 'Updated!');
+        return redirect()->route('admin.sponsor.index');
     }
 
     /**
@@ -150,27 +150,27 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        toastr()->error('Category Deleted Successfully!', 'Deleted!');
-        return redirect()->back();
+        $sponsor = Sponsor::find($id);
+        $sponsor->delete();
+        toastr()->error('Sponsor Deleted!', 'Deleted!');
+        return redirect()->route('admin.sponsor.index');
     }
 
     public function active($id)
     {
-        $category = Category::find($id);
-        $category->status = 1;
-        $category->save();
-        toastr()->success('Category Activate!', 'Activate!');
+        $sponsor = Sponsor::find($id);
+        $sponsor->status = 1;
+        $sponsor->save();
+        toastr()->success('Sponsor Activate!', 'Activate!');
         return redirect()->back();
     }
 
     public function deactive($id)
     {
-        $category = Category::find($id);
-        $category->status = 0;
-        $category->save();
-        toastr()->warning('Category Deactivate!', 'Deactivate!');
+        $sponsor = Sponsor::find($id);
+        $sponsor->status = 0;
+        $sponsor->save();
+        toastr()->warning('Sponsor Deactivate!', 'Deactivate!');
         return redirect()->back();
     }
 }

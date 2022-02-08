@@ -8,11 +8,7 @@ use App\Models\SponsorItem;
 class Sponsor extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'company_name',
-        'description',
-        'address',
-    ];
+    protected $fillable=['company_name','description','address','phone'];
     public function sponsor_items()
     {
         return $this->hasMany(SponsorItem::class);

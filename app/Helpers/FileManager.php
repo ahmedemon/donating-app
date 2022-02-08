@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Helpers;
+namespace App\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -11,15 +11,33 @@ use Illuminate\Support\Str;
 class FileManager
 {
     private $public_root = 'storage/';
-    private $root_path = 'public';
+    private $root_path = 'public/';
     private $sub_folder = null;
     private $name_prefix = null;
     private $name_postfix = null;
     private $file_name = null;
 
-    public function __construct(string $root_path = 'public')
+    public function __construct(string $root_path = 'public/')
     {
-        $this->root($root_path);
+        $this->root_path = $root_path;
+    }
+
+    public static function prepare($set = [
+        'root'    => '',
+        'folder'  => '',
+        'prefix'  => '',
+        'postfix' => ''
+    ])
+    {
+        $get = [
+            'root'    => $set['root'] ?? '',
+            'folder'  => $set['folder'] ?? '',
+            'prefix'  => $set['prefix'] ?? '',
+            'postfix' => $set['postfix'] ?? ''
+        ];
+        $file = new self($get['root']);
+        $file->folder($get['folder'])->prefix('prefix')->postfix('postfix');
+        return $file;
     }
 
     private function date()
@@ -59,8 +77,7 @@ class FileManager
         $separator = '-';
         $prefix = !empty($this->name_prefix) ? $this->name_prefix . $separator : '';
         $postfix = !empty($this->name_postfix) ? $this->name_postfix . $separator : '';
-        $uniqueid = uniqid() ?? Str::uuid();
-        return $prefix . $uniqueid . $separator . $postfix .  $this->date();
+        return $prefix . Str::uuid() . $separator . $postfix .  $this->date();
     }
 
     public function prefix($prefix)
@@ -88,7 +105,7 @@ class FileManager
         if ($file)
             $extension = $file->getClientOriginalExtension();
         else
-            throw new \Exception("Passed argument is not a file");
+            dd("No file method passed");
 
         $upload_path = $this->root_path . $this->sub_folder;
         $this->file_name = $this->genFileName() . '.' . $extension;

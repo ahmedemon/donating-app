@@ -8,12 +8,7 @@ use App\Models\Donation;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'name',
-        'slug',
-        'created_by',
-        'edited_by',
-    ];
+    protected $fillable=['name','description'];
 
     public function donation()
     {

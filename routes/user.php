@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\DonationController;
+use App\Http\Controllers\User\SponsoredShopController;
 /*
 |--------------------------------------------------------------------------
 | User Routes
@@ -17,4 +18,8 @@ use App\Http\Controllers\User\DonationController;
 Route::group(['prefix'=>'user','middleware' => 'auth'], function () {
 	Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
 	Route::resource('donations', DonationController::class);
+
+	Route::group(['prefix'=>'sponsored-shop', 'as'=>'sponsored-shop.'], function(){
+		Route::get('/', [SponsoredShopController::class, 'index'])->name('index');
+	});
 });

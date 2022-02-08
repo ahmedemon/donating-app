@@ -68,7 +68,7 @@
                 </ul>
             </li>
             <li>
-                <a href="javascript:void();" aria-expanded="false">
+                <a href="{{ route('sponsored-shop.index') }}" aria-expanded="false">
                     <i class="fas fa-user"></i>
                     <span class="nav-text">Sponsored Shop</span>
                 </a>
