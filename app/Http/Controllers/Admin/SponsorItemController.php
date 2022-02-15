@@ -66,7 +66,7 @@ class SponsorItemController extends Controller
                 })
                 ->rawColumns(['action', 'status', 'image'])
                 ->make(true);
-        }        
+        }
         return view('admin.sponsor_item.index', compact('headerTitle'));
     }
     public function paused()
@@ -208,21 +208,21 @@ class SponsorItemController extends Controller
             'reward_point' => 'required|integer',
             'shipping_address' => 'required|string',
             'description' => 'required|string',
-            'image' => 'nullable'
+            'image' => 'nullable|mimes:png,jpg,jpeg,gif|max:2048'
         ]);
         $sponsor_item = SponsorItem::find($id);
         $sponsor_item->update($request->except('_method', '_token'));
         $sponsor_item->edited_by = Auth::guard('admin')->user()->id;
         $sponsor_item->sponsored_by = $request->sponsored_by;
-        // $upload = new FileManager();
+        $upload = new FileManager();
 
-        // // user image start
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
+        // user image start
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
 
-        //     $upload->folder('user')->prefix('image')->update($image, $user->image);
-        //     $user->image = $upload->getName();
-        // }
+            $upload->folder('user')->prefix('image')->update($image, $user->image);
+            $user->image = $upload->getName();
+        }
         $sponsor_item->save();
         toastr()->success('Sponsor item updated suceessfully!', 'Success!');
         return redirect()->route('admin.sponsor-item.index');

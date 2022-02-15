@@ -22,6 +22,7 @@
                     <div class="basic-form">
                         <form action="{{ route('donations.store') }}" method="POST" class="form-valide-with-icon needs-validation" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -40,12 +41,12 @@
                                     <div class="col-md-6">
                                         <label class="text-label form-label" for="profilePicture">Product Image</label>
                                         <div class="input-group">
-                                            <span class="input-group-text"> <i class="far fa-image"></i> </span>
+                                            <span class="input-group-text"> <i class="far fa-images"></i> </span>
                                             <div class="form-file form-control">
-                                                <input type="file" multiple name="image" class="form-file-input form-control" id="image" accept="image">
+                                                <input type="file" name="images" class="form-file-input form-control" id="images" accept="images">
                                             </div>
                                         </div>
-                                        @error('image')
+                                        @error('images')
                                             <div class="invalid-feedback">
                                                 <strong>{{ $message }}</strong>
                                             </div>
@@ -80,10 +81,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="text-label form-label" for="Categories">Select a Category</label> <span class="small text-danger">*</span>
+                                        <label class="text-label form-label" for="Categories">Select Category</label> <span class="small text-danger">*</span>
                                         <div class="input-group">
-                                            <select class="input-group-text form-control" style="text-align: left" name="category" required id="Categories">
-                                                <option value="phones">Categories</option>
+                                            <select class="input-group-text form-control" style="text-align: left" name="category_id" required id="Categories">
+                                                    <option selected>-- Select --</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         @error('category')
@@ -101,7 +105,7 @@
                                         <label class="text-label form-label" for="Used_duration">Used Duration</label> <span class="small text-danger">*</span>
                                         <div class="input-group">
                                             <select class="input-group-text form-control" style="text-align: left" name="used_duration" required id="Used duration">
-                                                <option value="6-months">6 Months</option>
+                                                <option value="6">6 Months</option>
                                             </select>
                                         </div>
                                         @error('used_duration')

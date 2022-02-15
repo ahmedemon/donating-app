@@ -18,6 +18,8 @@ use App\Http\Controllers\User\SponsoredShopController;
 Route::group(['prefix'=>'user','middleware' => 'auth'], function () {
 	Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
 	Route::resource('donations', DonationController::class);
+	Route::get('donations/activate/{id}', [DonationController::class, 'active'])->name('donations.active');
+	Route::get('donations/deactivate/{id}', [DonationController::class, 'deactive'])->name('donations.deactive');
 
 	Route::group(['prefix'=>'sponsored-shop', 'as'=>'sponsored-shop.'], function(){
 		Route::get('/', [SponsoredShopController::class, 'index'])->name('index');

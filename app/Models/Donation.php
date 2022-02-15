@@ -13,10 +13,9 @@ class Donation extends Model
         'title',
         'price',
         'point',
-        'category',
+        'category_id',
         'description',
         'shipping_address',
-        'images',
         'used_duration',
     ];
 

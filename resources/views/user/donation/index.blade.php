@@ -20,12 +20,17 @@
                             <thead>
                                 <tr>
                                     <th>S.N</th>
-                                    <th>User</th>
-                                    <th>Trnx ID</th>
-                                    <th>In</th>
-                                    <th>Out</th>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Point</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Shipping Address</th>
+                                    <th>Images</th>
+                                    <th>Used Duration</th>
+                                    <th>Status</th>
                                     <th>Date</th>
-                                    <th>Note</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="border-0">
@@ -36,6 +41,14 @@
             </div>
         </div>
     </div>
+    <script>
+        function noticeDelete(elem) {
+            event.preventDefault();
+            if (confirm('Are you sure? You want to delete ( ' + elem.dataset.name + ' )')) {
+                document.getElementById('delete-form-' + elem.dataset.id).submit();
+            }
+        }
+    </script>
 @endsection
 @push('js')
     <script src="{{ asset('backend/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
@@ -56,28 +69,48 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'user',
-                        name: 'user'
+                        data: 'title',
+                        name: 'title'
                     },
                     {
-                        data: 'trnx_id',
-                        name: 'trnx_id'
+                        data: 'price',
+                        name: 'price'
                     },
                     {
-                        data: 'in',
-                        name: 'in'
+                        data: 'point',
+                        name: 'point'
                     },
                     {
-                        data: 'out',
-                        name: 'out'
+                        data: 'category_id',
+                        name: 'category_id'
+                    },
+                    {
+                        data: 'description',
+                        name: 'description'
+                    },
+                    {
+                        data: 'shipping_address',
+                        name: 'shipping_address'
+                    },
+                    {
+                        data: 'images',
+                        name: 'images'
+                    },
+                    {
+                        data: 'used_duration',
+                        name: 'used_duration'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'created_at',
                         name: 'created_at'
                     },
                     {
-                        data: 'note',
-                        name: 'note'
+                        data: 'action',
+                        name: 'action'
                     }
                 ]
             });
