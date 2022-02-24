@@ -25,6 +25,8 @@ class CreateDonationsTable extends Migration
             $table->string('images');
             $table->integer('used_duration');
             $table->integer('status')->default(0);
+            $table->integer('is_paused')->default(1);
+            $table->integer('is_purchased')->default(0);
             $table->integer('requested_by')->nullable();
             $table->integer('approved_by')->nullable();
             $table->integer('rejected_by')->nullable();

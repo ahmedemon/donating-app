@@ -16,7 +16,7 @@
         <ul class="metismenu" id="menu">
             <li>
                 <a href="{{ route('user.dashboard') }}">
-                    <span data-feather="user-check" class="nav-icon"></span>
+                    <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
@@ -26,10 +26,12 @@
                     <span class="nav-text">Shelf</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Mobile</a></li>
-                    <li><a href="javascript:void();">Laptop</a></li>
-                    <li><a href="javascript:void();">CPU</a></li>
-                    <li><a href="javascript:void();">Accessories</a></li>
+                    @php
+                        $categories = \App\Models\Category::where('status', 1)->get();
+                    @endphp
+                    @foreach($categories as $category)
+                        <li><a href="{{ route('category.index', $category->id) }}">{{ $category->name }}</a></li>
+                    @endforeach
                 </ul>
             </li>
             <li>
@@ -49,11 +51,11 @@
                     <span class="nav-text">Donate</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('donations.create') }}">Donate Product</a></li>
-                    <li><a href="{{ route('donations.index') }}">All</a></li>
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{ route('donation.create') }}">Donate Product</a></li>
+                    <li><a href="{{ route('donation.pending') }}">Pending</a></li>
+                    <li><a href="{{ route('donation.approved') }}">Approved</a></li>
+                    <li><a href="{{ route('donation.rejected') }}">Rejected</a></li>
+                    <li><a href="{{ route('donation.index') }}">Paused</a></li>
                 </ul>
             </li>
             <li>

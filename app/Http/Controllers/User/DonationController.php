@@ -18,9 +18,9 @@ class DonationController extends Controller
      */
     public function index()
     {
-        $headerTitle = "Sponsors";
+        $headerTitle = "Donated Product | Paused";
         if (request()->ajax()) {
-            $data = Donation::where('status', 1)->latest()->get();
+            $data = Donation::where('status', 1)->where('is_paused', 0)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){
@@ -33,7 +33,7 @@ class DonationController extends Controller
                     if ($data->status == 0) {
                         return $status = '
                             <span class="badge">Dective</span>
-                            <a href="' . route("donations.active", $data->id) . '" onClick="' . "return confirm('You want to active ({$data->title}`s)?');" . '" class="badge badge-primary">
+                            <a href="' . route("donation.active", $data->id) . '" onClick="' . "return confirm('You want to active ({$data->title}`s)?');" . '" class="badge badge-primary">
                                 Active
                             </a>
                         ';
@@ -41,7 +41,7 @@ class DonationController extends Controller
                     if ($data->status == 1) {
                         return $status = '
                             <span class="badge">Active</span>
-                            <a href="' . route("donations.deactive", $data->id) . '" onClick="' . "return confirm('You want to deactivate ({$data->title}`s)?');" . '" class="badge badge-danger">
+                            <a href="' . route("donation.deactive", $data->id) . '" onClick="' . "return confirm('You want to deactivate ({$data->title}`s)?');" . '" class="badge badge-danger">
                                 Deactive
                             </a>
                         ';
@@ -52,12 +52,12 @@ class DonationController extends Controller
                         <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
                             <i class="fa fa-trash"></i>
                         </a>
-                        <form id="delete-form-' . $data->id . '" action="' . route("donations.destroy", $data->id) . '" method="POST" class="d-none">
+                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
                             ' . @csrf_field() . '
                             ' . @method_field("DELETE") . '
                         </form>
 
-                        <a href="' . route("donations.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
+                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
                             <i class="flaticon-381-edit-1"></i>
                         </a>
                     ';
@@ -68,7 +68,123 @@ class DonationController extends Controller
         }
         return view('user.donation.index');
     }
+    public function pending()
+    {
+        $headerTitle = "Donatated Product | Pending";
+        if (request()->ajax()) {
+            $data = Donation::where('status', 0)->latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('images', function($data){
+                    return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
+                })
+                ->editColumn('created_at', function ($data) {
+                    return date('M d, Y, h:i a', strtotime($data->created_at));
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->status == 0) {
+                        return $status = '<span class="badge badge-primary">Pending</span>';
+                    }
+                })
+                ->addColumn('action', function ($data) {
+                    $actionBtn = '
+                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
+                            ' . @csrf_field() . '
+                            ' . @method_field("DELETE") . '
+                        </form>
 
+                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
+                            <i class="flaticon-381-edit-1"></i>
+                        </a>
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action', 'status', 'images'])
+                ->make(true);
+        }
+        return view('user.donation.pending');
+    }
+    public function approved()
+    {
+        $headerTitle = "Sponsors";
+        if (request()->ajax()) {
+            $data = Donation::where('status', 1)->latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('images', function($data){
+                    return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
+                })
+                ->editColumn('created_at', function ($data) {
+                    return date('M d, Y, h:i a', strtotime($data->created_at));
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->status == 1) {
+                        return $status = '<span class="badge badge-secondary">Approved</span>';
+                    }
+                })
+                ->addColumn('action', function ($data) {
+                    $actionBtn = '
+                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
+                            ' . @csrf_field() . '
+                            ' . @method_field("DELETE") . '
+                        </form>
+
+                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
+                            <i class="flaticon-381-edit-1"></i>
+                        </a>
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action', 'status', 'images'])
+                ->make(true);
+        }
+        return view('user.donation.approve');
+    }
+    public function rejected()
+    {
+        $headerTitle = "Sponsors";
+        if (request()->ajax()) {
+            $data = Donation::where('status', 2)->latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('images', function($data){
+                    return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
+                })
+                ->editColumn('created_at', function ($data) {
+                    return date('M d, Y, h:i a', strtotime($data->created_at));
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->status == 2) {
+                        return $status = '<span class="badge badge-danger">Rejected</span>';
+                    }
+                })
+                ->addColumn('action', function ($data) {
+                    $actionBtn = '
+                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
+                            ' . @csrf_field() . '
+                            ' . @method_field("DELETE") . '
+                        </form>
+
+                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
+                            <i class="flaticon-381-edit-1"></i>
+                        </a>
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action', 'status', 'images'])
+                ->make(true);
+        }
+        return view('user.donation.rejected');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -111,7 +227,7 @@ class DonationController extends Controller
         }
         $donation->save();
         toastr()->success('Product Successfully Donated!', 'Success!');
-        return redirect()->route('donations.index');
+        return redirect()->route('donation.pending');
     }
 
     /**
@@ -170,7 +286,7 @@ class DonationController extends Controller
 
         $donation->save();
         toastr()->success('Product Successfully Updated!', 'Updated!');
-        return redirect()->route('donations.index');
+        return redirect()->route('donation.pending');
     }
 
     /**
@@ -187,19 +303,19 @@ class DonationController extends Controller
         return redirect()->back();
     }
 
-    public function active($id)
+    public function pause($id)
     {
         $donation = Donation::find($id);
-        $donation->status = 1;
+        $donation->is_paused = 0;
         $donation->save();
         toastr()->success('Donated Product Activate!', 'Activate!');
         return redirect()->back();
     }
 
-    public function deactive($id)
+    public function relese($id)
     {
         $donation = Donation::find($id);
-        $donation->status = 0;
+        $donation->is_paused = 1;
         $donation->save();
         toastr()->warning('Donated Product Deactivate!', 'Deactivate!');
         return redirect()->back();

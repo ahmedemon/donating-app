@@ -20,7 +20,7 @@
                     @endif
 
                     <div class="basic-form">
-                        <form action="{{ route('donations.store') }}" method="POST" class="form-valide-with-icon needs-validation" enctype="multipart/form-data">
+                        <form action="{{ route('donation.store') }}" method="POST" class="form-valide-with-icon needs-validation" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="mb-3">

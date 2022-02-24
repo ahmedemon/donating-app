@@ -63,7 +63,7 @@
             $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('donations.index') }}",
+                ajax: "{{ route('donation.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'

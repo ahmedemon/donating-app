@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helpers\FileManager;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -13,7 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+use App\Models\CurrentBalance;
+use App\Helpers\FileManager;
 class RegisterController extends Controller
 {
     /*
@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:50'],
-            'phone'    => ['required', 'integer', 'min:11'],
+            'phone'    => ['required', 'integer'],
             'gender'   => ['required'],
             'image' => ['nullable'],
             'address' => ['nullable', 'string'],
@@ -84,7 +84,7 @@ class RegisterController extends Controller
             $request->image = $file->getName();
         }
 
-        return User::create([
+        return $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'username' => $request->username,
@@ -101,6 +101,10 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         $user = $this->create($request);
+        $current_balance = new CurrentBalance();
+        $current_balance->user_id = $user->id;
+        $current_balance->credit_point = 2000;
+        $current_balance->save();
 
         event(new Registered($user));
 
