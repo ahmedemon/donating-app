@@ -1,10 +1,11 @@
-@extends('layouts.user.app', ['pageTitle'=>$headerTitle])
+@extends('layouts.admin.app', ['pageTitle'=>'Donation Request'])
 @push('css')
     <link rel="stylesheet" href="{{ asset('backend/vendor/datatables/css/jquery.dataTables.min.css') }}">
     <style>
         #DataTables_Table_0_wrapper label {
             color: white !important;
         }
+
     </style>
 @endpush
 @section('content')
@@ -12,7 +13,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">{{ $headerTitle }} List</h4>
+                    <h4 class="card-title">Donation List</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -27,7 +28,7 @@
                                     <th>Description</th>
                                     <th>Shipping Address</th>
                                     <th>Images</th>
-                                    <th>Used Duration</th>
+                                    <th>Used Time</th>
                                     <th>Status</th>
                                     <th>Date</th>
                                     <th>Action</th>
@@ -63,7 +64,7 @@
             $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('donation.index') }}",
+                ajax: "{{ route('admin.donation.requests.pending') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
@@ -81,8 +82,8 @@
                         name: 'point'
                     },
                     {
-                        data: 'category_id',
-                        name: 'category_id'
+                        data: 'category',
+                        name: 'category'
                     },
                     {
                         data: 'description',

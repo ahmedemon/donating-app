@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\SponsorItemController;
+use App\Http\Controllers\Admin\DonationRequestController;
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -52,5 +53,18 @@ Route::group(['middleware' => 'admin'], function () {
 		Route::get('active/{id}', [SponsorItemController::class, 'active'])->name('active');
 		Route::get('deactive/{id}', [SponsorItemController::class, 'deactive'])->name('deactive');
 		Route::delete('destroy/{id}', [SponsorItemController::class, 'destroy'])->name('destroy');
+	});
+	Route::group(['prefix'=>'donation-request', 'as'=>'donation.requests.'], function(){
+		Route::get('pending/items', [DonationRequestController::class, 'pending'])->name('pending');
+		Route::get('approved/items', [DonationRequestController::class, 'approved'])->name('approved');
+		Route::get('rejected/items', [DonationRequestController::class, 'rejected'])->name('rejected');
+		Route::get('edit/{id}', [DonationRequestController::class, 'edit'])->name('edit');
+		Route::put('update/{id}', [DonationRequestController::class, 'update'])->name('update');
+
+		Route::get('{id}/approve', [DonationRequestController::class, 'approve'])->name('approve');
+		Route::get('{id}/reject', [DonationRequestController::class, 'reject'])->name('reject');
+		Route::get('{id}/recall', [DonationRequestController::class, 'recall'])->name('recall');
+
+		Route::delete('destroy/{id}', [DonationRequestController::class, 'destroy'])->name('destroy');
 	});
 });

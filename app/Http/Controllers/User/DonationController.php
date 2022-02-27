@@ -8,6 +8,7 @@ use App\Http\Requests\DonationRequest;
 use App\Models\Donation;
 use App\Models\Category;
 use App\Helpers\FileManager;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 class DonationController extends Controller
 {
@@ -18,9 +19,10 @@ class DonationController extends Controller
      */
     public function index()
     {
-        $headerTitle = "Donated Product | Paused";
+        $user_id = Auth::user()->id;
+        $headerTitle = "Total Sales";
         if (request()->ajax()) {
-            $data = Donation::where('status', 1)->where('is_paused', 0)->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 1)->where('requested_by', !null)->with('user')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){
@@ -66,13 +68,14 @@ class DonationController extends Controller
                 ->rawColumns(['action', 'status', 'images'])
                 ->make(true);
         }
-        return view('user.donation.index');
+        return view('user.donation.index', compact('headerTitle'));
     }
     public function pending()
     {
+        $user_id = Auth::user()->id;
         $headerTitle = "Donatated Product | Pending";
         if (request()->ajax()) {
-            $data = Donation::where('status', 0)->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 0)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){
@@ -109,9 +112,10 @@ class DonationController extends Controller
     }
     public function approved()
     {
+        $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Donation::where('status', 1)->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 1)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){
@@ -148,9 +152,10 @@ class DonationController extends Controller
     }
     public function rejected()
     {
+        $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Donation::where('status', 2)->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 2)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){
@@ -276,7 +281,7 @@ class DonationController extends Controller
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
 
-        $file = new FileManager();
+        $upload = new FileManager();
         if ($request->hasFile('images')) {
             $images = $request->file('images');
 

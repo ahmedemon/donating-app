@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">{{ $headerTitle }} List</h4>
+                    <h4 class="card-title">{{ $headerTitle }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -20,15 +20,10 @@
                             <thead>
                                 <tr>
                                     <th>S.N</th>
-                                    <th>Title</th>
-                                    <th>Price</th>
-                                    <th>Point</th>
-                                    <th>Category</th>
-                                    <th>Description</th>
-                                    <th>Shipping Address</th>
-                                    <th>Images</th>
-                                    <th>Used Duration</th>
+                                    <th>Product</th>
+                                    {{-- <th>User</th> --}}
                                     <th>Status</th>
+                                    <th>Owner Approval</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -63,50 +58,30 @@
             $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('donation.index') }}",
+                ajax: "{{ route('my-order.rejected.request') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'title',
-                        name: 'title'
+                        data: 'product',
+                        name: 'product'
                     },
-                    {
-                        data: 'price',
-                        name: 'price'
-                    },
-                    {
-                        data: 'point',
-                        name: 'point'
-                    },
-                    {
-                        data: 'category_id',
-                        name: 'category_id'
-                    },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'shipping_address',
-                        name: 'shipping_address'
-                    },
-                    {
-                        data: 'images',
-                        name: 'images'
-                    },
-                    {
-                        data: 'used_duration',
-                        name: 'used_duration'
-                    },
+                    // {
+                    //     data: 'user',
+                    //     name: 'user'
+                    // },
                     {
                         data: 'status',
                         name: 'status'
                     },
                     {
-                        data: 'created_at',
-                        name: 'created_at'
+                        data: 'owner_approval',
+                        name: 'owner_approval'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date'
                     },
                     {
                         data: 'action',

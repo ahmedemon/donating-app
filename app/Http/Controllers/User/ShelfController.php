@@ -12,7 +12,7 @@ class ShelfController extends Controller
     {
         $category = Category::find($id);
         $pageTitle = 'Free Shelf | ' . $category->name;
-        $donations = Donation::where('status', 1)->where('category_id', $category->id)->get();
+        $donations = Donation::where('status', 1)->where('requested_by', null)->where('category_id', $category->id)->get();
         return view('user.free_shelf.index', compact('category', 'donations', 'pageTitle'));
     }
 }

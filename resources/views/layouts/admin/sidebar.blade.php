@@ -46,9 +46,9 @@
                     <span class="nav-text">Donation Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{route('admin.donation.requests.pending')}}">Pending</a></li>
+                    <li><a href="{{route('admin.donation.requests.approved')}}">Approved</a></li>
+                    <li><a href="{{route('admin.donation.requests.rejected')}}">Rejected</a></li>
                 </ul>
             </li>
             <li>

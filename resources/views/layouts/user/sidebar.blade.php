@@ -40,9 +40,9 @@
                     <span class="nav-text">Ordered Items</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{ route('my-order.pending.request') }}">Pending</a></li>
+                    <li><a href="{{ route('my-order.approved.request') }}">Approved</a></li>
+                    <li><a href="{{ route('my-order.rejected.request') }}">Rejected</a></li>
                 </ul>
             </li>
             <li>
@@ -55,8 +55,13 @@
                     <li><a href="{{ route('donation.pending') }}">Pending</a></li>
                     <li><a href="{{ route('donation.approved') }}">Approved</a></li>
                     <li><a href="{{ route('donation.rejected') }}">Rejected</a></li>
-                    <li><a href="{{ route('donation.index') }}">Paused</a></li>
                 </ul>
+            </li>
+            <li>
+                <a class=" " href="{{ route('donation.index') }}" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Total Sales Item</span>
+                </a>
             </li>
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">

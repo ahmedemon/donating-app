@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\DonationController;
+use App\Http\Controllers\User\PurchaseController;
 use App\Http\Controllers\User\SponsoredShopController;
 use App\Http\Controllers\User\ShelfController;
 /*
@@ -25,6 +26,13 @@ Route::group(['prefix'=>'user','middleware' => 'auth'], function () {
 		Route::get('rejected', [DonationController::class, 'rejected'])->name('rejected');
 		Route::get('pause/{id}', [DonationController::class, 'pause'])->name('pause');
 		Route::get('relese/{id}', [DonationController::class, 'relese'])->name('relese');
+	});
+
+	Route::group(['prefix'=>'my-order', 'as'=>'my-order.'], function(){
+		Route::get('{id}/buy', [PurchaseController::class, 'purchaseRequest'])->name('buy.request');
+		Route::get('pending', [PurchaseController::class, 'pending'])->name('pending.request');
+		Route::get('approved', [PurchaseController::class, 'approved'])->name('approved.request');
+		Route::get('rejected', [PurchaseController::class, 'rejected'])->name('rejected.request');
 	});
 
 	Route::group(['prefix'=>'sponsored-shop', 'as'=>'sponsored-shop.'], function(){

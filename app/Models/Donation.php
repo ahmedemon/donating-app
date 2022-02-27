@@ -21,6 +21,10 @@ class Donation extends Model
 
     public function category()
     {
-        return $this->belognsTo(Category::class);
+        return $this->hasOne(Category::class, 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
