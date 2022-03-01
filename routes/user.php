@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\BuyerRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\DonationController;
@@ -33,6 +34,15 @@ Route::group(['prefix'=>'user','middleware' => 'auth'], function () {
 		Route::get('pending', [PurchaseController::class, 'pending'])->name('pending.request');
 		Route::get('approved', [PurchaseController::class, 'approved'])->name('approved.request');
 		Route::get('rejected', [PurchaseController::class, 'rejected'])->name('rejected.request');
+	});
+
+	Route::group(['prefix'=>'buyer-request', 'as'=>'buyer-request.'], function(){
+		Route::get('pending', [BuyerRequestController::class, 'pending'])->name('pending.request');
+		Route::get('completed', [BuyerRequestController::class, 'completed'])->name('completed.request');
+		Route::get('rejected', [BuyerRequestController::class, 'rejected'])->name('rejected.request');
+		Route::get('approve/{id}', [BuyerRequestController::class, 'approve'])->name('approve.request');
+		Route::get('reject/{id}', [BuyerRequestController::class, 'reject'])->name('reject.request');
+		Route::get('recall/{id}', [BuyerRequestController::class, 'recall'])->name('recall.request');
 	});
 
 	Route::group(['prefix'=>'sponsored-shop', 'as'=>'sponsored-shop.'], function(){

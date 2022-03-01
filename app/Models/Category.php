@@ -12,6 +12,6 @@ class Category extends Model
 
     public function donation()
     {
-        return $this->hasMany(Donation::class, 'category_id');
+        return $this->hasMany(Donation::class, 'id');
     }
 }

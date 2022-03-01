@@ -69,9 +69,9 @@
                     <span class="nav-text">Buyer Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Completed</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{ route('buyer-request.pending.request') }}">Pending</a></li>
+                    <li><a href="{{ route('buyer-request.completed.request') }}">Completed</a></li>
+                    <li><a href="{{ route('buyer-request.rejected.request') }}">Rejected</a></li>
                 </ul>
             </li>
             <li>

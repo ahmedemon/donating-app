@@ -21,6 +21,7 @@ class PurchaseController extends Controller
         PurchasedProduct::create([
             'product_id' => $id,
             'user_id' => $user_id,
+            'owner_id' => $product->user_id,
             'product_point' => $product->point,
             'date' => date('Y-m-d'),
             'status' => 0,
@@ -42,15 +43,20 @@ class PurchaseController extends Controller
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
-                    $user_name = $data->donation->category->name ?? '<span class="badge badge-danger">Not Found</span>';
-                    $category = 'Owner: ' . '<span style="color: darkorange !important; border-bottom: 2px solid darkorange !important;">'. $user_name .'</span>';
+                    $user_name = $data->donation->user->name ?? '<span class="badge badge-danger">Not Found</span>';
+                    $category = 'Category: ' . '<span style="color: darkorange !important; border-bottom: 2px solid darkorange !important;">'. $data->donation->category->name .'</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-                    return $title . '<br>' . str_replace('.00', '', $point). ' Points' . '<br>' . $category . '<br><br>' . $image;
+                    return $title . '<br>' . str_replace('.00', '', $point). ' Points' . '<br>' . $category . '<br>' . 'Owner: ' . $user_name . '<br><br>' . $image;
                 })
-                // ->addColumn('user', function ($data) {
-                //     return $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
-                // })
                 ->addColumn('status', function ($data) {
+                    if ($data->status == 0) {
+                        return '<span class="badge badge-primary">Pending</span>';
+                    }
+                    if ($data->status == 1) {
+                        return '<span class="badge badge-secondary">Approved</span>';
+                    }
+                })
+                ->addColumn('owner_approval', function ($data) {
                     if ($data->status == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
@@ -66,7 +72,7 @@ class PurchaseController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user'])
+                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval'])
                 ->make(true);
         }
         return view('user.ordered_items.pending', compact('headerTitle'));

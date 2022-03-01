@@ -21,10 +21,15 @@ class Donation extends Model
 
     public function category()
     {
-        return $this->hasOne(Category::class, 'id');
+        return $this->hasOne(Category::class, 'id', 'category_id');
     }
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function purchase()
+    {
+        return $this->hasOne(PurchasedProduct::class, 'product_id');
     }
 }
