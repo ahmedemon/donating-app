@@ -19,13 +19,18 @@ class CreateDonationsTable extends Migration
             $table->string('title');
             $table->integer('price');
             $table->integer('point');
-            $table->string('category');
+            $table->integer('category_id');
             $table->text('description');
             $table->string('shipping_address');
             $table->string('images');
             $table->integer('used_duration');
-            $table->string('status')->default('pending');
-            $table->string('requested_user')->nullable();
+            $table->integer('status')->default(0);
+            $table->integer('is_paused')->default(1);
+            $table->integer('is_purchased')->default(0);
+            $table->integer('requested_by')->nullable();
+            $table->integer('approved_by')->nullable();
+            $table->integer('rejected_by')->nullable();
+            $table->integer('recycled_by')->nullable();
             $table->timestamps();
         });
     }

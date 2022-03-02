@@ -3,39 +3,26 @@
 	<link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}">
 @endpush
 @section('content')
-	@include('layouts/frontend/animated_perticles')
 	<div class="container-fluid">
 		<div class="loop owl-carousel">
-			<div class="item card rounded-0">
-				<a class="text-decoration-none" href="">
-					<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-					    <div class="">
-					        <img class="d-block" height="280" src="{{ asset('frontend/img/avatar.svg') }}" alt="">
-					    </div>
-					    <div class="bbb_viewed_content text-center py-2 mt-0">
-					        <div class="bbb_viewed_price">Points to get : 45</div>
-					        <p class="small my-0 text-uppercase text-dark">Non asperiores non s</p>
-					        <div class="bbb_viewed_name"></div>
+			@foreach($products as $product)
+				<div class="item card rounded-0">
+					<a class="text-decoration-none" href="">
+						<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
+						    <div class="">
+						        <img class="d-block" height="280" src="{{ asset('storage/donation/'. $product->images) }}" alt="">
+						    </div>
+						    <div class="bbb_viewed_content text-center py-2 mt-0">
+						        <div class="bbb_viewed_price">Points to get : {{ $product->point }}</div>
+						        <p class="small my-0 text-uppercase text-dark">{{ $product->title }}</p>
+						        <div class="bbb_viewed_name"></div>
+							</div>
 						</div>
-					</div>
-				</a>
-			</div>
-			<div class="item card rounded-0">
-				<a class="text-decoration-none" href="">
-					<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-					    <div class="">
-					        <img class="d-block" height="280" src="{{ asset('frontend/img/avatar.svg') }}" alt="">
-					    </div>
-					    <div class="bbb_viewed_content text-center py-2 mt-0">
-					        <div class="bbb_viewed_price">Points to get : 45</div>
-					        <p class="small my-0 text-uppercase text-dark">Non asperiores non s</p>
-					        <div class="bbb_viewed_name"></div>
-						</div>
-					</div>
-				</a>
-			</div>
+					</a>
+				</div>
+			@endforeach
 		</div>
-	</div>	
+	</div>
 @endsection
 
 @push('js')

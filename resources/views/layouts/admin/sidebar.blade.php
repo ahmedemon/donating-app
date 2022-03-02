@@ -22,11 +22,22 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">User Request</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.category.create') }}">Pending</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Approved</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Rejected</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Categories</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Add Category</a></li>
-                    <li><a href="javascript:void();">Category List</a></li>
+                    <li><a href="{{ route('admin.category.create') }}">Add Category</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Category List</a></li>
                 </ul>
             </li>
             <li>
@@ -35,9 +46,9 @@
                     <span class="nav-text">Buy Product Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.pending.request') }}">Pending</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Completed</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.rejected.request') }}">Rejected</a></li>
                 </ul>
             </li>
             <li>
@@ -46,19 +57,19 @@
                     <span class="nav-text">Donation Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{route('admin.donation.requests.pending')}}">Pending</a></li>
+                    <li><a href="{{route('admin.donation.requests.approved')}}">Approved</a></li>
+                    <li><a href="{{route('admin.donation.requests.rejected')}}">Rejected</a></li>
                 </ul>
             </li>
             <li>
-                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                <a class="has-arrow " href="javascript:void();" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Sponsor</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Add Sponsor</a></li>
-                    <li><a href="javascript:void();">Sponsor List</a></li>
+                    <li><a href="{{ route('admin.sponsor.create') }}">Add Sponsor</a></li>
+                    <li><a href="{{ route('admin.sponsor.index') }}">Sponsor List</a></li>
                 </ul>
             </li>
             <li>
@@ -67,9 +78,9 @@
                     <span class="nav-text">Sponsored Item</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Add Product</a></li>
-                    <li><a href="javascript:void();">Sponsored Products</a></li>
-                    <li><a href="javascript:void();">Paused Products</a></li>
+                    <li><a href="{{ route('admin.sponsor-item.create') }}">Add Product</a></li>
+                    <li><a href="{{ route('admin.sponsor-item.index') }}">Sponsored Products</a></li>
+                    <li><a href="{{ route('admin.sponsor-item.paused') }}">Paused Products</a></li>
                 </ul>
             </li>
             <li>

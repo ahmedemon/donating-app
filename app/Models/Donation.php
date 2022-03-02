@@ -13,15 +13,23 @@ class Donation extends Model
         'title',
         'price',
         'point',
-        'category',
+        'category_id',
         'description',
         'shipping_address',
-        'images',
         'used_duration',
     ];
 
     public function category()
     {
-        return $this->belognsTo(Category::class);
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function purchase()
+    {
+        return $this->hasOne(PurchasedProduct::class, 'product_id');
     }
 }

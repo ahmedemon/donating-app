@@ -16,18 +16,18 @@ class CreateSponsorItemsTable extends Migration
         Schema::create('sponsor_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            // $table->integer('sponsor_id');
             $table->integer('price');
             $table->integer('reward_point');
             $table->text('description');
             $table->string('shipping_address');
             $table->string('image');
-            $table->string('status')->default('pending');
+            $table->integer('status')->default(0);
             // $table->integer('request_user_id');
-            $table->string('created_by');
-            $table->string('edited_by');
+            // $table->integer('sponsor_by');
+            $table->foreignId('sponsored_by')->references('id')->on('sponsors');
+            $table->string('created_by')->nullable();
+            $table->string('edited_by')->nullable();
 
-            $table->foreignId('sponsor_id')->references('id')->on('sponsors');
             // $table->foreign('request_user_id')->references('id')->on('users');
             $table->timestamps();
         });

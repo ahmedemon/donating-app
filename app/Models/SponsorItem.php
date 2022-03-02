@@ -16,6 +16,7 @@ class SponsorItem extends Model
         'description',
         'shipping_address',
         'image',
+        'sponsored_by'
     ];
     public function sponsor()
     {

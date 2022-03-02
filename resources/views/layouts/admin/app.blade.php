@@ -145,7 +145,7 @@
 
     <script src="{{ asset('backend/vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
-    {{-- {!! Toastr::message() !!} --}}
+    {!! Toastr::message() !!}
 
     @stack('js')
 

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PAGE TITLE HERE -->
-    <title>{{ ($pageTitle ?? 'User Panel') . ' | ' }} Forex E-coin</title>
+    <title>{{  'Donate For Re-Use | ' . ($pageTitle ?? 'User Panel') }}</title>
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
     <link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
@@ -146,7 +146,7 @@
     <script src="{{ asset('backend/vendor/toastr/js/toastr.min.js') }}"></script>
     <!-- All init script -->
     <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
-    {{-- {!! Toastr::message() !!} --}}
+    {!! Toastr::message() !!}
 
     @stack('js')
 

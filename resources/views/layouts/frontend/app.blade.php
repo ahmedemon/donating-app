@@ -10,11 +10,13 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('frontend/css/background.animated.css') }}">
+  @if(!route('home'))
+    <link rel="stylesheet" href="{{ asset('frontend/css/background.animated.css') }}">
+  @endif
   @stack('css')
 </head>
 
-<body id="dark">
+<body id="light">
   <header>
     @include('layouts.frontend.topbar')
   </header>
