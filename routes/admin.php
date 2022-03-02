@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BuyerRequestController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\SponsorItemController;
 use App\Http\Controllers\Admin\DonationRequestController;
+use App\Http\Controllers\Admin\UserRequestController;
+
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -33,6 +36,24 @@ Route::group(['middleware' => 'admin'], function () {
 		Route::get('deactive/{id}', [CategoryController::class, 'deactive'])->name('deactive');
 		Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
 	});
+
+    Route::group(['prefix'=>'user-request', 'as'=>'user-request.'], function(){
+        Route::get('pending', [UserRequestController::class, 'pending'])->name('pending.request');
+        Route::get('approved', [UserRequestController::class, 'approved'])->name('approved.request');
+        Route::get('rejected', [UserRequestController::class, 'rejected'])->name('rejected.request');
+        Route::get('activated', [UserRequestController::class, 'activated'])->name('activated.request');
+        Route::get('deactivated', [UserRequestController::class, 'deactivated'])->name('deactivated.request');
+        Route::get('blocked', [UserRequestController::class, 'blocked'])->name('blocked.request');
+
+        Route::get('approve/{id}', [UserRequestController::class, 'approve'])->name('approve.request');
+        Route::get('reject/{id}', [UserRequestController::class, 'reject'])->name('reject.request');
+        Route::get('recall/{id}', [UserRequestController::class, 'recall'])->name('recall.request');
+
+        Route::get('active/{id}', [UserRequestController::class, 'active'])->name('active.request');
+        Route::get('deactive/{id}', [UserRequestController::class, 'deactive'])->name('deactive.request');
+        Route::get('block/{id}', [UserRequestController::class, 'block'])->name('block.request');
+    });
+
 	Route::group(['prefix'=>'sponsor', 'as'=>'sponsor.'], function(){
 		Route::get('/', [SponsorController::class, 'index'])->name('index');
 		Route::get('/create', [SponsorController::class, 'create'])->name('create');
@@ -66,5 +87,14 @@ Route::group(['middleware' => 'admin'], function () {
 		Route::get('{id}/recall', [DonationRequestController::class, 'recall'])->name('recall');
 
 		Route::delete('destroy/{id}', [DonationRequestController::class, 'destroy'])->name('destroy');
+	});
+
+	Route::group(['prefix'=>'buyer-request-admin-approval', 'as'=>'buyer-request-admin-approval.'], function(){
+		Route::get('pending', [BuyerRequestController::class, 'pending'])->name('pending.request');
+		Route::get('completed', [BuyerRequestController::class, 'completed'])->name('completed.request');
+		Route::get('rejected', [BuyerRequestController::class, 'rejected'])->name('rejected.request');
+		Route::get('approve/{id}', [BuyerRequestController::class, 'approve'])->name('approve.request');
+		Route::get('reject/{id}', [BuyerRequestController::class, 'reject'])->name('reject.request');
+		Route::get('recall/{id}', [BuyerRequestController::class, 'recall'])->name('recall.request');
 	});
 });

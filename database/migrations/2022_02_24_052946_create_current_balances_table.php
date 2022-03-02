@@ -16,8 +16,8 @@ class CreateCurrentBalancesTable extends Migration
         Schema::create('current_balances', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
-            $table->decimal('credit_point')->nullable();
-            $table->decimal('debit_point')->nullable();
+            $table->integer('credit_point')->nullable();
+            $table->integer('debit_point')->nullable();
             $table->timestamps();
         });
     }

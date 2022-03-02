@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\Traits\CurrentBalance;
+use App\Helpers\Traits\WalletTrait;
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use App\Models\PurchasedProduct;
@@ -12,10 +14,21 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseController extends Controller
 {
+    use WalletTrait;
     public function purchaseRequest($id)
     {
         $user_id = Auth::user()->id;
         $product = Donation::find($id);
+        if ($product->requested_by == !null) {
+            toastr()->warning('This product is already has been purchased by another user!', 'Already Purchased!');
+            return redirect()->back();
+        }
+        $current_balance = $this->allWallets(Auth::user()->id)['current_balance'];
+        if ($current_balance < $product->point) {
+            toastr()->error('You don`t have enough balance!', 'Insufficient Balance!');
+            return redirect()->back();
+        }
+
         $product->requested_by = $user_id;
         $product->save();
         PurchasedProduct::create([

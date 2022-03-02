@@ -17,8 +17,8 @@ class CreateDonationsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('title');
-            $table->decimal('price', 15, 2);
-            $table->decimal('point', 15, 2);
+            $table->integer('price');
+            $table->integer('point');
             $table->integer('category_id');
             $table->text('description');
             $table->string('shipping_address');

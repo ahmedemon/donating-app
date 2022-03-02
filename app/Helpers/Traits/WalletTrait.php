@@ -9,8 +9,9 @@ trait WalletTrait
 {
     public function allWallets($user_id)
     {
-        $wallet['current_balance'] = number_format(round(Balance::getCurrentPointBalance($user_id), 2), 2);
-        $wallet['total_purchased_balance'] = number_format(round(Balance::getTotalPurchasedBalance($user_id), 2), 2);
+        $wallet['current_balance'] = Balance::getCurrentPointBalance($user_id);
+        $wallet['total_purchased_balance'] = Balance::getTotalPurchasedBalance($user_id);
+        // $wallet['total_purchased_balance'] = number_format(round(Balance::getTotalPurchasedBalance($user_id), 2), 2);
         return $wallet;
     }
 

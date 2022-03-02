@@ -18,10 +18,11 @@ class CreatePurchasedProductsTable extends Migration
             $table->integer('product_id');
             $table->integer('user_id');
             $table->integer('owner_id');
-            $table->decimal('product_point', 15, 2);
+            $table->integer('product_point');
             $table->date('date');
             $table->integer('status')->default(0);
             $table->integer('owner_approval')->default(0);
+            $table->integer('admin_approval')->default(0);
             $table->timestamps();
         });
     }

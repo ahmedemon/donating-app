@@ -22,6 +22,17 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">User Request</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.category.create') }}">Pending</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Approved</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Rejected</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Categories</span>
                 </a>
                 <ul aria-expanded="false">
@@ -35,9 +46,9 @@
                     <span class="nav-text">Buy Product Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="javascript:void();">Pending</a></li>
-                    <li><a href="javascript:void();">Approved</a></li>
-                    <li><a href="javascript:void();">Rejected</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.pending.request') }}">Pending</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Completed</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.rejected.request') }}">Rejected</a></li>
                 </ul>
             </li>
             <li>

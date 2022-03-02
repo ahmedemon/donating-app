@@ -21,8 +21,17 @@ class BalanceHelper
             $purchased_product = PurchasedProduct::where('user_id', $user_id)
                 ->whereIn('status', [0, 1])
                 ->whereIn('owner_approval', [0, 1])
+                ->where('admin_approval', 1)
                 ->sum('product_point');
             $totalCredit -= $purchased_product;
+        }
+        if (CurrentBalance::class == $balanceModel) {
+            $purchased_product = PurchasedProduct::where('owner_id', $user_id)
+                ->whereIn('status', [0, 1])
+                ->whereIn('owner_approval', [1])
+                ->where('admin_approval', 1)
+                ->sum('product_point');
+            $totalCredit += $purchased_product;
         }
 
         return $totalCredit - $totalDebit;

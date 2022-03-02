@@ -16,8 +16,8 @@ class CreateSponsorItemsTable extends Migration
         Schema::create('sponsor_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->decimal('price', 15, 2);
-            $table->decimal('reward_point', 15, 2);
+            $table->integer('price');
+            $table->integer('reward_point');
             $table->text('description');
             $table->string('shipping_address');
             $table->string('image');

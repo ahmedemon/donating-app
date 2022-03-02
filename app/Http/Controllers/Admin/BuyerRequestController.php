@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use App\Models\PurchasedProduct;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class BuyerRequestController extends Controller
@@ -14,10 +13,9 @@ class BuyerRequestController extends Controller
 
     public function pending()
     {
-        $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Pending List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('owner_id', $user_id)->where('status', 0)->where('admin_approval', 1)->where('owner_approval', 0)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('admin_approval', 0)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function($data){
@@ -53,10 +51,10 @@ class BuyerRequestController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="'. route('buyer-request.approve.request', $data->id) .'" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
+                        <a href="'. route('admin.buyer-request-admin-approval.approve.request', $data->id) .'" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
                             <i class="fa fa-check"></i>
                         </a>
-                        <a href="'. route('buyer-request.reject.request', $data->id) .'" class="btn btn-danger shadow btn-xs sharp">
+                        <a href="'. route('admin.buyer-request-admin-approval.reject.request', $data->id) .'" class="btn btn-danger shadow btn-xs sharp">
                             <i class="fa fa-times"></i>
                         </a>
                     ';
@@ -65,15 +63,14 @@ class BuyerRequestController extends Controller
                 ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
-        return view('user.buyer_request.pending', compact('headerTitle'));
+        return view('admin.buyer_request.pending', compact('headerTitle'));
     }
 
     public function completed()
     {
-        $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Completed List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('owner_id', $user_id)->whereIn('status', [1,3])->where('admin_approval', 1)->where('owner_approval', 1)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('admin_approval', 1)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function($data){
@@ -118,15 +115,14 @@ class BuyerRequestController extends Controller
                 ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
-        return view('user.buyer_request.completed', compact('headerTitle'));
+        return view('admin.buyer_request.completed', compact('headerTitle'));
     }
 
     public function rejected()
     {
-        $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Rejected List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('owner_id', $user_id)->where('status', 2)->where('admin_approval', 1)->where('owner_approval', 2)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('admin_approval', 2)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function($data){
@@ -162,7 +158,7 @@ class BuyerRequestController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="'. route('buyer-request.recall.request', $data->id) .'" class="btn btn-info shadow btn-xs sharp">
+                        <a href="'. route('admin.buyer-request-admin-approval.recall.request', $data->id) .'" class="btn btn-info shadow btn-xs sharp">
                             <i class="fas fa-recycle"></i>
                         </a>
                     ';
@@ -171,14 +167,13 @@ class BuyerRequestController extends Controller
                 ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
-        return view('user.buyer_request.rejected', compact('headerTitle'));
+        return view('admin.buyer_request.rejected', compact('headerTitle'));
     }
 
     public function approve($id)
     {
         $approve_request = PurchasedProduct::find($id);
-        $approve_request->status = 1;
-        $approve_request->owner_approval = 1;
+        $approve_request->admin_approval = 1;
         $approve_request->save();
         $donation = Donation::find($approve_request->id);
         $donation->status = 3;
@@ -190,8 +185,7 @@ class BuyerRequestController extends Controller
     public function reject($id)
     {
         $approve_request = PurchasedProduct::find($id);
-        $approve_request->status = 2;
-        $approve_request->owner_approval = 2;
+        $approve_request->admin_approval = 2;
         $approve_request->save();
         toastr()->error('Rejected!', 'Request rejected!');
         return redirect()->back();
@@ -199,8 +193,7 @@ class BuyerRequestController extends Controller
     public function recall($id)
     {
         $approve_request = PurchasedProduct::find($id);
-        $approve_request->status = 0;
-        $approve_request->owner_approval = 0;
+        $approve_request->admin_approval = 0;
         $approve_request->save();
         toastr()->info('Recycled!', 'Request recycled successfylly!');
         return redirect()->back();
