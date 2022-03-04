@@ -47,7 +47,7 @@ Route::group(['middleware' => 'admin'], function () {
 
         Route::get('edit/{id}', [UserRequestController::class, 'edit'])->name('edit.request');
         Route::put('update/{id}', [UserRequestController::class, 'update'])->name('update.request');
-        Route::delete('delete/{id}', [UserRequestController::class, 'destroy'])->name('destroy.request');
+        Route::delete('destroy/{id}', [UserRequestController::class, 'destroy'])->name('destroy.request');
 
         Route::get('approve/{id}', [UserRequestController::class, 'approve'])->name('approve.request');
         Route::get('reject/{id}', [UserRequestController::class, 'reject'])->name('reject.request');

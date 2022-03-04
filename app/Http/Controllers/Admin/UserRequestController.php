@@ -17,7 +17,7 @@ class UserRequestController extends Controller
     {
         $headerTitle = "User Request - Pending List";
         if (request()->ajax()) {
-            $data = User::where('is_active', 0)->where('is_approve', 0)->latest()->get();
+            $data = User::where('is_approve', 0)->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('user_info', function ($data) {
@@ -39,7 +39,7 @@ class UserRequestController extends Controller
                     return $name . '<br>' . $email . '<br>' . $phone . '<br>' . $joining_date . '<hr class="my-2">' . $is_active . $is_blocked;
                 })
                 ->editColumn('image', function ($data) {
-                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image ?? 'avatar.png') . '" height="100" width="100">';
+                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image == !null ? 'storage/user/' . $data->image : 'avatar.png') . '" height="100" width="100">';
                 })
                 ->addColumn('current_balance', function ($data) {
                     return '<i class="fas fa-coins text-warning"></i> ' . $this->allWallets($data->id)['current_balance'];
@@ -104,7 +104,7 @@ class UserRequestController extends Controller
                     return $name . '<br>' . $email . '<br>' . $phone . '<br>' . $joining_date . '<hr class="my-2">' . $is_active . $is_blocked;
                 })
                 ->editColumn('image', function ($data) {
-                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image ?? 'avatar.png') . '" height="100" width="100">';
+                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image == !null ? 'storage/user/' . $data->image : 'avatar.png') . '" height="100" width="100">';
                 })
                 ->addColumn('current_balance', function ($data) {
                     return '<i class="fas fa-coins text-warning"></i> ' . $this->allWallets($data->id)['current_balance'];
@@ -169,7 +169,7 @@ class UserRequestController extends Controller
                     return $name . '<br>' . $email . '<br>' . $phone . '<br>' . $joining_date . '<hr class="my-2">' . $is_active . $is_blocked;
                 })
                 ->editColumn('image', function ($data) {
-                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image ?? 'avatar.png') . '" height="100" width="100">';
+                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image == !null ? 'storage/user/' . $data->image : 'avatar.png') . '" height="100" width="100">';
                 })
                 ->addColumn('current_balance', function ($data) {
                     return '<i class="fas fa-coins text-warning"></i> ' . $this->allWallets($data->id)['current_balance'];
@@ -234,7 +234,7 @@ class UserRequestController extends Controller
                     return $name . '<br>' . $email . '<br>' . $phone . '<br>' . $joining_date . '<hr class="my-2">' . $is_active . $is_blocked;
                 })
                 ->editColumn('image', function ($data) {
-                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image ?? 'avatar.png') . '" height="100" width="100">';
+                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image == !null ? 'storage/user/' . $data->image : 'avatar.png') . '" height="100" width="100">';
                 })
                 ->addColumn('current_balance', function ($data) {
                     return '<i class="fas fa-coins text-warning"></i> ' . $this->allWallets($data->id)['current_balance'];
@@ -299,7 +299,7 @@ class UserRequestController extends Controller
                     return $name . '<br>' . $email . '<br>' . $phone . '<br>' . $joining_date . '<hr class="my-2">' . $is_active . $is_blocked;
                 })
                 ->editColumn('image', function ($data) {
-                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image ?? 'avatar.png') . '" height="100" width="100">';
+                    return '<img class="rounded-circle" style="border: 2px solid darkgray;" src="' . asset($data->image == !null ? 'storage/user/' . $data->image : 'avatar.png') . '" height="100" width="100">';
                 })
                 ->addColumn('current_balance', function ($data) {
                     return '<i class="fas fa-coins text-warning"></i> ' . $this->allWallets($data->id)['current_balance'];
@@ -375,6 +375,63 @@ class UserRequestController extends Controller
         $user = User::find($id);
         $user->delete();
         toastr()->error('Deleted!', 'User has been deleted!');
+        return redirect()->back();
+    }
+
+    public function approve($id)
+    {
+        $user = User::find($id);
+        $user->is_approve = 1;
+        $user->save();
+        toastr()->success('Approved!', 'User approved successfully!');
+        return redirect()->back();
+    }
+    public function reject($id)
+    {
+        $user = User::find($id);
+        $user->is_approve = 2;
+        $user->save();
+        toastr()->error('Rejected!', 'User rejected!');
+        return redirect()->back();
+    }
+    public function recall($id)
+    {
+        $user = User::find($id);
+        $user->is_approve = 0;
+        $user->save();
+        toastr()->error('Rejected!', 'User rejected!');
+        return redirect()->back();
+    }
+    public function active($id)
+    {
+        $user = User::find($id);
+        $user->is_active = 1;
+        $user->save();
+        toastr()->error('Activate!', 'User Activated!');
+        return redirect()->back();
+    }
+    public function deactive($id)
+    {
+        $user = User::find($id);
+        $user->is_active = 0;
+        $user->save();
+        toastr()->error('Deactivate!', 'User Deactivated!');
+        return redirect()->back();
+    }
+    public function block($id)
+    {
+        $user = User::find($id);
+        $user->is_blocked = 1;
+        $user->save();
+        toastr()->error('Blocked!', 'User Blocked!');
+        return redirect()->back();
+    }
+    public function unblock($id)
+    {
+        $user = User::find($id);
+        $user->is_blocked = 0;
+        $user->save();
+        toastr()->success('Unblocked!', 'User Unblocked!');
         return redirect()->back();
     }
 }

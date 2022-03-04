@@ -77,13 +77,13 @@
                                             <div class="col-md-6 px-4 text-white">
                                                 <label class="col-form-label text-white small text-md-right">Gender</label><br>
 
-                                                <input id="male" type="radio" class="form-check-input px-1 text-white" name="gender" value="Male">
+                                                <input id="male" {{ $user->gender == 'Male' ? 'checked' : '' }} type="radio" class="form-check-input px-1 text-white" name="gender" value="Male">
                                                 <label for="male" class="form-check-label text-white text-md-right">Male</label>&nbsp;
 
-                                                <input id="female" type="radio" class="form-check-input px-1 text-white" name="gender" value="Female">
+                                                <input id="female" {{ $user->gender == 'Female' ? 'checked' : '' }} type="radio" class="form-check-input px-1 text-white" name="gender" value="Female">
                                                 <label for="female" class="form-check-label text-white text-md-right">Female</label>&nbsp;
 
-                                                <input id="others" type="radio" class="form-check-input px-1 text-white" name="gender" value="Others">
+                                                <input id="others" {{ $user->gender == 'Others' ? 'checked' : '' }} type="radio" class="form-check-input px-1 text-white" name="gender" value="Others">
                                                 <label for="others" class="form-check-label text-white text-md-right">Others</label>&nbsp;
 
                                                 @error('gender')

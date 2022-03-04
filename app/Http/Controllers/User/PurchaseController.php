@@ -15,6 +15,10 @@ use Yajra\DataTables\Facades\DataTables;
 class PurchaseController extends Controller
 {
     use WalletTrait;
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
     public function purchaseRequest($id)
     {
         $user_id = Auth::user()->id;

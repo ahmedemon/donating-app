@@ -15,6 +15,15 @@
 						    <div class="bbb_viewed_content text-center py-2 mt-0">
 						        <div class="bbb_viewed_price">Points to get : {{ $product->point }}</div>
 						        <p class="small my-0 text-uppercase text-dark">{{ $product->title }}</p>
+                                @auth
+                                    @if ($product->user_id == Auth::user()->id)
+                                        <a href="{{ route('donation.pending'. $product->id) }}" class="btn btn-sm rounded-0 btn-danger">View</a>
+                                    @else
+                                        <a href="{{ route('my-order.buy.request', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">Get Now</a>
+                                    @endif
+                                @else
+                                    <a href="{{ route('my-order.buy.request', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">Get Now</a>
+                                @endauth
 						        <div class="bbb_viewed_name"></div>
 							</div>
 						</div>
@@ -40,7 +49,7 @@
         margin:10,
         responsive:{
             600:{
-                items:7 
+                items:7
             }
         }
     });
