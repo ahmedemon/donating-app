@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Helpers\FileManager;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+
 class DonationController extends Controller
 {
     /**
@@ -25,7 +26,7 @@ class DonationController extends Controller
             $data = Donation::where('user_id', $user_id)->where('status', 3)->where('requested_by', !null)->with(['user', 'category'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -38,7 +39,7 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -56,7 +57,7 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'category_id'])
                 ->make(true);
         }
         return view('user.donation.index', compact('headerTitle'));
@@ -69,7 +70,7 @@ class DonationController extends Controller
             $data = Donation::where('user_id', $user_id)->where('status', 0)->with(['user', 'category'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -82,7 +83,7 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -100,7 +101,7 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images'])
+                ->rawColumns(['action', 'status', 'images', 'category_id'])
                 ->make(true);
         }
         return view('user.donation.pending');
@@ -110,10 +111,10 @@ class DonationController extends Controller
         $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->whereIn('status', [1,3])->with(['user', 'category'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->whereIn('status', [1, 3])->with(['user', 'category'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -126,7 +127,7 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -144,7 +145,7 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'category_id'])
                 ->make(true);
         }
         return view('user.donation.approve');
@@ -157,7 +158,7 @@ class DonationController extends Controller
             $data = Donation::where('user_id', $user_id)->where('status', 2)->with(['user', 'category'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -170,7 +171,7 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -188,7 +189,7 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'category_id'])
                 ->make(true);
         }
         return view('user.donation.rejected');
@@ -221,7 +222,7 @@ class DonationController extends Controller
             'description' => 'required',
             'shipping_address' => 'required',
             'used_duration' => 'required',
-            'images' => 'nullable|mimes:png,jpg,jpeg,gif|max:2048'
+            'images' => 'required|mimes:png,jpg,jpeg,gif|max:2048'
         ]);
         $donation = new Donation($request->all());
 
@@ -229,9 +230,9 @@ class DonationController extends Controller
 
         if ($request->has('images')) {
             $file->folder('donation')->prefix('image')
-            ->postfix($request->title)
-            ->upload($request->images) ?
-            $donation->images = $file->getName() : null;
+                ->postfix($request->title)
+                ->upload($request->images) ?
+                $donation->images = $file->getName() : null;
         }
         $donation->save();
         toastr()->success('Product Successfully Donated!', 'Success!');

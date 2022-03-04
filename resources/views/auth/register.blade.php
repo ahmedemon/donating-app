@@ -32,8 +32,12 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 px-4">
-                                                <label for="name" class="col-form-label text-white small text-md-right">Name</label>
-                                                <input id="name" type="text" class="form-control bg-transparent text-white @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                                <label for="name"
+                                                    class="col-form-label text-white small text-md-right">Name</label>
+                                                <input id="name" type="text"
+                                                    class="form-control bg-transparent text-white @error('name') is-invalid @enderror"
+                                                    name="name" value="{{ old('name') }}" required autocomplete="name"
+                                                    autofocus>
 
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
@@ -43,8 +47,12 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="username" class="col-form-label text-white small text-md-right">Username</label>
-                                                <input id="username" type="text" class="form-control bg-transparent text-white @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                                <label for="username"
+                                                    class="col-form-label text-white small text-md-right">Username</label>
+                                                <input id="username" type="text"
+                                                    class="form-control bg-transparent text-white @error('username') is-invalid @enderror"
+                                                    name="username" value="{{ old('username') }}" required
+                                                    autocomplete="username" autofocus>
 
                                                 @error('username')
                                                     <span class="invalid-feedback" role="alert">
@@ -54,8 +62,12 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="phone" class="col-form-label text-white small text-md-right">Phone</label>
-                                                <input id="phone" type="number" class="form-control bg-transparent text-white @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                                <label for="phone"
+                                                    class="col-form-label text-white small text-md-right">Phone</label>
+                                                <input id="phone" type="number"
+                                                    class="form-control bg-transparent text-white @error('phone') is-invalid @enderror"
+                                                    name="phone" value="{{ old('phone') }}" required autocomplete="phone"
+                                                    autofocus>
 
                                                 @error('phone')
                                                     <span class="invalid-feedback" role="alert">
@@ -65,8 +77,12 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="email" class="col-form-label text-white small text-md-right">E-Mail Address</label>
-                                                <input id="email" type="email" class="form-control bg-transparent text-white @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                                <label for="email"
+                                                    class="col-form-label text-white small text-md-right">E-Mail
+                                                    Address</label>
+                                                <input id="email" type="email"
+                                                    class="form-control bg-transparent text-white @error('email') is-invalid @enderror"
+                                                    name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
@@ -76,8 +92,11 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="password" class="col-form-label text-white small text-md-right">Password</label>
-                                                <input id="password" type="password" class="form-control bg-transparent text-white @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                                <label for="password"
+                                                    class="col-form-label text-white small text-md-right">Password</label>
+                                                <input id="password" type="password"
+                                                    class="form-control bg-transparent text-white @error('password') is-invalid @enderror"
+                                                    name="password" required autocomplete="new-password">
 
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -87,13 +106,20 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="password-confirm" class="col-form-label text-white small text-md-right">Confirm Password</label>
-                                                <input id="password-confirm" type="password" class="form-control bg-transparent text-white" name="password_confirmation" required autocomplete="new-password">
+                                                <label for="password-confirm"
+                                                    class="col-form-label text-white small text-md-right">Confirm
+                                                    Password</label>
+                                                <input id="password-confirm" type="password"
+                                                    class="form-control bg-transparent text-white"
+                                                    name="password_confirmation" required autocomplete="new-password">
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="address" class="col-form-label text-white small text-md-right">address</label>
-                                                <input id="address" type="text" class="form-control bg-transparent text-white @error('address') is-invalid @enderror" name="address" required autocomplete="new-address">
+                                                <label for="address"
+                                                    class="col-form-label text-white small text-md-right">address</label>
+                                                <input id="address" type="text"
+                                                    class="form-control bg-transparent text-white @error('address') is-invalid @enderror"
+                                                    name="address" required autocomplete="new-address">
 
                                                 @error('address')
                                                     <span class="invalid-feedback" role="alert">
@@ -103,16 +129,26 @@
                                             </div>
 
                                             <div class="col-md-6 px-4 text-white">
-                                                <label class="col-form-label text-white small text-md-right">Gender</label><br>
+                                                <label
+                                                    class="col-form-label text-white small text-md-right">Gender</label><br>
 
-                                                <input id="male" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Male">
-                                                <label for="male" class="form-check-label text-white text-md-right">Male</label>&nbsp;
+                                                <input id="male" type="radio"
+                                                    class="form-check-input px-1 bg-transparent text-white" name="gender"
+                                                    value="Male">
+                                                <label for="male"
+                                                    class="form-check-label text-white text-md-right">Male</label>&nbsp;
 
-                                                <input id="female" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Female">
-                                                <label for="female" class="form-check-label text-white text-md-right">Female</label>&nbsp;
+                                                <input id="female" type="radio"
+                                                    class="form-check-input px-1 bg-transparent text-white" name="gender"
+                                                    value="Female">
+                                                <label for="female"
+                                                    class="form-check-label text-white text-md-right">Female</label>&nbsp;
 
-                                                <input id="others" type="radio" class="form-check-input px-1 bg-transparent text-white" name="gender" value="Others">
-                                                <label for="others" class="form-check-label text-white text-md-right">Others</label>&nbsp;
+                                                <input id="others" type="radio"
+                                                    class="form-check-input px-1 bg-transparent text-white" name="gender"
+                                                    value="Others">
+                                                <label for="others"
+                                                    class="form-check-label text-white text-md-right">Others</label>&nbsp;
 
                                                 @error('gender')
                                                     <span class="invalid-feedback" role="alert">
@@ -122,8 +158,13 @@
                                             </div>
 
                                             <div class="col-md-6 px-4">
-                                                <label for="image" class="col-form-label text-white small text-md-right">Profile Picture</label>
-                                                <input id="image" type="file" class="bg-transparent text-white border w-100 @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image" autofocus>
+                                                <label for="image"
+                                                    class="col-form-label text-white small text-md-right">Profile
+                                                    Picture</label>
+                                                <input id="image" type="file"
+                                                    class="bg-transparent text-white border w-100 @error('image') is-invalid @enderror"
+                                                    name="image" value="{{ old('image') }}" required autocomplete="image"
+                                                    autofocus>
 
                                                 @error('image')
                                                     <span class="invalid-feedback" role="alert">

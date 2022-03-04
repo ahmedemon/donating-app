@@ -6,6 +6,7 @@ use App\Models\CurrentBalance;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Str;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -25,9 +26,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password'       => bcrypt('ahmedemon'), // password
                 'remember_token' => Str::random(20),
-                'is_active' => 1,
-                'is_approve' => 1,
-                'is_blocked' => 1,
+                'is_active' => 0,
+                'is_approve' => 0,
+                'is_blocked' => 0,
                 'address' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
                 'created_at' => now(),
                 'updated_at' => now(),
