@@ -8,7 +8,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\SponsorItemController;
 use App\Http\Controllers\Admin\DonationRequestController;
+use App\Http\Controllers\Admin\DurationController;
 use App\Http\Controllers\Admin\UserRequestController;
+use App\Models\Duration;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,5 +103,11 @@ Route::group(['middleware' => 'admin'], function () {
         Route::get('approve/{id}', [BuyerRequestController::class, 'approve'])->name('approve.request');
         Route::get('reject/{id}', [BuyerRequestController::class, 'reject'])->name('reject.request');
         Route::get('recall/{id}', [BuyerRequestController::class, 'recall'])->name('recall.request');
+    });
+    Route::group(['prefix' => 'duration', 'as' => 'duration.'], function () {
+        Route::get('/', [DurationController::class, 'index'])->name('index');
+        Route::get('create', [DurationController::class, 'create'])->name('create');
+        Route::post('store', [DurationController::class, 'store'])->name('store');
+        Route::delete('destroy/{id}', [DurationController::class, 'destroy'])->name('destroy');
     });
 });

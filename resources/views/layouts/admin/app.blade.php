@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- PAGE TITLE HERE -->
-    <title>{{ ($pageTitle ?? 'Admin Panel')}} Forex E-coin</title>
+    <title>{{ ($pageTitle ?? 'Admin Panel')}} | Donate For Re-Use</title>
 
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />

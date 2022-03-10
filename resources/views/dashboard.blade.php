@@ -10,14 +10,14 @@
 					<a class="text-decoration-none" href="">
 						<div class="p-0 border border-danger rounded-0 bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
 						    <div class="">
-						        <img class="d-block" height="280" src="{{ asset('storage/donation/'. $product->images) }}" alt="">
+						        <img class="d-block" style="height: 280px !important; width: 300px !important;" src="{{ asset('storage/donation/'. $product->images) }}" alt="">
 						    </div>
 						    <div class="bbb_viewed_content text-center py-2 mt-0">
 						        <div class="bbb_viewed_price">Points to get : {{ $product->point }}</div>
 						        <p class="small my-0 text-uppercase text-dark">{{ $product->title }}</p>
                                 @auth
                                     @if ($product->user_id == Auth::user()->id)
-                                        <a href="{{ route('donation.pending'. $product->id) }}" class="btn btn-sm rounded-0 btn-danger">View</a>
+                                        <a href="{{ route('donation.pending', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">View</a>
                                     @else
                                         <a href="{{ route('my-order.buy.request', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">Get Now</a>
                                     @endif
@@ -39,13 +39,13 @@
   <script>
     $('.loop').owlCarousel({
     	dots: false,
-        autoplay: true,
+        autoplay: false,
         mergeFit: true,
         startPosition: 1,
         smartSpeed: 250,
         center: true,
         items:2,
-        loop:true,
+        loop:false,
         margin:10,
         responsive:{
             600:{

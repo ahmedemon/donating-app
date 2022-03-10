@@ -86,7 +86,7 @@ $notices = App\Models\Notice::latest()->get();
             <img src="{{ Auth::user()->image == !null ? asset('storage/user/' . Auth::user()->image) : asset('frontend/img/avatar.svg') }}" width="20" alt="" />
         </a>
         <div class="dropdown-menu dropdown-menu-end" style="z-index: 99">
-            <a href="" class="dropdown-item ai-icon">
+            <a href="{{ route('profile.index') }}" class="dropdown-item ai-icon">
                 <svg id="icon-user2" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>

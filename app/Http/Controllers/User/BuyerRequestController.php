@@ -15,6 +15,11 @@ class BuyerRequestController extends Controller
 
     public function pending()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Pending List";
         if (request()->ajax()) {
@@ -71,6 +76,11 @@ class BuyerRequestController extends Controller
 
     public function completed()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Completed List";
         if (request()->ajax()) {
@@ -110,9 +120,9 @@ class BuyerRequestController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                    <a href="' . route('buyer-request.approve.request', $data->id) . '" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
-                    <i class="fa fa-check"></i>
-                </a>
+                        <a href="' . route('buyer-request.approve.request', $data->id) . '" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
+                            <i class="fa fa-check"></i>
+                        </a>
                         <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp disabled">
                             <i class="fa fa-check"></i>
                         </a>
@@ -127,6 +137,11 @@ class BuyerRequestController extends Controller
 
     public function rejected()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Buyer Request - Rejected List";
         if (request()->ajax()) {
@@ -180,6 +195,11 @@ class BuyerRequestController extends Controller
 
     public function approve($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $approve_request = PurchasedProduct::find($id);
         $approve_request->status = 1;
         $approve_request->owner_approval = 1;
@@ -208,6 +228,11 @@ class BuyerRequestController extends Controller
     }
     public function reject($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $approve_request = PurchasedProduct::find($id);
         $approve_request->status = 2;
         $approve_request->owner_approval = 2;
@@ -217,6 +242,11 @@ class BuyerRequestController extends Controller
     }
     public function recall($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $approve_request = PurchasedProduct::find($id);
         $approve_request->status = 0;
         $approve_request->owner_approval = 0;

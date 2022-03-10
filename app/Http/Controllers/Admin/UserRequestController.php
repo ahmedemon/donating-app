@@ -382,6 +382,7 @@ class UserRequestController extends Controller
     {
         $user = User::find($id);
         $user->is_approve = 1;
+        $user->is_active = 1;
         $user->save();
         toastr()->success('Approved!', 'User approved successfully!');
         return redirect()->back();
@@ -390,6 +391,7 @@ class UserRequestController extends Controller
     {
         $user = User::find($id);
         $user->is_approve = 2;
+        $user->is_active = 0;
         $user->save();
         toastr()->error('Rejected!', 'User rejected!');
         return redirect()->back();
@@ -398,6 +400,7 @@ class UserRequestController extends Controller
     {
         $user = User::find($id);
         $user->is_approve = 0;
+        $user->is_active = 0;
         $user->save();
         toastr()->error('Rejected!', 'User rejected!');
         return redirect()->back();
@@ -422,6 +425,7 @@ class UserRequestController extends Controller
     {
         $user = User::find($id);
         $user->is_blocked = 1;
+        $user->is_active = 0;
         $user->save();
         toastr()->error('Blocked!', 'User Blocked!');
         return redirect()->back();
@@ -430,6 +434,7 @@ class UserRequestController extends Controller
     {
         $user = User::find($id);
         $user->is_blocked = 0;
+        $user->is_active = 1;
         $user->save();
         toastr()->success('Unblocked!', 'User Unblocked!');
         return redirect()->back();

@@ -8,6 +8,7 @@ use App\Http\Requests\DonationRequest;
 use App\Models\Donation;
 use App\Models\Category;
 use App\Helpers\FileManager;
+use App\Models\Duration;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
@@ -20,6 +21,11 @@ class DonationController extends Controller
      */
     public function index()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Total Sales";
         if (request()->ajax()) {
@@ -64,6 +70,11 @@ class DonationController extends Controller
     }
     public function pending()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Donatated Product | Pending";
         if (request()->ajax()) {
@@ -108,6 +119,11 @@ class DonationController extends Controller
     }
     public function approved()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
@@ -152,6 +168,11 @@ class DonationController extends Controller
     }
     public function rejected()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
@@ -202,7 +223,8 @@ class DonationController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('user.donation.create', compact('categories'));
+        $durations = Duration::all();
+        return view('user.donation.create', compact('categories', 'durations'));
     }
 
     /**
@@ -213,6 +235,11 @@ class DonationController extends Controller
      */
     public function store(Request $request)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $this->validate($request, [
             'user_id' => 'required',
             'title' => 'required',
@@ -258,8 +285,14 @@ class DonationController extends Controller
      */
     public function edit($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
+        $categories = Category::all();
         $donation = Donation::find($id);
-        return view('user.donation.edit', compact('donation'));
+        return view('user.donation.edit', compact('donation', 'categories'));
     }
 
     /**
@@ -271,6 +304,11 @@ class DonationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $this->validate($request, [
             'user_id' => 'required',
             'title' => 'required',
@@ -306,6 +344,11 @@ class DonationController extends Controller
      */
     public function destroy($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->delete();
         toastr()->error('Product deleted!', 'Deleted!');
@@ -314,6 +357,11 @@ class DonationController extends Controller
 
     public function pause($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->is_paused = 0;
         $donation->save();
@@ -323,6 +371,11 @@ class DonationController extends Controller
 
     public function relese($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->is_paused = 1;
         $donation->save();

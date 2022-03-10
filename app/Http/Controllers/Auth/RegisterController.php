@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\CurrentBalance;
 use App\Helpers\FileManager;
+
 class RegisterController extends Controller
 {
     /*
@@ -78,7 +79,7 @@ class RegisterController extends Controller
             $file = new FileManager();
             $image = $request->file('image');
             $file->folder('user')
-                ->prefix($request->username)
+                ->prefix('profile')
                 ->postfix(Str::random(10))
                 ->upload($image);
             $request->image = $file->getName();

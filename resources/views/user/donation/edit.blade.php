@@ -40,18 +40,25 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="text-label form-label" for="profilePicture">Product Image</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"> <i class="far fa-images"></i> </span>
-                                            <div class="form-file form-control">
-                                                <input type="file" name="images" class="form-file-input form-control" id="images" accept="images">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-3 my-3 my-lg-0 d-flex justify-content-center">
+                                                <img src="{{ asset('storage/donation/'. $donation->images) }}" alt="" height="80">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <label class="text-label form-label" for="profilePicture">Product Image</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"> <i class="far fa-images"></i> </span>
+                                                    <div class="form-file form-control">
+                                                        <input type="file" name="images" class="form-file-input form-control" id="images" accept="images">
+                                                    </div>
+                                                </div>
+                                                @error('images')
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $message }}</strong>
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
-                                        @error('images')
-                                            <div class="invalid-feedback">
-                                                <strong>{{ $message }}</strong>
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                             </div>

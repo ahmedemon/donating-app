@@ -18,6 +18,9 @@
             <div class="col-md-5 mt-5 mt-lg-0">
                 <div class="card border border-dark" style="background-color: #090f289e !important;">
                     <div class="card-body">
+                        @if(Session::has('error'))
+                            <p class="alert alert-danger">{{ Session::get('error') }}</p>
+                        @endif
                         <h2 class="text-white text-center py-2">Login</h2>
                         <div class="row justify-content-center my-4">
                             <form method="POST" action="{{ route('login') }}">
@@ -63,7 +66,7 @@
                             <div class="new-account mt-1">
                                 <p class="p-0 m-0 text-white">Don't have an account? <a class="text-primary" href="{{ route('register') }}">Sign up</a></p>
                             </div>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </div>

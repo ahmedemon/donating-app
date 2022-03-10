@@ -4,6 +4,7 @@ use App\Http\Controllers\User\BuyerRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\DonationController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\PurchaseController;
 use App\Http\Controllers\User\SponsoredShopController;
 use App\Http\Controllers\User\ShelfController;
@@ -20,13 +21,26 @@ use App\Http\Controllers\User\ShelfController;
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
+
+    Route::prefix('profile')->as('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::get('edit/{id}', [ProfileController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [ProfileController::class, 'update'])->name('update');
+        Route::put('image/{id}', [ProfileController::class, 'image'])->name('image');
+    });
+
     Route::group(['prefix' => 'donations', 'as' => 'donation.'], function () {
-        Route::resource('/', DonationController::class);
+        Route::get('/', [DonationController::class, 'index'])->name('index');
+        Route::get('create', [DonationController::class, 'create'])->name('create');
+        Route::post('store', [DonationController::class, 'store'])->name('store');
+        Route::put('update/{id}', [DonationController::class, 'update'])->name('update');
         Route::get('pending', [DonationController::class, 'pending'])->name('pending');
         Route::get('approved', [DonationController::class, 'approved'])->name('approved');
         Route::get('rejected', [DonationController::class, 'rejected'])->name('rejected');
         Route::get('pause/{id}', [DonationController::class, 'pause'])->name('pause');
         Route::get('relese/{id}', [DonationController::class, 'relese'])->name('relese');
+        Route::get('edit/{id}', [DonationController::class, 'edit'])->name('edit');
+        Route::delete('destroy/{id}', [DonationController::class, 'destroy'])->name('destroy');
     });
     Route::group(['prefix' => 'my-order', 'as' => 'my-order.'], function () {
         Route::get('{id}/buy', [PurchaseController::class, 'purchaseRequest'])->name('buy.request');

@@ -21,7 +21,7 @@ class CreateSponsorItemsTable extends Migration
             $table->text('description');
             $table->string('shipping_address');
             $table->string('image');
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             // $table->integer('request_user_id');
             // $table->integer('sponsor_by');
             $table->foreignId('sponsored_by')->references('id')->on('sponsors');

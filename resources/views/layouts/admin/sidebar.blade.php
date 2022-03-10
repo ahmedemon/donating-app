@@ -16,9 +16,19 @@
         <ul class="metismenu" id="menu">
             <li>
                 <a href="{{ route('admin.index') }}">
-                    <span data-feather="user-check" class="nav-icon"></span>
+                    <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Duration</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.duration.create') }}">Create Duration</a></li>
+                    <li><a href="{{ route('admin.duration.index') }}">Duration List</a></li>
+                </ul>
             </li>
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">

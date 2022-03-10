@@ -6,7 +6,11 @@
                 <div class="d-flex align-items-center sidebar-info">
                     <div>
                         <span class="font-w400 d-block">{{ Auth::user()->name }}</span>
-                        <small class="d-block text-danger"><strong>{{ Auth::user()->is_active ? 'Active' : 'Inactive Account' }}</strong></small>
+                        @if (Auth::user()->is_active)
+                            <strong><small class="d-block text-success">Active</small></strong>
+                        @else
+                            <strong><small class="d-block text-danger">Inactive</small></strong>
+                        @endif
                         <small class="font-w400 d-block">User ID: {{ Auth::user()->username }}</small>
                         <small class="font-w400 d-none d-lg-block">E-mail: {{ Auth::user()->email }}</small>
                     </div>

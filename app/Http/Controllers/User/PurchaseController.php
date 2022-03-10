@@ -21,10 +21,19 @@ class PurchaseController extends Controller
     // }
     public function purchaseRequest($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $product = Donation::find($id);
         if ($product->requested_by == !null) {
             toastr()->warning('This product is already has been purchased by another user!', 'Already Purchased!');
+            return redirect()->back();
+        }
+        if ($product->user_id == $user_id) {
+            toastr()->warning('This is your product You can`t buy this product!');
             return redirect()->back();
         }
         $current_balance = $this->allWallets(Auth::user()->id)['current_balance'];
@@ -51,6 +60,11 @@ class PurchaseController extends Controller
 
     public function pending()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Pending List";
         if (request()->ajax()) {
@@ -102,6 +116,11 @@ class PurchaseController extends Controller
 
     public function approved()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Approved List";
         if (request()->ajax()) {
@@ -144,6 +163,11 @@ class PurchaseController extends Controller
 
     public function rejected()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Rejected List";
         if (request()->ajax()) {
@@ -185,6 +209,11 @@ class PurchaseController extends Controller
     }
     public function cancel($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $product = Donation::find($id);
         $product->status = 0;
         $product->requested_by = null;
