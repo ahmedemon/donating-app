@@ -123,7 +123,7 @@
                                         <div class="input-group">
                                             <select class="input-group-text form-control" style="text-align: left" name="used_duration" required id="Used duration">
                                                 @foreach ($durations as $duration)
-                                                    <option value="{{ $duration->duration . '-' . $duration->type }}">{{ $duration->duration . ' - ' . $duration->type }}</option>
+                                                    <option value="{{ $duration->id }}">{{ $duration->duration . ' ' . $duration->type }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

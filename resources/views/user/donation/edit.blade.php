@@ -112,7 +112,9 @@
                                         <label class="text-label form-label" for="Used_duration">Used Duration</label> <span class="small text-danger">*</span>
                                         <div class="input-group">
                                             <select class="input-group-text form-control" style="text-align: left" name="used_duration" required id="Used duration">
-                                                <option value="6">6 Months</option>
+                                                @foreach ($durations as $duration)
+                                                <option {{ $duration->id == $donation->used_duration ? 'selected' : '' }} value="{{ $donation->id }}">{{ $donation->duration->duration . ' - ' . $donation->duration->type }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         @error('used_duration')

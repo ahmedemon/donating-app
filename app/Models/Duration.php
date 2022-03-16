@@ -9,4 +9,9 @@ class Duration extends Model
 {
     use HasFactory;
     protected $fillable = ['duration', 'type'];
+
+    public function donation()
+    {
+        return $this->belongsTo(Donation::class, 'used_duration');
+    }
 }

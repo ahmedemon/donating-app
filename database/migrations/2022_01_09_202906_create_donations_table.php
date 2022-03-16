@@ -23,7 +23,7 @@ class CreateDonationsTable extends Migration
             $table->text('description');
             $table->string('shipping_address');
             $table->string('images');
-            $table->string('used_duration');
+            $table->integer('used_duration');
             $table->integer('status')->default(0);
             $table->integer('is_paused')->default(1);
             $table->integer('is_purchased')->default(0);

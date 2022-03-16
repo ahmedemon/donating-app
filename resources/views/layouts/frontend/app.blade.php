@@ -21,7 +21,7 @@
     @include('layouts.frontend.topbar')
   </header>
 
-  <div class="container-fluid px-0 my-3">
+  <div class="container-fluid px-0">
     @yield('content')
   </div>
 

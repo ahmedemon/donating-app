@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+
 class Donation extends Model
 {
     use HasFactory;
-    protected $fillable =[
+    protected $fillable = [
         'user_id',
         'title',
         'price',
@@ -31,5 +32,10 @@ class Donation extends Model
     public function purchase()
     {
         return $this->hasOne(PurchasedProduct::class, 'product_id');
+    }
+
+    public function duration()
+    {
+        return $this->hasOne(Duration::class, 'id');
     }
 }
