@@ -64,6 +64,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     });
 
     Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
+        Route::get('/categories', [ShelfController::class, 'categories'])->name('categories');
         Route::get('/{id}', [ShelfController::class, 'index'])->name('index');
     });
 });

@@ -15,9 +15,12 @@ class DashboardController extends Controller
     use TopDonatorTrait, TopBuyerTrait;
     public function index()
     {
+        $total_donation = Donation::count();
         $donators = $this->topDonator();
+
+        $total_purchase = PurchasedProduct::count();
         $buyers = $this->topBuyer();
         $products = Donation::latest()->where('status', 1)->where('is_purchased', 0)->take(10)->get();
-        return view('dashboard', compact('products', 'donators', 'buyers'));
+        return view('dashboard', compact('products', 'donators', 'buyers', 'total_donation', 'total_purchase'));
     }
 }

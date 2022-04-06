@@ -17,7 +17,7 @@ class SponsoredShopController extends Controller
             toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
             return redirect()->back();
         }
-        $sponsor_items = SponsorItem::where('status', 1)->latest()->paginate(5);
+        $sponsor_items = SponsorItem::where('status', 1)->latest()->paginate(12);
         $headerTitle = "Sponsored Shop";
         return view('user.sponsored_shop.index', compact('headerTitle', 'sponsor_items'));
     }

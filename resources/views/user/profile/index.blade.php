@@ -104,7 +104,7 @@
                                                             $joining_date = Carbon\Carbon::parse(Auth::user()->created_at);
                                                             // $now = Carbon\Carbon::now();
                                                         @endphp
-                                                        Join Before : {{ $joining_date ? $joining_date->diffInDays() : '' }} days ago
+                                                        Joined {{ $joining_date ? $joining_date->diffInDays() : '' }} days ago
                                                     </p>
                                                 </li>
                                             </ul>

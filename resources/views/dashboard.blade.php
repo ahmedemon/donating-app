@@ -48,18 +48,24 @@
                         <div class="h4 font-weight-normal text-center">Top 10 Donator</div>
                     </div>
                     @if ($donators->count() == 0)
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; user-select: none;">
+                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
                             <p class="lead">Top buyer is not available</p>
                         </div>
                     @else
                         <div class="card-body py-0" style="height: 254px !important; overflow-y: scroll;">
                             @foreach ($donators as $donator)
-                                <div class="row {{ $loop->last ? 'border-bottom-0' : 'border-bottom' }} py-2 align-items-center">
-                                    <div class="col-md-12 d-flex justify-content-between px-5" style="user-select: none;">
-                                        <p class="my-0">{{ $donator->user->name . ' | Join ' . $donator->user->created_at->diffInDays() . ' days ago!' }}</p>
-                                        <p class="my-0 bg-success text-white rounded-0 btn-sm">{{ $donator->user->donation->count(); }} Items</p>
+                                @if ($total_donation >= 100)
+                                    <div class="row {{ $loop->last ? 'border-bottom-0' : 'border-bottom' }} py-2 align-items-center">
+                                        <div class="col-md-12 d-flex justify-content-between px-5" style="">
+                                            <p class="my-0">{{ $donator->user->name . ' | Join ' . $donator->user->created_at->diffInDays() . ' days ago!' }}</p>
+                                            <p class="my-0 bg-success text-white rounded-0 btn-sm">{{ $donator->user->donation->count(); }} Items</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
+                                        <p class="lead">Top buyer is not available</p>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     @endif
@@ -71,18 +77,24 @@
                         <div class="h4 font-weight-normal text-center">Top 10 Buyer</div>
                     </div>
                     @if ($buyers->count() == 0)
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; user-select: none;">
+                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
                             <p class="lead">Top buyer is not selected</p>
                         </div>
                     @else
                         <div class="card-body py-0" style="height: 254px !important; overflow-y: scroll;">
                             @foreach ($buyers as $buyer)
-                                <div class="row {{ $loop->last ? 'border-bottom-0' : 'border-bottom' }} py-3 align-items-center">
-                                    <div class="col-md-12 d-flex justify-content-between px-5" style="user-select: none;">
-                                        <p class="my-0">{{ $buyer->user->name . ' | Join ' . $donator->user->created_at->diffInDays() . ' days ago!' }}</p>
-                                        <p class="my-0 bg-success text-white rounded-0 btn-sm">{{ $buyer->user->donation->count(); }} Items</p>
+                                @if ($total_purchase >= 100)
+                                    <div class="row {{ $loop->last ? 'border-bottom-0' : 'border-bottom' }} py-3 align-items-center">
+                                        <div class="col-md-12 d-flex justify-content-between px-5" style="">
+                                            <p class="my-0">{{ $buyer->user->name . ' | Join ' . $donator->user->created_at->diffInDays() . ' days ago!' }}</p>
+                                            <p class="my-0 bg-success text-white rounded-0 btn-sm">{{ $buyer->user->donation->count(); }} Items</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
+                                        <p class="lead">Top buyer is not selected</p>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     @endif
@@ -93,23 +105,24 @@
 @endsection
 
 @push('js')
-  <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
-  <script>
-    $('.loop').owlCarousel({
-    	dots: false,
-        autoplay: true,
-        mergeFit: true,
-        startPosition: 1,
-        smartSpeed: 250,
-        center: true,
-        items:2,
-        loop:true,
-        margin:10,
-        responsive:{
-            600:{
-                items:7
+    <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
+    <script>
+        $('.loop').owlCarousel({
+            dots: false,
+            autoplay: true,
+            mergeFit: true,
+            startPosition: 1,
+            smartSpeed: 250,
+            center: true,
+            items:2,
+            loop:true,
+            margin:10,
+            responsive:{
+                600:{
+                    items:7
+                }
             }
-        }
-    });
-  </script>
+        });
+    </script>
+
 @endpush

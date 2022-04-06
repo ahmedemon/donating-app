@@ -1,0 +1,20 @@
+.point-tag {
+    color: white;
+    margin: 5% 0% 100% -95% !important;
+    padding: 0px 10px !important;
+    z-index: 1;
+}
+
+.image img {
+    filter: brightness(80%) !important;
+    transition: 0.2s;
+}
+
+.card-body:hover .image img {
+    filter: brightness(110%) !important;
+    transition: 0.2s;
+}
+
+.image {
+    height: fit-content;
+}
