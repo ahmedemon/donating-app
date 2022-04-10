@@ -56,7 +56,7 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Buy Product Request</span>
+                    <span class="nav-text">Receiver Request</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.buyer-request-admin-approval.pending.request') }}">Pending</a></li>

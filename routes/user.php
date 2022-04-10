@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\DonationController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\PurchaseController;
+use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\SponsoredShopController;
 use App\Http\Controllers\User\ShelfController;
 /*
@@ -21,6 +22,10 @@ use App\Http\Controllers\User\ShelfController;
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
+
+    Route::group(['prefix' => 'search', 'as' => 'user.search.'], function () {
+        Route::get('search', [SearchController::class, 'search'])->name('search');
+    });
 
     Route::prefix('profile')->as('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');

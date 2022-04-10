@@ -29,7 +29,7 @@
                 @endauth
 
                 <li class="nav-item">
-                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="#">
+                    <a class="btn shadow-none {{ Request::is('about') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('about') }}">
                         About Us
                     </a>
                 </li>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="#">
+                    <a class="btn shadow-none {{ Request::is('how') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('how') }}">
                         How It Works
                     </a>
                 </li>
@@ -53,9 +53,9 @@
             <ul class="navbar-nav ml-auto">
                 <ul class="navbar-nav m-0">
                     <li class="nav-item my-auto">
-                        <form action="" method="POST" class="d-flex mx-1 my-md-auto my-1">
+                        <form action="{{ route('search.search') }}" method="GET" class="d-flex mx-1 my-md-auto my-1">
                             @csrf
-                            <input name="search" class="form-control rounded-0" type="search" placeholder="Ex: Smarphones" aria-label="Search">
+                            <input name="search" class="form-control rounded-0" type="search" placeholder="Ex: Smarphones" aria-label="Search" value="{{ request()->search }}">
                             <button class="btn btn-danger rounded-0" type="submit">
                                 <i class="lni lni-search-alt font-weight-bolder"></i>
                             </button>

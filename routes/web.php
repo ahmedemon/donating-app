@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\DashboardController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,12 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [DashboardController::class, 'index'])->name('user.frontend');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/how', [HomeController::class, 'how'])->name('how');
+
+Route::group(['prefix' => 'search', 'as' => 'search.'], function () {
+    Route::get('search', [SearchController::class, 'search'])->name('search');
+});
 
 Auth::routes();
 
