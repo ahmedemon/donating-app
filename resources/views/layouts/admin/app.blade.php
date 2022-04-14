@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- PAGE TITLE HERE -->
-    <title>{{ ($pageTitle ?? 'Admin Panel')}} Forex E-coin</title>
+    <title>{{ $pageTitle ?? 'Admin Panel' }} | Donate For Re-Use</title>
 
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
@@ -72,16 +72,16 @@
         <div id="main-wrapper">
 
             <!-- Nav header start -->
-                <div class="nav-header">
-                    <a href="{{ route('admin.index') }}" class="brand-logo">
-                        <img style="height: 60%; width: 100%;" class="border rounded" src="{{ asset('logo.png') }}" alt="Logo">
-                    </a>
-                    <div class="nav-control d-lg-none">
-                        <div class="hamburger">
-                            <span class="line"></span><span class="line"></span><span class="line"></span>
-                        </div>
+            <div class="nav-header">
+                <a href="{{ route('admin.index') }}" class="brand-logo d-flex">
+                    <img class="border rounded" src="{{ asset('frontend/img/logo.png') }}" alt="Logo" style="width: 72px;">
+                </a>
+                <div class="nav-control d-lg-none">
+                    <div class="hamburger">
+                        <span class="line"></span><span class="line"></span><span class="line"></span>
                     </div>
                 </div>
+            </div>
             <!-- Nav header end -->
 
             <!-- Header start -->
@@ -111,7 +111,6 @@
             <div class="footer"></div>
 
         </div>
-
     @else
         @yield('content')
     @endif
@@ -120,7 +119,6 @@
     <script src="{{ asset('backend/vendor/global/global.min.js') }}"></script>
 
     @if (!Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login'))
-
         {{-- <script src="{{ asset('backend/vendor/chart.js/Chart.bundle.min.js') }}"></script> --}}
         <script src="{{ asset('backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
 
@@ -136,7 +134,6 @@
         <script src="{{ asset('backend/js/dashboard/dashboard-1.js') }}"></script>
 
         {{-- <script src="{{ asset('backend/vendor/owl-carousel/owl.carousel.js') }}"></script> --}}
-
     @endif
 
 

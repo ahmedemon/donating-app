@@ -8,8 +8,10 @@ use App\Http\Requests\DonationRequest;
 use App\Models\Donation;
 use App\Models\Category;
 use App\Helpers\FileManager;
+use App\Models\Duration;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+
 class DonationController extends Controller
 {
     /**
@@ -19,13 +21,18 @@ class DonationController extends Controller
      */
     public function index()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Total Sales";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->where('status', 3)->where('requested_by', !null)->with(['user', 'category'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 3)->where('requested_by', !null)->with(['user', 'category', 'duration'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -38,7 +45,12 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
+                })
+                ->addColumn('used_duration', function ($data) {
+                    $duration = $data->duration->duration ?? '-';
+                    $type = $data->duration->type ?? '-';
+                    return $duration . ' ' . $type;
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -56,20 +68,25 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'used_duration'])
                 ->make(true);
         }
         return view('user.donation.index', compact('headerTitle'));
     }
     public function pending()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Donatated Product | Pending";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->where('status', 0)->with(['user', 'category'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 0)->with(['user', 'category', 'duration'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -82,7 +99,12 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
+                })
+                ->addColumn('used_duration', function ($data) {
+                    $duration = $data->duration->duration ?? '-';
+                    $type = $data->duration->type ?? '-';
+                    return $duration . ' ' . $type;
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -100,20 +122,25 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'used_duration'])
                 ->make(true);
         }
         return view('user.donation.pending');
     }
     public function approved()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->whereIn('status', [1,3])->with(['user', 'category'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->whereIn('status', [1, 3])->with(['user', 'category', 'duration'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -126,7 +153,12 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
+                })
+                ->addColumn('used_duration', function ($data) {
+                    $duration = $data->duration->duration ?? '-';
+                    $type = $data->duration->type ?? '-';
+                    return $duration . ' ' . $type;
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -144,20 +176,25 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'category_id', 'used_duration'])
                 ->make(true);
         }
         return view('user.donation.approve');
     }
     public function rejected()
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $user_id = Auth::user()->id;
         $headerTitle = "Sponsors";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->where('status', 2)->with(['user', 'category'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 2)->with(['user', 'category', 'duration'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -170,7 +207,12 @@ class DonationController extends Controller
                 })
                 ->addColumn('category_id', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-danger">'. $category .'</span>';
+                    return '<span class="badge badge-danger">' . $category . '</span>';
+                })
+                ->addColumn('used_duration', function ($data) {
+                    $duration = $data->duration->duration ?? '-';
+                    $type = $data->duration->type ?? '-';
+                    return $duration . ' ' . $type;
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
@@ -188,7 +230,7 @@ class DonationController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'images', 'category_id'])
+                ->rawColumns(['action', 'status', 'images', 'category_id', 'category_id', 'used_duration'])
                 ->make(true);
         }
         return view('user.donation.rejected');
@@ -201,7 +243,8 @@ class DonationController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('user.donation.create', compact('categories'));
+        $durations = Duration::all();
+        return view('user.donation.create', compact('categories', 'durations'));
     }
 
     /**
@@ -212,6 +255,11 @@ class DonationController extends Controller
      */
     public function store(Request $request)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $this->validate($request, [
             'user_id' => 'required',
             'title' => 'required',
@@ -221,7 +269,7 @@ class DonationController extends Controller
             'description' => 'required',
             'shipping_address' => 'required',
             'used_duration' => 'required',
-            'images' => 'nullable|mimes:png,jpg,jpeg,gif|max:2048'
+            'images' => 'required|mimes:png,jpg,jpeg,gif|max:2048'
         ]);
         $donation = new Donation($request->all());
 
@@ -229,9 +277,9 @@ class DonationController extends Controller
 
         if ($request->has('images')) {
             $file->folder('donation')->prefix('image')
-            ->postfix($request->title)
-            ->upload($request->images) ?
-            $donation->images = $file->getName() : null;
+                ->postfix($request->title)
+                ->upload($request->images) ?
+                $donation->images = $file->getName() : null;
         }
         $donation->save();
         toastr()->success('Product Successfully Donated!', 'Success!');
@@ -257,8 +305,15 @@ class DonationController extends Controller
      */
     public function edit($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
+        $categories = Category::all();
+        $durations = Duration::all();
         $donation = Donation::find($id);
-        return view('user.donation.edit', compact('donation'));
+        return view('user.donation.edit', compact('donation', 'categories', 'durations'));
     }
 
     /**
@@ -270,6 +325,11 @@ class DonationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $this->validate($request, [
             'user_id' => 'required',
             'title' => 'required',
@@ -305,6 +365,11 @@ class DonationController extends Controller
      */
     public function destroy($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->delete();
         toastr()->error('Product deleted!', 'Deleted!');
@@ -313,6 +378,11 @@ class DonationController extends Controller
 
     public function pause($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->is_paused = 0;
         $donation->save();
@@ -322,6 +392,11 @@ class DonationController extends Controller
 
     public function relese($id)
     {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
         $donation = Donation::find($id);
         $donation->is_paused = 1;
         $donation->save();

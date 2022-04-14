@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\CurrentBalance;
 use App\Helpers\FileManager;
+
 class RegisterController extends Controller
 {
     /*
@@ -57,7 +58,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'username' => ['required', 'string', 'max:50'],
+            'username' => ['required', 'string', 'max:50', 'unique:users'],
             'phone'    => ['required', 'numeric'],
             'gender'   => ['required'],
             'image' => ['nullable'],
@@ -78,7 +79,7 @@ class RegisterController extends Controller
             $file = new FileManager();
             $image = $request->file('image');
             $file->folder('user')
-                ->prefix($request->username)
+                ->prefix('profile')
                 ->postfix(Str::random(10))
                 ->upload($image);
             $request->image = $file->getName();
@@ -113,9 +114,11 @@ class RegisterController extends Controller
         if ($response = $this->registered($request, $user)) {
             return $response;
         }
-
+        toastr()->success('You`ve registered successfully!', 'Success!');
+        toastr()->info('You`re profile is not activate. Please wait for admin approval!', 'Notice!');
         return $request->wantsJson()
             ? new JsonResponse([], 201)
             : redirect($this->redirectPath());
+        // : redirect(route('user.frontend'));
     }
 }

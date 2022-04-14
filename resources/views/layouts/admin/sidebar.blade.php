@@ -7,7 +7,8 @@
                     <div>
                         <span class="font-w400 d-block">{{ Auth::guard('admin')->user()->name }}</span>
                         <small class="font-w400 d-block">User ID: {{ Auth::guard('admin')->user()->username }}</small>
-                        <small class="font-w400 d-none d-lg-block">E-mail: {{ Auth::guard('admin')->user()->email }}</small>
+                        <small class="font-w400 d-none d-lg-block">E-mail:
+                            {{ Auth::guard('admin')->user()->email }}</small>
                     </div>
                 </div>
             </div>
@@ -15,9 +16,19 @@
         <ul class="metismenu" id="menu">
             <li>
                 <a href="{{ route('admin.index') }}">
-                    <span data-feather="user-check" class="nav-icon"></span>
+                    <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
+            </li>
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Duration</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.duration.create') }}">Create Duration</a></li>
+                    <li><a href="{{ route('admin.duration.index') }}">Duration List</a></li>
+                </ul>
             </li>
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
@@ -25,9 +36,11 @@
                     <span class="nav-text">User Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.category.create') }}">Pending</a></li>
-                    <li><a href="{{ route('admin.category.index') }}">Approved</a></li>
-                    <li><a href="{{ route('admin.category.index') }}">Rejected</a></li>
+                    <li><a href="{{ route('admin.user-request.pending.request') }}">Pending User</a></li>
+                    <li><a href="{{ route('admin.user-request.approved.request') }}">Activated User</a></li>
+                    <li><a href="{{ route('admin.user-request.deactivated.request') }}">Deactivated User</a></li>
+                    <li><a href="{{ route('admin.user-request.blocked.request') }}">Blocked User</a></li>
+                    <li><a href="{{ route('admin.user-request.rejected.request') }}">Rejected User</a></li>
                 </ul>
             </li>
             <li>
@@ -43,12 +56,14 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Buy Product Request</span>
+                    <span class="nav-text">Receiver Request</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.buyer-request-admin-approval.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Completed</a></li>
-                    <li><a href="{{ route('admin.buyer-request-admin-approval.rejected.request') }}">Rejected</a></li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Completed</a>
+                    </li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.rejected.request') }}">Rejected</a>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -57,9 +72,9 @@
                     <span class="nav-text">Donation Request</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('admin.donation.requests.pending')}}">Pending</a></li>
-                    <li><a href="{{route('admin.donation.requests.approved')}}">Approved</a></li>
-                    <li><a href="{{route('admin.donation.requests.rejected')}}">Rejected</a></li>
+                    <li><a href="{{ route('admin.donation.requests.pending') }}">Pending</a></li>
+                    <li><a href="{{ route('admin.donation.requests.approved') }}">Approved</a></li>
+                    <li><a href="{{ route('admin.donation.requests.rejected') }}">Rejected</a></li>
                 </ul>
             </li>
             <li>

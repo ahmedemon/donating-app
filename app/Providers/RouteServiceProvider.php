@@ -36,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-        
+
         $admin_home = env('ADMIN_URL_PREFIX', static::ADMIN_HOME);
 
         $this->routes(function () use ($admin_home) {
@@ -62,6 +62,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/manager.php'));
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/maintenance.php'));
         });
     }
 

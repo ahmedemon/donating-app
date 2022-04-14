@@ -6,15 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PAGE TITLE HERE -->
-    <title>{{  'Donate For Re-Use | ' . ($pageTitle ?? 'User Panel') }}</title>
+    <title>{{ 'Donate For Re-Use | ' . ($pageTitle ?? 'User Panel') }}</title>
     <!-- FAVICONS ICON -->
+    @if (Request::is('user/profile'))
+        @stack('croppercss')
+    @endif
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
     <link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
     <link href="{{ asset('backend/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/sweetalert2/dist/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/icons/font-awesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/logo_animation.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Style css -->
     <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
@@ -46,6 +48,7 @@
         .card-body {
             z-index: 0 !important;
         }
+
     </style>
 
     @stack('css')
@@ -73,8 +76,8 @@
             <!-- Nav  -->
             @auth
                 <div class="nav-header">
-                    <a href="{{ route('user.dashboard') }}" class="brand-logo">
-                        <img style="height: 60%; width: 100%;" class="border rounded" src="{{ asset('logo.png') }}" alt="Logo">
+                    <a href="{{ route('user.dashboard') }}" class="brand-logo d-flex">
+                        <img class="border rounded" src="{{ asset('frontend/img/logo.png') }}" alt="Logo" style="width: 72px;">
                     </a>
                     <div class="nav-control d-lg-none">
                         <div class="hamburger">
@@ -86,12 +89,16 @@
 
                 <!-- Header start -->
                 <div class="header">
-                    <div class="header-content" style="padding-left: 0rem;">
+                    <div class="header-content">
                         <nav class="navbar navbar-expand">
                             <div class="collapse navbar-collapse justify-content-between">
-                                    <marquee behavior="" direction="">Notice Slider</marquee>
-                                <div class="header-left">
-                                </div>
+                                <form action="{{ route('user.search.search') }}" method="GET" class="w-100">
+                                    @csrf
+                                    <div class="input-group search-area">
+                                        <input type="text" name="search" class="form-control" placeholder="Search here. Example: Smartphones, Monitor etc." value="{{ request()->search }}">
+                                        <button class="btn border"><i class="text-white flaticon-381-search-2"></i></button>
+                                    </div>
+                                </form>
                                 @include('layouts.user.header-right')
                             </div>
                         </nav>
@@ -117,9 +124,12 @@
         @yield('content')
     @endif
 
+
     <!-- Scripts -->
     <!-- Required vendors -->
     <script src="{{ asset('backend/vendor/global/global.min.js') }}"></script>
+
+    @stack('cropperjs')
 
     @if (!Request::is('login'))
 

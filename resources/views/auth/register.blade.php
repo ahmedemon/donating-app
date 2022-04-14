@@ -134,7 +134,11 @@
                                         </div>
 
                                         <div class="d-flex justify-content-center my-4">
-                                            <button type="submit" class="btn w-50 btn-primary"> Register </button>
+                                            <button type="submit" class="btn w-50 btn-sm btn-primary"> Register </button>
+                                            <a href="{{ route('user.frontend') }}" class="btn w-50 btn-sm btn-secondary">Go Home</a>
+                                        </div>
+                                        <div class="new-account mt-1">
+                                            <p class="p-0 m-0 text-white">Already have an account? <a href="{{ route('login') }}" style="color: #f93a0b !important;">Sign in</a></p>
                                         </div>
                                     </form>
                                 </div>

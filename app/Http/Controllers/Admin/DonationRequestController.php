@@ -64,7 +64,7 @@ class DonationRequestController extends Controller
     {
         $headerTitle = "Donation Request | Approved";
         if (request()->ajax()) {
-            $data = Donation::where('status', 1)->with('category')->latest()->get();
+            $data = Donation::whereIn('status', [1,3])->with('category')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function($data){

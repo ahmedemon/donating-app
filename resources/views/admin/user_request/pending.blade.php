@@ -1,8 +1,12 @@
-@extends('layouts.admin.app', ['pageTitle'=>'User Request'])
+@extends('layouts.admin.app', ['pageTitle'=>$headerTitle])
 @push('css')
     <link rel="stylesheet" href="{{ asset('backend/vendor/datatables/css/jquery.dataTables.min.css') }}">
     <style>
         #DataTables_Table_0_wrapper label {
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
             color: white !important;
         }
 
@@ -13,7 +17,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">User List</h4>
+                    <h4 class="card-title">{{ $headerTitle }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -21,19 +25,16 @@
                             <thead>
                                 <tr>
                                     <th>S.N</th>
-                                    <th>Image</th>
                                     <th>User Information</th>
-                                    <th>Status</th>
+                                    <th>Image</th>
                                     <th>Current Balance</th>
-                                    <th>Total Buy</th>
-                                    <th>Shipping Address</th>
-                                    <th>Used Time</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
+                                    <th>Lost Balance</th>
+                                    <th>Sale</th>
+                                    <th>Purchase</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="border-0">
+                            <tbody class="table-bordered">
                             </tbody>
                         </table>
                     </div>
@@ -63,54 +64,45 @@
             $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.donation.requests.pending') }}",
+                ajax: "{{ route('admin.user-request.pending.request') }}",
                 columns: [{
                         data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        name: 'DT_RowIndex',
                     },
                     {
-                        data: 'title',
-                        name: 'title'
+                        data: 'user_info',
+                        name: 'user_info',
+                        orderable: false,
                     },
                     {
-                        data: 'price',
-                        name: 'price'
+                        data: 'image',
+                        name: 'image',
+                        orderable: false,
                     },
                     {
-                        data: 'point',
-                        name: 'point'
+                        data: 'current_balance',
+                        name: 'current_balance',
+                        orderable: false,
                     },
                     {
-                        data: 'category',
-                        name: 'category'
+                        data: 'total_purchased_balance',
+                        name: 'total_purchased_balance',
+                        orderable: false,
                     },
                     {
-                        data: 'description',
-                        name: 'description'
+                        data: 'total_sale',
+                        name: 'total_sale',
+                        orderable: false,
                     },
                     {
-                        data: 'shipping_address',
-                        name: 'shipping_address'
-                    },
-                    {
-                        data: 'images',
-                        name: 'images'
-                    },
-                    {
-                        data: 'used_duration',
-                        name: 'used_duration'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
+                        data: 'total_purchased',
+                        name: 'total_purchased',
+                        orderable: false,
                     },
                     {
                         data: 'action',
-                        name: 'action'
+                        name: 'action',
+                        orderable: false,
                     }
                 ]
             });

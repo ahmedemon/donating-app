@@ -2,41 +2,48 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Donate For Re-Use</title>
-  <link rel="icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
-  <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
-  @if(!route('home'))
-    <link rel="stylesheet" href="{{ asset('frontend/css/background.animated.css') }}">
-  @endif
-  @stack('css')
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ 'Donate For Re-Use | ' . ($pageTitle ?? 'Home') }}</title>
+    <link rel="icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
+    @if (!route('home'))
+        <link rel="stylesheet" href="{{ asset('frontend/css/background.animated.css') }}">
+    @endif
+    @stack('css')
+    <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
 </head>
 
 <body id="light">
-  <header>
-    @include('layouts.frontend.topbar')
-  </header>
+    <header>
+        @include('layouts.frontend.topbar')
+    </header>
 
-  <div class="container-fluid px-0 my-3">
-    @yield('content')
-  </div>
+    <div class="container-fluid px-0">
+        @yield('content')
+    </div>
 
-  <div class="footer">
-    @include('layouts.frontend.footer')
-  </div>
+    <div class="footer">
+        @include('layouts.frontend.footer')
+    </div>
 
+    <script src="{{ asset('frontend/js/jquery-3.4.1.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    @stack('js')
+    <script src="{{ asset('frontend/js/popper.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/amcharts-core.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/amcharts.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/custom.js') }}"></script>
 
-  <script src="{{ asset('frontend/js/jquery-3.4.1.min.js') }}"></script>
-  @stack('js')
-  <script src="{{ asset('frontend/js/popper.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/amcharts-core.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/amcharts.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/custom.js') }}"></script>
+    <script src="{{ asset('backend/vendor/toastr/js/toastr.min.js') }}"></script>
+    <!-- All init script -->
+    <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
+    {!! Toastr::message() !!}
 </body>
 
 </html>

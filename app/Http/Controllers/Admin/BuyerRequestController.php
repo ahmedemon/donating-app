@@ -18,17 +18,17 @@ class BuyerRequestController extends Controller
             $data = PurchasedProduct::where('admin_approval', 0)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('product', function($data){
+                ->addColumn('product', function ($data) {
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
                     $user_name = $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
                     $category_name = $data->donation->category->name ?? '--';
-                    $category = 'Category: ' . '<span>'. '<a style="color: darkorange !important;" href="'. route('category.index', $data->donation->category->id).'">'.$category_name.'</a>' .'</span>';
+                    $category = 'Category: ' . '<span>' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->donation->category->id) . '">' . $category_name . '</a>' . '</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-                    return $title . '<br>' . str_replace('.00', '', $point). ' Points' . '<br>' . $category . '<br>' .
-                           'Owner: ' . '<a style="color: darkorange !important;" href="'. route('category.index', $data->user->id).'">'.$user_name.'</a>' .
-                           '<br><br>' . $image;
+                    return $title . '<br>' . str_replace('.00', '', $point) . ' Points' . '<br>' . $category . '<br>' .
+                        'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
+                        '<br><br>' . $image;
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -51,10 +51,10 @@ class BuyerRequestController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="'. route('admin.buyer-request-admin-approval.approve.request', $data->id) .'" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
+                        <a href="' . route('admin.buyer-request-admin-approval.approve.request', $data->id) . '" class="btn btn-secondary shadow btn-xs sharp" onClick="return confirm("Are you sure?")">
                             <i class="fa fa-check"></i>
                         </a>
-                        <a href="'. route('admin.buyer-request-admin-approval.reject.request', $data->id) .'" class="btn btn-danger shadow btn-xs sharp">
+                        <a href="' . route('admin.buyer-request-admin-approval.reject.request', $data->id) . '" class="btn btn-danger shadow btn-xs sharp">
                             <i class="fa fa-times"></i>
                         </a>
                     ';
@@ -73,17 +73,17 @@ class BuyerRequestController extends Controller
             $data = PurchasedProduct::where('admin_approval', 1)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('product', function($data){
+                ->addColumn('product', function ($data) {
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
                     $user_name = $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
                     $category_name = $data->donation->category->name ?? '--';
-                    $category = 'Category: ' . '<span>'. '<a style="color: darkorange !important;" href="'. route('category.index', $data->donation->category->id).'">'.$category_name.'</a>' .'</span>';
+                    $category = 'Category: ' . '<span>' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->donation->category->id) . '">' . $category_name . '</a>' . '</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-                    return $title . '<br>' . str_replace('.00', '', $point). ' Points' . '<br>' . $category . '<br>' .
-                           'Owner: ' . '<a style="color: darkorange !important;" href="'. route('category.index', $data->user->id).'">'.$user_name.'</a>' .
-                           '<br><br>' . $image;
+                    return $title . '<br>' . str_replace('.00', '', $point) . ' Points' . '<br>' . $category . '<br>' .
+                        'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
+                        '<br><br>' . $image;
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -125,17 +125,17 @@ class BuyerRequestController extends Controller
             $data = PurchasedProduct::where('admin_approval', 2)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('product', function($data){
+                ->addColumn('product', function ($data) {
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
                     $user_name = $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
                     $category_name = $data->donation->category->name ?? '--';
-                    $category = 'Category: ' . '<span>'. '<a style="color: darkorange !important;" href="'. route('category.index', $data->donation->category->id).'">'.$category_name.'</a>' .'</span>';
+                    $category = 'Category: ' . '<span>' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->donation->category->id) . '">' . $category_name . '</a>' . '</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-                    return $title . '<br>' . str_replace('.00', '', $point). ' Points' . '<br>' . $category . '<br>' .
-                           'Owner: ' . '<a style="color: darkorange !important;" href="'. route('category.index', $data->user->id).'">'.$user_name.'</a>' .
-                           '<br><br>' . $image;
+                    return $title . '<br>' . str_replace('.00', '', $point) . ' Points' . '<br>' . $category . '<br>' .
+                        'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
+                        '<br><br>' . $image;
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -158,7 +158,7 @@ class BuyerRequestController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="'. route('admin.buyer-request-admin-approval.recall.request', $data->id) .'" class="btn btn-info shadow btn-xs sharp">
+                        <a href="' . route('admin.buyer-request-admin-approval.recall.request', $data->id) . '" class="btn btn-info shadow btn-xs sharp">
                             <i class="fas fa-recycle"></i>
                         </a>
                     ';
@@ -187,6 +187,10 @@ class BuyerRequestController extends Controller
         $approve_request = PurchasedProduct::find($id);
         $approve_request->admin_approval = 2;
         $approve_request->save();
+        $donation = Donation::find($approve_request->id);
+        $donation->status = 2;
+        $donation->is_purchased = 2;
+        $donation->save();
         toastr()->error('Rejected!', 'Request rejected!');
         return redirect()->back();
     }
@@ -195,7 +199,11 @@ class BuyerRequestController extends Controller
         $approve_request = PurchasedProduct::find($id);
         $approve_request->admin_approval = 0;
         $approve_request->save();
-        toastr()->info('Recycled!', 'Request recycled successfylly!');
+        $donation = Donation::find($approve_request->id);
+        $donation->status = 0;
+        $donation->is_purchased = 0;
+        $donation->save();
+        toastr()->info('Recycled!', 'Request recycled successful!');
         return redirect()->back();
     }
 }

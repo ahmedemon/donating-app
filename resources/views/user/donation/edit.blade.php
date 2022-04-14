@@ -40,18 +40,25 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="text-label form-label" for="profilePicture">Product Image</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"> <i class="far fa-images"></i> </span>
-                                            <div class="form-file form-control">
-                                                <input type="file" name="images" class="form-file-input form-control" id="images" accept="images">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-3 my-3 my-lg-0 d-flex justify-content-center">
+                                                <img src="{{ asset('storage/donation/'. $donation->images) }}" alt="" height="80">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <label class="text-label form-label" for="profilePicture">Product Image</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"> <i class="far fa-images"></i> </span>
+                                                    <div class="form-file form-control">
+                                                        <input type="file" name="images" class="form-file-input form-control" id="images" accept="images">
+                                                    </div>
+                                                </div>
+                                                @error('images')
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $message }}</strong>
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
-                                        @error('images')
-                                            <div class="invalid-feedback">
-                                                <strong>{{ $message }}</strong>
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +112,9 @@
                                         <label class="text-label form-label" for="Used_duration">Used Duration</label> <span class="small text-danger">*</span>
                                         <div class="input-group">
                                             <select class="input-group-text form-control" style="text-align: left" name="used_duration" required id="Used duration">
-                                                <option value="6">6 Months</option>
+                                                @foreach ($durations as $duration)
+                                                <option {{ $duration->id == $donation->used_duration ? 'selected' : '' }} value="{{ $donation->id }}">{{ $donation->duration->duration . ' - ' . $donation->duration->type }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         @error('used_duration')
