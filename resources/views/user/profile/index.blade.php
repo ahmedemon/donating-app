@@ -113,7 +113,6 @@
                             <a class="float-right btn btn-sm btn-outline-info" href="{{ route('profile.edit', Auth::user()->id) }}">Edit</a>
                             <div class="row justify-content-center">
                                 <div class="col-12 d-flex justify-content-center align-items-center px-0 mb-3">
-                                    {{-- {{ Auth::user()->image }} --}}
                                     {{-- ------------------------- --}}
                                     <form action="{{ route('profile.image', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
@@ -130,10 +129,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-center align-items-center mt-3">
-                                                    {{-- <strong class="text-white">Upload</strong> --}}
                                                     <button type="submit" class="btn-xs btn btn-primary">
-                                                        {{-- <i class="fas fa-arrow-circle-up"></i> --}}
-                                                        Upload
+                                                        Update
                                                     </button>
                                                 </div>
                                             </div>
@@ -267,10 +264,6 @@
                 </div>
             </div>
         </div>
-        <!-- Button trigger modal -->
-        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
-        Launch demo modal
-    </button> --}}
 
         <!-- Modal -->
         <div class="modal fade bd-example-modal-lg imagecrop" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">

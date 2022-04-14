@@ -63,7 +63,7 @@
                             </div>
                             @if ($donators->count() == 0)
                                 <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
-                                    <p class="lead">Top buyer is not available</p>
+                                    <p class="lead">Top donator is not available</p>
                                 </div>
                             @else
                                 <div class="card-body py-0" style="height: 254px !important; overflow-y: scroll;">
@@ -77,7 +77,7 @@
                                             </div>
                                         @else
                                             <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
-                                                <p class="lead">Top buyer is not available</p>
+                                                <p class="lead">Top donator is not available</p>
                                             </div>
                                         @endif
                                     @endforeach

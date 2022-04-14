@@ -8,8 +8,13 @@
                           <li class="list-group-item border-0 p-0 bg-dark text-light">Street: Sainik Club, Banani, Dhaka Cant.</li>
                           <li class="list-group-item border-0 p-0 bg-dark text-light">City: Dhaka</li>
                           <li class="list-group-item border-0 p-0 bg-dark text-light">ZIP Code: 9000</li>
-                          <li class="list-group-item border-0 p-0 bg-dark text-light">Phone Number: 1950-594-285</li>
-                          <li class="list-group-item border-0 p-0 bg-dark text-light">Mobile Number: +880(1950-594-285)</li>
+                          <li class="list-group-item border-0 p-0 bg-dark text-light">Phone Number:
+                              <a href="javascript:void();" class="text-white">01877-020-222</a>,
+                              <br>
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <a href="javascript:void();" class="text-white">01877-020-111</a>
+                          </li>
                       </ul>
                   </div>
               </div>
