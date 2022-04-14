@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -37,15 +39,25 @@ class ProfileController extends Controller
     }
     public function image(Request $request, $id)
     {
-
         $user = User::find($id);
-        $upload = new FileManager();
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        $input = $request->all();
 
-            $upload->folder('user')->prefix('profile')->update($image, $user->image);
-            $user->image = $upload->getName();
-        }
+        $parts = explode(";base64,", $input['base64image']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
+
+        // file naming convension
+        $separator = '-';
+        $prefix = 'profile-';
+        $postfix = '';
+        $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+
+        Storage::disk('profile')->delete($user->image);
+        Storage::disk('profile')->put($filename, $image_base64);
+
+        $user->image = $filename;
         $user->save();
         toastr()->success("Profile Picture Updated Successfully.", "Success!");
         return redirect()->route('profile.index');

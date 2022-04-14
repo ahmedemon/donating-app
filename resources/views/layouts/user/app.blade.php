@@ -9,29 +9,7 @@
     <title>{{ 'Donate For Re-Use | ' . ($pageTitle ?? 'User Panel') }}</title>
     <!-- FAVICONS ICON -->
     @if (Request::is('user/profile'))
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css" integrity="sha256-jKV9n9bkk/CTP8zbtEtnKaKf+ehRovOYeKoyfthwbC8=" crossorigin="anonymous" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js" integrity="sha256-CgvH7sz3tHhkiVKh05kSUgG97YtzYNnWt6OXcmYzqHY=" crossorigin="anonymous"></script>
-        <style type="text/css">
-            img {
-                display: block;
-                max-width: 100%;
-            }
-
-            .preview {
-                overflow: hidden;
-                width: 160px;
-                height: 160px;
-                margin: 0 10px;
-                border: 1px solid red;
-            }
-
-            .modal-lg {
-                max-width: 1000px !important;
-            }
-
-        </style>
+        @stack('croppercss')
     @endif
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
     <link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
@@ -146,9 +124,12 @@
         @yield('content')
     @endif
 
+
     <!-- Scripts -->
     <!-- Required vendors -->
     <script src="{{ asset('backend/vendor/global/global.min.js') }}"></script>
+
+    @stack('cropperjs')
 
     @if (!Request::is('login'))
 
