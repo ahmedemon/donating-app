@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\File;
 use App\Helpers\FileManager;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 class SponsorItemController extends Controller
 {
     /**
@@ -24,7 +27,7 @@ class SponsorItemController extends Controller
             $data = SponsorItem::where('status', 1)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('image', function($data){
+                ->editColumn('image', function ($data) {
                     return '<img src="' . asset('storage/sponsor_item/' . $data->image) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -76,7 +79,7 @@ class SponsorItemController extends Controller
             $data = SponsorItem::where('status', 0)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('image', function($data){
+                ->editColumn('image', function ($data) {
                     return '<img src="' . asset('storage/sponsor_item/' . $data->image) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -118,7 +121,7 @@ class SponsorItemController extends Controller
                 })
                 ->rawColumns(['action', 'status', 'image'])
                 ->make(true);
-        }        
+        }
         return view('admin.sponsor_item.index', compact('headerTitle'));
     }
 
@@ -154,14 +157,22 @@ class SponsorItemController extends Controller
         $sponsor_item->created_by = Auth::guard('admin')->user()->id;
         $sponsor_item->sponsored_by = $request->sponsored_by;
 
-        $file = new FileManager();
+        $input = $request->all();
+        $parts = explode(";base64,", $input['cropimage64']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
 
-        if ($request->has('image')) {
-            $file->folder('sponsor_item')->prefix('image')
-            ->postfix($request->title)
-            ->upload($request->image) ?
-            $sponsor_item->image = $file->getName() : null;
-        }
+        // file naming convension
+        $separator = '-';
+        $prefix = 'image-';
+        $postfix = str_replace(' ', '-', $request->title);
+        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+
+        Storage::disk('sponsored')->put($filename, $image_base64);
+
+        $sponsor_item->image = $filename;
 
         $sponsor_item->save();
         toastr()->success('Sponsor item added suceessfully!', 'Success!');
@@ -214,15 +225,25 @@ class SponsorItemController extends Controller
         $sponsor_item->update($request->except('_method', '_token'));
         $sponsor_item->edited_by = Auth::guard('admin')->user()->id;
         $sponsor_item->sponsored_by = $request->sponsored_by;
-        $upload = new FileManager();
 
-        // user image start
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        $input = $request->all();
+        $parts = explode(";base64,", $input['cropimage64']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
 
-            $upload->folder('user')->prefix('image')->update($image, $user->image);
-            $user->image = $upload->getName();
-        }
+        // file naming convension
+        $separator = '-';
+        $prefix = 'image-';
+        $postfix = str_replace(' ', '-', $request->title);
+        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+
+        Storage::disk('sponsored')->delete($sponsor_item->image);
+        Storage::disk('sponsored')->put($filename, $image_base64);
+
+        $sponsor_item->image = $filename;
+
         $sponsor_item->save();
         toastr()->success('Sponsor item updated suceessfully!', 'Success!');
         return redirect()->route('admin.sponsor-item.index');

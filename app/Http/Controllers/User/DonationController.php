@@ -10,7 +10,9 @@ use App\Models\Category;
 use App\Helpers\FileManager;
 use App\Models\Duration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class DonationController extends Controller
 {
@@ -217,15 +219,7 @@ class DonationController extends Controller
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
                         <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
-                            ' . @csrf_field() . '
-                            ' . @method_field("DELETE") . '
-                        </form>
-
-                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
-                            <i class="flaticon-381-edit-1"></i>
+                            <i class="fa fa-check"></i>
                         </a>
                     ';
                     return $actionBtn;
@@ -273,14 +267,23 @@ class DonationController extends Controller
         ]);
         $donation = new Donation($request->all());
 
-        $file = new FileManager();
+        $input = $request->all();
 
-        if ($request->has('images')) {
-            $file->folder('donation')->prefix('image')
-                ->postfix($request->title)
-                ->upload($request->images) ?
-                $donation->images = $file->getName() : null;
-        }
+        $parts = explode(";base64,", $input['cropimage64']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
+
+        // file naming convension
+        $separator = '-';
+        $prefix = 'image-';
+        $postfix = str_replace(' ', '-', $request->title);
+        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+
+        Storage::disk('donations')->put($filename, $image_base64);
+
+        $donation->images = $filename;
         $donation->save();
         toastr()->success('Product Successfully Donated!', 'Success!');
         return redirect()->route('donation.pending');
@@ -344,13 +347,31 @@ class DonationController extends Controller
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
 
-        $upload = new FileManager();
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
+        $input = $request->all();
 
-            $upload->folder('donation')->prefix('images')->update($images, $donation->images);
-            $donation->images = $upload->getName();
-        }
+        $parts = explode(";base64,", $input['cropimage64']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
+
+        // file naming convension
+        $separator = '-';
+        $prefix = 'image-';
+        $postfix = str_replace(' ', '-', $request->title);
+        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+        Storage::disk('donations')->delete($donation->images);
+        Storage::disk('donations')->put($filename, $image_base64);
+
+        $donation->images = $filename;
+
+        // $upload = new FileManager();
+        // if ($request->hasFile('images')) {
+        //     $images = $request->file('images');
+
+        //     $upload->folder('donation')->prefix('images')->update($images, $donation->images);
+        //     $donation->images = $upload->getName();
+        // }
 
         $donation->save();
         toastr()->success('Product Successfully Updated!', 'Updated!');

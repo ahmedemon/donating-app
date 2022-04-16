@@ -41,6 +41,19 @@ return [
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
+        'donations' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/donation'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'sponsored' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/sponsor_item'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
 
         'public' => [
             'driver' => 'local',

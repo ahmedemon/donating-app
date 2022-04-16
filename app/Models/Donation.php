@@ -36,6 +36,6 @@ class Donation extends Model
 
     public function duration()
     {
-        return $this->hasOne(Duration::class, 'id');
+        return $this->hasOne(Duration::class, 'id', 'used_duration');
     }
 }

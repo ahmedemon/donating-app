@@ -19,7 +19,7 @@
         </div>
         <ul class="metismenu" id="menu">
             <li>
-                <a href="{{ route('user.frontend') }}" target="_blank">
+                <a href="{{ route('user.frontend') }}">
                     <i class="fa fa-home"></i>
                     <span class="nav-text">Home</span>
                 </a>

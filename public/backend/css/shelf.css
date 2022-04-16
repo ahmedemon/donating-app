@@ -8,6 +8,7 @@
 .image img {
     filter: brightness(80%) !important;
     transition: 0.2s;
+    width: -webkit-fill-available !important;
 }
 
 .card-body:hover .image img {

@@ -15,6 +15,10 @@
     <link href="{{ asset('backend/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
 
+    @if (Request::is('admin/donation-request/edit/*') || Request::is('admin/sponsor-item/*'))
+        @stack('croppercss')
+    @endif
+
     <!-- Style css -->
     <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
     <style>
@@ -117,7 +121,7 @@
 
     <!-- Required vendors -->
     <script src="{{ asset('backend/vendor/global/global.min.js') }}"></script>
-
+    @stack('cropperjs')
     @if (!Request::is(env('ADMIN_URL_PREFIX', 'admin') . '/login'))
         {{-- <script src="{{ asset('backend/vendor/chart.js/Chart.bundle.min.js') }}"></script> --}}
         <script src="{{ asset('backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>

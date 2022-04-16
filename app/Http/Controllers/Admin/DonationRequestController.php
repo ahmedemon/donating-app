@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Donation;
 use App\Models\Category;
+use App\Models\Duration;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
+
 class DonationRequestController extends Controller
 {
     public function pending()
@@ -17,7 +21,7 @@ class DonationRequestController extends Controller
             $data = Donation::where('status', 0)->with('category')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -25,7 +29,7 @@ class DonationRequestController extends Controller
                 })
                 ->editColumn('category', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-primary">'. $category .'</span>';
+                    return '<span class="badge badge-primary">' . $category . '</span>';
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -64,10 +68,10 @@ class DonationRequestController extends Controller
     {
         $headerTitle = "Donation Request | Approved";
         if (request()->ajax()) {
-            $data = Donation::whereIn('status', [1,3])->with('category')->latest()->get();
+            $data = Donation::whereIn('status', [1, 3])->with('category')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -75,7 +79,7 @@ class DonationRequestController extends Controller
                 })
                 ->editColumn('category', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-primary">'. $category .'</span>';
+                    return '<span class="badge badge-primary">' . $category . '</span>';
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 1) {
@@ -106,7 +110,7 @@ class DonationRequestController extends Controller
             $data = Donation::where('status', 2)->with('category')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('images', function($data){
+                ->editColumn('images', function ($data) {
                     return '<img src="' . asset('storage/donation/' . $data->images) . '" height="50" width="100">';
                 })
                 ->editColumn('created_at', function ($data) {
@@ -114,7 +118,7 @@ class DonationRequestController extends Controller
                 })
                 ->editColumn('category', function ($data) {
                     $category = $data->category->name ?? '-';
-                    return '<span class="badge badge-primary">'. $category .'</span>';
+                    return '<span class="badge badge-primary">' . $category . '</span>';
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->status == 2) {
@@ -147,7 +151,8 @@ class DonationRequestController extends Controller
     {
         $donation = Donation::find($id);
         $categories = Category::all();
-        return view('admin.donation_request.edit', compact('donation', 'categories'));
+        $durations = Duration::all();
+        return view('admin.donation_request.edit', compact('donation', 'categories', 'durations'));
     }
 
     public function approve($id)
@@ -175,13 +180,23 @@ class DonationRequestController extends Controller
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
 
-        $upload = new FileManager();
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
+        $input = $request->all();
 
-            $upload->folder('donation')->prefix('images')->update($images, $donation->images);
-            $donation->images = $upload->getName();
-        }
+        $parts = explode(";base64,", $input['cropimage64']);
+        $type_aux = explode("image/", $parts[0]);
+        $type = $type_aux[1];
+        $image_base64 = base64_decode($parts[1]);
+
+        // file naming convension
+        $separator = '-';
+        $prefix = 'image-';
+        $postfix = str_replace(' ', '-', $request->title);
+        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+        // file naming convension
+        Storage::disk('donations')->delete($donation->images);
+        Storage::disk('donations')->put($filename, $image_base64);
+
+        $donation->images = $filename;
 
         $donation->save();
         toastr()->success('Product Successfully Updated!', 'Updated!');

@@ -8,7 +8,7 @@
     <!-- PAGE TITLE HERE -->
     <title>{{ 'Donate For Re-Use | ' . ($pageTitle ?? 'User Panel') }}</title>
     <!-- FAVICONS ICON -->
-    @if (Request::is('user/profile'))
+    @if (Request::is('user/profile') || Request::is('user/donations/create') || Request::is('user/donations/edit/*'))
         @stack('croppercss')
     @endif
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}" />
