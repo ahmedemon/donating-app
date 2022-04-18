@@ -21,6 +21,7 @@ class CreatePurchasedProductsTable extends Migration
             $table->integer('product_point');
             $table->date('date');
             $table->integer('status')->default(0);
+            $table->integer('gotted')->default(0)->nullable();
             $table->integer('owner_approval')->default(0);
             $table->integer('admin_approval')->default(0);
             $table->timestamps();

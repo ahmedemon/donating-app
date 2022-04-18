@@ -22,12 +22,13 @@
                   <p class="lead my-0 font-weight-bold my-2 text-white text-uppercase border-bottom text-center border-secondary">Menu</p>
                   <div class="d-flex justify-content-center">
                       <ul class="list-group-flush bg-dark text-white">
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">Home</a></li>
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">About Us</a></li>
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">Donate</a></li>
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">Free Shelf</a></li>
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">Sponsored Shop</a></li>
-                          <li class="list-group-item border-0 p-0 bg-dark"><a href="#" class="text-light">How It Works</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('home') }}" class="text-light">Home</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('about') }}" class="text-light">About Us</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('donation.create') }}" class="text-light">Donate</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('category.categories') }}" class="text-light">Free Shelf</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('sponsored-shop.index') }}" class="text-light">Sponsored Shop</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('how') }}" class="text-light">How It Works</a></li>
+                          <li class="list-group-item border-0 p-0 bg-dark"><a href="{{ route('register') }}" class="text-light">Register</a></li>
                       </ul>
                   </div>
               </div>

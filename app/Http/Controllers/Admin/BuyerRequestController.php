@@ -13,7 +13,7 @@ class BuyerRequestController extends Controller
 
     public function pending()
     {
-        $headerTitle = "Buyer Request - Pending List";
+        $headerTitle = "Receiver Request - Pending List";
         if (request()->ajax()) {
             $data = PurchasedProduct::where('admin_approval', 0)->with('donation')->latest()->get();
             return DataTables::of($data)
@@ -30,12 +30,15 @@ class BuyerRequestController extends Controller
                         'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
+                    }
+                    if ($data->admin_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('owner_approval', function ($data) {
@@ -44,6 +47,9 @@ class BuyerRequestController extends Controller
                     }
                     if ($data->owner_approval == 1) {
                         return '<span class="badge badge-danger">Accepted</span>';
+                    }
+                    if ($data->owner_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
                     }
                 })
                 ->editColumn('date', function ($data) {
@@ -60,7 +66,7 @@ class BuyerRequestController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('admin.buyer_request.pending', compact('headerTitle'));
@@ -68,7 +74,7 @@ class BuyerRequestController extends Controller
 
     public function completed()
     {
-        $headerTitle = "Buyer Request - Completed List";
+        $headerTitle = "Receiver Request - Completed List";
         if (request()->ajax()) {
             $data = PurchasedProduct::where('admin_approval', 1)->with('donation')->latest()->get();
             return DataTables::of($data)
@@ -85,12 +91,15 @@ class BuyerRequestController extends Controller
                         'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
+                    }
+                    if ($data->admin_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('owner_approval', function ($data) {
@@ -100,19 +109,22 @@ class BuyerRequestController extends Controller
                     if ($data->owner_approval == 1) {
                         return '<span class="badge badge-danger">Accepted</span>';
                     }
+                    if ($data->owner_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
+                    }
                 })
                 ->editColumn('date', function ($data) {
                     return !is_null($data->created_at) ? date('M d, Y, h:i a', strtotime($data->created_at)) : '-';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp disabled">
-                            <i class="fa fa-check"></i>
+                        <a href="' . route('admin.buyer-request-admin-approval.reject.request', $data->id) . '" class="btn btn-danger shadow btn-xs sharp">
+                            <i class="fa fa-trash"></i>
                         </a>
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('admin.buyer_request.completed', compact('headerTitle'));
@@ -120,7 +132,7 @@ class BuyerRequestController extends Controller
 
     public function rejected()
     {
-        $headerTitle = "Buyer Request - Rejected List";
+        $headerTitle = "Receiver Request - Rejected List";
         if (request()->ajax()) {
             $data = PurchasedProduct::where('admin_approval', 2)->with('donation')->latest()->get();
             return DataTables::of($data)
@@ -137,12 +149,15 @@ class BuyerRequestController extends Controller
                         'Owner: ' . '<a style="color: darkorange !important;" href="' . route('category.index', $data->user->id) . '">' . $user_name . '</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
+                    }
+                    if ($data->admin_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('owner_approval', function ($data) {
@@ -152,19 +167,22 @@ class BuyerRequestController extends Controller
                     if ($data->owner_approval == 1) {
                         return '<span class="badge badge-danger">Accepted</span>';
                     }
+                    if ($data->owner_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
+                    }
                 })
                 ->editColumn('date', function ($data) {
                     return !is_null($data->created_at) ? date('M d, Y, h:i a', strtotime($data->created_at)) : '-';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="' . route('admin.buyer-request-admin-approval.recall.request', $data->id) . '" class="btn btn-info shadow btn-xs sharp">
-                            <i class="fas fa-recycle"></i>
+                        <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp disabled">
+                            <i class="fas fa-check"></i>
                         </a>
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('admin.buyer_request.rejected', compact('headerTitle'));
@@ -175,7 +193,7 @@ class BuyerRequestController extends Controller
         $approve_request = PurchasedProduct::find($id);
         $approve_request->admin_approval = 1;
         $approve_request->save();
-        $donation = Donation::find($approve_request->id);
+        $donation = Donation::find($approve_request->product_id);
         $donation->status = 3;
         $donation->is_purchased = 1;
         $donation->save();
@@ -187,7 +205,7 @@ class BuyerRequestController extends Controller
         $approve_request = PurchasedProduct::find($id);
         $approve_request->admin_approval = 2;
         $approve_request->save();
-        $donation = Donation::find($approve_request->id);
+        $donation = Donation::find($approve_request->product_id);
         $donation->status = 2;
         $donation->is_purchased = 2;
         $donation->save();
@@ -199,7 +217,7 @@ class BuyerRequestController extends Controller
         $approve_request = PurchasedProduct::find($id);
         $approve_request->admin_approval = 0;
         $approve_request->save();
-        $donation = Donation::find($approve_request->id);
+        $donation = Donation::find($approve_request->product_id);
         $donation->status = 0;
         $donation->is_purchased = 0;
         $donation->save();

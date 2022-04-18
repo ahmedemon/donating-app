@@ -5,6 +5,7 @@
         #DataTables_Table_0_wrapper label {
             color: white !important;
         }
+
     </style>
 @endpush
 @section('content')
@@ -22,7 +23,7 @@
                                     <th>S.N</th>
                                     <th>Product</th>
                                     {{-- <th>User</th> --}}
-                                    <th>Status</th>
+                                    <th>Admin Approval</th>
                                     <th>Owner Approval</th>
                                     <th>Date</th>
                                     <th>Action</th>
@@ -72,8 +73,8 @@
                     //     name: 'user'
                     // },
                     {
-                        data: 'status',
-                        name: 'status'
+                        data: 'admin_approval',
+                        name: 'admin_approval'
                     },
                     {
                         data: 'owner_approval',

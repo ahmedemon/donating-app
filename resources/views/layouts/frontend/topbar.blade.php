@@ -14,12 +14,8 @@
                         Home
                     </a>
                 </li>
+
                 @auth
-                    <li class="nav-item">
-                        <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('donation.create') }}">
-                            Donate
-                        </a>
-                    </li>
                 @else
                     <li class="nav-item">
                         <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('register') }}">
@@ -27,6 +23,11 @@
                         </a>
                     </li>
                 @endauth
+                <li class="nav-item">
+                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('donation.create') }}">
+                        Donate
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a class="btn shadow-none {{ Request::is('about') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('about') }}">

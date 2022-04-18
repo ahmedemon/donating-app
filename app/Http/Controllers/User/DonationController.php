@@ -29,9 +29,9 @@ class DonationController extends Controller
             return redirect()->back();
         }
         $user_id = Auth::user()->id;
-        $headerTitle = "Total Sales";
+        $headerTitle = "Total Successfully Donated Items";
         if (request()->ajax()) {
-            $data = Donation::where('user_id', $user_id)->where('status', 3)->where('requested_by', !null)->with(['user', 'category', 'duration'])->latest()->get();
+            $data = Donation::where('user_id', $user_id)->where('status', 3)->where('is_purchased', 1)->where('requested_by', '!=', null)->with(['user', 'category', 'duration'])->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('images', function ($data) {
@@ -56,16 +56,8 @@ class DonationController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->title . '">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                        <form id="delete-form-' . $data->id . '" action="' . route("donation.destroy", $data->id) . '" method="POST" class="d-none">
-                            ' . @csrf_field() . '
-                            ' . @method_field("DELETE") . '
-                        </form>
-
-                        <a href="' . route("donation.edit", $data->id) . '" onClick="' . "return confirm('You want to edit {$data->title}`s?');" . '" class="btn btn-success shadow btn-xs sharp">
-                            <i class="flaticon-381-edit-1"></i>
+                        <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp">
+                            <i class="fa fa-check"></i>
                         </a>
                     ';
                     return $actionBtn;
@@ -268,7 +260,10 @@ class DonationController extends Controller
         $donation = new Donation($request->all());
 
         $input = $request->all();
-
+        if ($input['cropimage64'] == null) {
+            toastr()->warning('Please select an image first!', 'Warning!');
+            return redirect()->back();
+        }
         $parts = explode(";base64,", $input['cropimage64']);
         $type_aux = explode("image/", $parts[0]);
         $type = $type_aux[1];
@@ -348,30 +343,23 @@ class DonationController extends Controller
         $donation->update($request->except('_token', '_method'));
 
         $input = $request->all();
+        if ($input['cropimage64'] != null) {
+            $parts = explode(";base64,", $input['cropimage64']);
+            $type_aux = explode("image/", $parts[0]);
+            $type = $type_aux[1];
+            $image_base64 = base64_decode($parts[1]);
 
-        $parts = explode(";base64,", $input['cropimage64']);
-        $type_aux = explode("image/", $parts[0]);
-        $type = $type_aux[1];
-        $image_base64 = base64_decode($parts[1]);
+            // file naming convension
+            $separator = '-';
+            $prefix = 'image-';
+            $postfix = str_replace(' ', '-', $request->title);
+            $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+            // file naming convension
+            Storage::disk('donations')->delete($donation->images);
+            Storage::disk('donations')->put($filename, $image_base64);
 
-        // file naming convension
-        $separator = '-';
-        $prefix = 'image-';
-        $postfix = str_replace(' ', '-', $request->title);
-        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
-        // file naming convension
-        Storage::disk('donations')->delete($donation->images);
-        Storage::disk('donations')->put($filename, $image_base64);
-
-        $donation->images = $filename;
-
-        // $upload = new FileManager();
-        // if ($request->hasFile('images')) {
-        //     $images = $request->file('images');
-
-        //     $upload->folder('donation')->prefix('images')->update($images, $donation->images);
-        //     $donation->images = $upload->getName();
-        // }
+            $donation->images = $filename;
+        }
 
         $donation->save();
         toastr()->success('Product Successfully Updated!', 'Updated!');

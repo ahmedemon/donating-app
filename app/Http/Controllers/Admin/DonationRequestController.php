@@ -155,15 +155,6 @@ class DonationRequestController extends Controller
         return view('admin.donation_request.edit', compact('donation', 'categories', 'durations'));
     }
 
-    public function approve($id)
-    {
-        $donation = Donation::find($id);
-        $donation->status = 1;
-        $donation->save();
-        toastr()->success('Request Approved Successfully!', 'Approved!');
-        return redirect()->back();
-    }
-
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -179,28 +170,37 @@ class DonationRequestController extends Controller
         ]);
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
-
         $input = $request->all();
+        if ($input['cropimage64'] != null) {
+            $parts = explode(";base64,", $input['cropimage64']);
+            $type_aux = explode("image/", $parts[0]);
+            $type = $type_aux[1];
+            $image_base64 = base64_decode($parts[1]);
 
-        $parts = explode(";base64,", $input['cropimage64']);
-        $type_aux = explode("image/", $parts[0]);
-        $type = $type_aux[1];
-        $image_base64 = base64_decode($parts[1]);
+            // file naming convension
+            $separator = '-';
+            $prefix = 'image-';
+            $postfix = str_replace(' ', '-', $request->title);
+            $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
+            // file naming convension
+            Storage::disk('donations')->delete($donation->images);
+            Storage::disk('donations')->put($filename, $image_base64);
 
-        // file naming convension
-        $separator = '-';
-        $prefix = 'image-';
-        $postfix = str_replace(' ', '-', $request->title);
-        $filename = $prefix . Str::uuid() . $separator . $postfix . $separator .  date('Y-m-d') . '.' . $type;
-        // file naming convension
-        Storage::disk('donations')->delete($donation->images);
-        Storage::disk('donations')->put($filename, $image_base64);
-
-        $donation->images = $filename;
+            $donation->images = $filename;
+        }
 
         $donation->save();
         toastr()->success('Product Successfully Updated!', 'Updated!');
         return redirect()->route('admin.donation.requests.pending');
+    }
+
+    public function approve($id)
+    {
+        $donation = Donation::find($id);
+        $donation->status = 1;
+        $donation->save();
+        toastr()->success('Request Approved Successfully!', 'Approved!');
+        return redirect()->back();
     }
 
     public function reject($id)

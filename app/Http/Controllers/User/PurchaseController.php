@@ -43,6 +43,7 @@ class PurchaseController extends Controller
         }
 
         $product->requested_by = $user_id;
+        $product->is_purchased = 1;
         $product->save();
         PurchasedProduct::create([
             'product_id' => $id,
@@ -53,7 +54,7 @@ class PurchaseController extends Controller
             'status' => 0,
             'owner_approval' => 0,
         ]);
-        toastr()->success('Debit Notice!', 'You`ve just invested ' . $product->point . ' point for ' . $product->title . '!');
+        toastr()->success('You`ve just invested ' . $product->point . ' point for ' . $product->title . '!', 'Debit Notice!');
         toastr()->info('Request sent successfully to the product woner! Please wait form confirmation', 'Success!');
         return redirect()->back();
     }
@@ -68,7 +69,7 @@ class PurchaseController extends Controller
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Pending List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('user_id', $user_id)->where('status', 0)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('user_id', $user_id)->where('status', 0)->where('admin_approval', 0)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function ($data) {
@@ -124,14 +125,14 @@ class PurchaseController extends Controller
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Approved List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('user_id', $user_id)->where('status', 1)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('user_id', $user_id)->where('admin_approval', 1)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function ($data) {
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
-                    $user_name = $data->donation->category->name ?? '<span class="badge badge-danger">Not Found</span>';
+                    $user_name = $data->donation->user->name ?? '<span class="badge badge-danger">Not Found</span>';
                     $category = 'Owner: ' . '<span style="color: darkorange !important; border-bottom: 2px solid darkorange !important;">' . $user_name . '</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
                     return $title . '<br>' . $point . '<br>' . $category . '<br><br>' . $image;
@@ -147,15 +148,26 @@ class PurchaseController extends Controller
                         return '<span class="badge badge-secondary">Approved</span>';
                     }
                 })
-                ->addColumn('action', function ($data) {
-                    $actionBtn = '
-                        <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp disabled">
-                            <i class="fa fa-check"></i>
-                        </a>
-                    ';
-                    return $actionBtn;
+                ->addColumn('owner_approval', function ($data) {
+                    if ($data->status == 0) {
+                        return '<span class="badge badge-primary">Pending</span>';
+                    }
+                    if ($data->status == 1) {
+                        return '<span class="badge badge-secondary">Approved</span>';
+                    }
                 })
-                ->rawColumns(['action', 'status', 'product', 'user'])
+                ->addColumn('action', function ($data) {
+                    if ($data->gotted == 0) {
+                        return '
+                            <a href="' . route("my-order.gotted.request", $data->id) . '" class="btn btn-secondary shadow btn-xs" onClick="' . "return confirm('Are you sure you`ve received your product?');" . '">
+                                Got It <i class="fa fa-check"></i>
+                            </a>
+                        ';
+                    } else {
+                        return '<span class="badge badge-secondary">Gotted</span>';
+                    }
+                })
+                ->rawColumns(['action', 'status', 'owner_approval', 'product', 'user'])
                 ->make(true);
         }
         return view('user.ordered_items.approved', compact('headerTitle'));
@@ -171,14 +183,14 @@ class PurchaseController extends Controller
         $user_id = Auth::user()->id;
         $headerTitle = "Requested Product - Rejected List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('user_id', $user_id)->where('status', 2)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('user_id', $user_id)->where('status', 2)->where('owner_approval', 2)->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function ($data) {
                     $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
                     $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
                     $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
-                    $user_name = $data->donation->category->name ?? '<span class="badge badge-danger">Not Found</span>';
+                    $user_name = $data->donation->user->name ?? '<span class="badge badge-danger">Not Found</span>';
                     $category = 'Owner: ' . '<span style="color: darkorange !important; border-bottom: 2px solid darkorange !important;">' . $user_name . '</span>';
                     $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
                     return $title . '<br>' . $point . '<br>' . $category . '<br><br>' . $image;
@@ -214,13 +226,30 @@ class PurchaseController extends Controller
             toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
             return redirect()->back();
         }
-        $product = Donation::find($id);
-        $product->status = 0;
+        $purchase = PurchasedProduct::find($id);
+
+        $product = Donation::find($purchase->product_id);
+        $product->status = 1;
+        $product->is_purchased = 0;
         $product->requested_by = null;
         $product->save();
-        $purchase = PurchasedProduct::find($id);
+
         $purchase->delete();
         toastr()->error('Order Canceled!', 'Order calcel successfully!');
+        return redirect()->back();
+    }
+
+    public function gotted($id)
+    {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
+        $purchase = PurchasedProduct::find($id);
+        $purchase->gotted = 1;
+        $purchase->save();
+        toastr()->info('Thanks for confirming that you got the product!', 'Product Gotted Successfully!');
         return redirect()->back();
     }
 }

@@ -60,8 +60,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.buyer-request-admin-approval.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Completed</a>
-                    </li>
+                    <li><a href="{{ route('admin.buyer-request-admin-approval.completed.request') }}">Approved</a></li>
                     <li><a href="{{ route('admin.buyer-request-admin-approval.rejected.request') }}">Rejected</a>
                     </li>
                 </ul>

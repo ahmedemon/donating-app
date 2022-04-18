@@ -33,7 +33,7 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Shelf</span>
+                    <span class="nav-text">Free Shelf</span>
                 </a>
                 <ul aria-expanded="false">
                     @php
@@ -52,7 +52,8 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('my-order.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('my-order.approved.request') }}">Delivered</a></li> {{-- Approved --}}
+                    <li><a href="{{ route('my-order.approved.request') }}">Completed</a></li> {{-- Approved --}}
+                    <li><a href="{{ route('my-order.rejected.request') }}">Rejected</a></li> {{-- Approved --}}
                 </ul>
             </li>
             <li>
@@ -70,7 +71,7 @@
             <li>
                 <a class=" " href="{{ route('donation.index') }}" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Total Sales Item</span>
+                    <span class="nav-text">Total Donated Items</span>
                 </a>
             </li>
             <li>
@@ -80,14 +81,13 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('buyer-request.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('buyer-request.completed.request') }}">Completed</a></li>
-                    <li><a href="{{ route('buyer-request.rejected.request') }}">Rejected</a></li>
+                    <li><a href="{{ route('buyer-request.completed.request') }}">Delivered</a></li>
                 </ul>
             </li>
             <li>
                 <a href="{{ route('sponsored-shop.index') }}" aria-expanded="false">
                     <i class="fas fa-user"></i>
-                    <span class="nav-text">Sponsored Shop</span>
+                    <span class="nav-text">Sponsored Shelf</span>
                 </a>
             </li>
             <li>

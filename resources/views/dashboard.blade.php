@@ -77,7 +77,7 @@
                                             </div>
                                         @else
                                             <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
-                                                <p class="lead">Top donator is not available</p>
+                                                <p class="lead">Top Donator is not available</p>
                                             </div>
                                         @endif
                                     @endforeach
@@ -88,11 +88,11 @@
                     <div class="col-md-6 mt-3 mt-lg-0">
                         <div class="card">
                             <div class="card-header">
-                                <div class="h4 font-weight-normal text-center">Top 10 Buyer</div>
+                                <div class="h4 font-weight-normal text-center">Top 10 Receiver</div>
                             </div>
                             @if ($buyers->count() == 0)
                                 <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
-                                    <p class="lead">Top buyer is not selected</p>
+                                    <p class="lead">Top receiver is not selected</p>
                                 </div>
                             @else
                                 <div class="card-body py-0" style="height: 254px !important; overflow-y: scroll;">
@@ -106,7 +106,7 @@
                                             </div>
                                         @else
                                             <div class="card-body d-flex justify-content-center align-items-center" style="height: 254px !important; ">
-                                                <p class="lead">Top buyer is not selected</p>
+                                                <p class="lead">Top Receiver is not selected</p>
                                             </div>
                                         @endif
                                     @endforeach
@@ -155,9 +155,39 @@
             loop: true,
             margin: 10,
             responsive: {
-                600: {
+                1500: {
                     items: 7
-                }
+                },
+                1400: {
+                    items: 7
+                },
+                1300: {
+                    items: 5
+                },
+                1200: {
+                    items: 5
+                },
+                1100: {
+                    items: 4
+                },
+                1000: {
+                    items: 4
+                },
+                900: {
+                    items: 3
+                },
+                800: {
+                    items: 3
+                },
+                700: {
+                    items: 3
+                },
+                600: {
+                    items: 2
+                },
+                450: {
+                    items: 2
+                },
             }
         });
         $('.ad-loop').owlCarousel({
@@ -171,9 +201,39 @@
             loop: true,
             margin: 10,
             responsive: {
-                600: {
+                1500: {
                     items: 7
-                }
+                },
+                1400: {
+                    items: 7
+                },
+                1300: {
+                    items: 5
+                },
+                1200: {
+                    items: 5
+                },
+                1100: {
+                    items: 4
+                },
+                1000: {
+                    items: 4
+                },
+                900: {
+                    items: 3
+                },
+                800: {
+                    items: 3
+                },
+                700: {
+                    items: 3
+                },
+                600: {
+                    items: 2
+                },
+                450: {
+                    items: 2
+                },
             }
         });
     </script>
