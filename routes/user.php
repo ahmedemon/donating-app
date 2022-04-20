@@ -61,9 +61,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
         Route::get('completed', [BuyerRequestController::class, 'completed'])->name('completed.request');
         Route::get('rejected', [BuyerRequestController::class, 'rejected'])->name('rejected.request');
         Route::get('approve/{id}', [BuyerRequestController::class, 'approve'])->name('approve.request');
+        Route::get('proceed/{id}', [BuyerRequestController::class, 'proceed'])->name('proceed.request');
         Route::get('reject/{id}', [BuyerRequestController::class, 'reject'])->name('reject.request');
         Route::get('recall/{id}', [BuyerRequestController::class, 'recall'])->name('recall.request');
+        Route::get('view/request/{id}', [BuyerRequestController::class, 'view'])->name('view.request');
         Route::get('receiver/profile/{id}', [BuyerRequestController::class, 'buyerProfile'])->name('buyer.profile');
+        Route::get('all/notification', [BuyerRequestController::class, 'notifications'])->name('all.notifications.request');
     });
 
     Route::group(['prefix' => 'sponsored-shop', 'as' => 'sponsored-shop.'], function () {

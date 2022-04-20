@@ -24,7 +24,7 @@ class BuyerRequestController extends Controller
         $user_id = Auth::user()->id;
         $headerTitle = "Receiver Request - Pending List";
         if (request()->ajax()) {
-            $data = PurchasedProduct::where('owner_id', $user_id)->where('status', 0)->where('admin_approval', 1)->where('owner_approval', 0)->with('donation')->latest()->get();
+            $data = PurchasedProduct::where('owner_id', $user_id)->where('status', 0)->where('admin_approval', 1)->whereIn('owner_approval', [0, 1])->with('donation')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product', function ($data) {
@@ -39,20 +39,26 @@ class BuyerRequestController extends Controller
                         '<a class="btn btn-secondary btn-xs" href="' . route('buyer-request.buyer.profile', $data->user->id) . '" onClick="' . "return confirm('You want to view receiver profile?');" . '">View Receiver Profile</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
                     }
                 })
                 ->addColumn('owner_approval', function ($data) {
                     if ($data->owner_approval == 0) {
-                        return '<span class="badge badge-primary">Pending</span>';
+                        return '<span class="badge badge-primary">Pending</span>
+                        <a href="' . route('buyer-request.proceed.request', $data->id) . '" class="btn btn-secondary shadow btn-xs sharp" onClick="' . "return confirm('Are you sure you want proceed this request?');" . '">
+                            <i class="fa fa-check"></i>
+                        </a>';
                     }
                     if ($data->owner_approval == 1) {
-                        return '<span class="badge badge-secondary">Accepted</span>';
+                        if ($data->gotted == 1) {
+                            return '<span class="badge badge-secondary">Completed</span>';
+                        }
+                        return '<span class="badge badge-primary">Processing</span>';
                     }
                 })
                 ->editColumn('date', function ($data) {
@@ -81,7 +87,7 @@ class BuyerRequestController extends Controller
                     }
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('user.buyer_request.pending', compact('headerTitle'));
@@ -112,11 +118,11 @@ class BuyerRequestController extends Controller
                         '<a class="btn btn-secondary btn-xs" href="' . route('buyer-request.buyer.profile', $data->user->id) . '" onClick="' . "return confirm('You want to view receiver profile?');" . '">View Receiver Profile</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
                     }
                 })
@@ -139,7 +145,7 @@ class BuyerRequestController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('user.buyer_request.completed', compact('headerTitle'));
@@ -170,11 +176,11 @@ class BuyerRequestController extends Controller
                         '<a class="btn btn-secondary btn-xs" href="' . route('buyer-request.buyer.profile', $data->user->id) . '" onClick="' . "return confirm('You want to view receiver profile?');" . '">View Receiver Profile</a>' .
                         '<br><br>' . $image;
                 })
-                ->addColumn('status', function ($data) {
-                    if ($data->status == 0) {
+                ->addColumn('admin_approval', function ($data) {
+                    if ($data->admin_approval == 0) {
                         return '<span class="badge badge-primary">Pending</span>';
                     }
-                    if ($data->status == 1) {
+                    if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
                     }
                 })
@@ -200,12 +206,26 @@ class BuyerRequestController extends Controller
                     ';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'status', 'product', 'user', 'owner_approval', 'date'])
+                ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval', 'date'])
                 ->make(true);
         }
         return view('user.buyer_request.rejected', compact('headerTitle'));
     }
 
+    public function proceed($id)
+    {
+        $current_user = Auth::user();
+        if (!$current_user->is_active) {
+            toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
+            return redirect()->back();
+        }
+        $approve_request = PurchasedProduct::find($id);
+        $approve_request->owner_approval = 1;
+        $approve_request->save();
+
+        toastr()->success('Request is being processing!', 'Proceed!');
+        return redirect()->back();
+    }
     public function approve($id)
     {
         $current_user = Auth::user();
@@ -284,5 +304,25 @@ class BuyerRequestController extends Controller
         $headerTitle = $buyer->name;
         $pageTitle = "Receiver Profile";
         return view('user.buyer_request.buyer_profile', compact('buyer', 'headerTitle', 'pageTitle'));
+    }
+
+    public function view($id)
+    {
+        $view = PurchasedProduct::find($id);
+        if ($view->seen == 0 || $view->gotted == 0) {
+            $view->seen = 1;
+            $view->save();
+            return redirect()->route('buyer-request.pending.request');
+        } else {
+            $view->seen = 1;
+            $view->save();
+            return redirect()->route('buyer-request.completed.request');
+        }
+    }
+
+    public function notifications()
+    {
+        $notifications = PurchasedProduct::where('owner_id', Auth::user()->id)->latest()->paginate(100);
+        return view('user.notifications', compact('notifications'));
     }
 }

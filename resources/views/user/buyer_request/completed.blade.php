@@ -5,6 +5,7 @@
         #DataTables_Table_0_wrapper label {
             color: white !important;
         }
+
     </style>
 @endpush
 @section('content')
@@ -72,8 +73,8 @@
                     //     name: 'user'
                     // },
                     {
-                        data: 'status',
-                        name: 'status'
+                        data: 'admin_approval',
+                        name: 'admin_approval'
                     },
                     {
                         data: 'owner_approval',

@@ -56,7 +56,6 @@
     @if (Request::is('user'))
         <link rel="stylesheet" href="{{ asset('backend/css/style.ext.css') }}">
     @endif
-
 </head>
 
 <body class="{{ Request::is('login') || Request::is('password/*') || !Request::is('guest/register') ? 'vh-100' : '' }}">

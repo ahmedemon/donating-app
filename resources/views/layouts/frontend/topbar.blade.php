@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="headerMenu">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="btn shadow-none {{ Request::is('/') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('user.frontend') }}">
+                    <a class="btn shadow-none {{ Request::is('/') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1 btn-block" href="{{ route('user.frontend') }}">
                         Home
                     </a>
                 </li>
@@ -18,35 +18,35 @@
                 @auth
                 @else
                     <li class="nav-item">
-                        <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('register') }}">
+                        <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('register') }}">
                             Register
                         </a>
                     </li>
                 @endauth
                 <li class="nav-item">
-                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('donation.create') }}">
+                    <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('donation.create') }}">
                         Donate
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="btn shadow-none {{ Request::is('about') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('about') }}">
+                    <a class="btn shadow-none {{ Request::is('about') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1 btn-block" href="{{ route('about') }}">
                         About Us
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('category.categories') }}">
+                    <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('category.categories') }}">
                         Free Shelf
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn shadow-none btn-outline-dark text-light mx-1" href="{{ route('sponsored-shop.index') }}">
+                    <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('sponsored-shop.index') }}">
                         Sponsored Shop
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn shadow-none {{ Request::is('how') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1" href="{{ route('how') }}">
+                    <a class="btn shadow-none {{ Request::is('how') ? 'btn-danger' : 'btn-outline-dark' }} text-light mx-1 btn-block" href="{{ route('how') }}">
                         How It Works
                     </a>
                 </li>
@@ -63,7 +63,7 @@
                         </form>
                     </li>
                     @auth
-                        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                        <div class="collapse navbar-collapse">
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,6 +83,11 @@
                                 </li>
                             </ul>
                         </div>
+                        <a href="{{ route('user.dashboard') }}" class="navbar-toggler btn btn-dark text-white bg-success mb-2">Account</a>
+                        <a class="navbar-toggler btn btn-success text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-outline-success mx-1 my-md-auto my-1 rounded-sm text-white">Login</a>
                         <a href="{{ route('register') }}" class="btn btn-outline-success mx-1 my-md-auto my-1 rounded-sm active">Register</a>
