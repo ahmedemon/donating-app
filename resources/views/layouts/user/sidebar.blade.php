@@ -48,42 +48,31 @@
             <li>
                 <a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Ordered Items</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('my-order.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('my-order.approved.request') }}">Completed</a></li> {{-- Approved --}}
-                    <li><a href="{{ route('my-order.rejected.request') }}">Rejected</a></li> {{-- Approved --}}
-                </ul>
-            </li>
-            <li>
-                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Donate</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('donation.create') }}">Donate Product</a></li>
-                    <li><a href="{{ route('donation.pending') }}">Pending</a></li>
-                    <li><a href="{{ route('donation.approved') }}">Approved</a></li>
-                    <li><a href="{{ route('donation.rejected') }}">Rejected</a></li>
+                    <li><a href="{{ route('donation.pending') }}">Donation List</a></li>
+                    <li><a href="{{ route('buyer-request.pending.request') }}">Receiver Request</a></li>
                 </ul>
             </li>
             <li>
+                <a class=" " href="{{ route('my-order.pending.request') }}">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Receive</span>
+                </a>
+                {{-- <ul aria-expanded="false">
+                    <li><a href="">Pending</a></li>
+                    <li><a href="{{ route('my-order.approved.request') }}">Completed</a></li>
+                    <li><a href="{{ route('my-order.rejected.request') }}">Rejected</a></li>
+                </ul> --}}
+            </li>
+            {{-- <li>
                 <a class=" " href="{{ route('donation.index') }}" aria-expanded="false">
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Total Donated Items</span>
                 </a>
-            </li>
-            <li>
-                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-credit-card"></i>
-                    <span class="nav-text">Receiver Request</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('buyer-request.pending.request') }}">Pending</a></li>
-                    <li><a href="{{ route('buyer-request.completed.request') }}">Delivered</a></li>
-                </ul>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('sponsored-shop.index') }}" aria-expanded="false">
                     <i class="fas fa-user"></i>

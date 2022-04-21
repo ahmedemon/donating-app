@@ -3,13 +3,13 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}">
 @endpush
 @section('content')
-    <div class="container-fluid my-3">
-        <div class="loop owl-carousel">
+    <div class="container-fluid mt-3">
+        <div class="owl-carousel owl-theme">
             @foreach ($products as $product)
                 <div class="item card rounded-0">
                     @auth
                         @if ($product->user_id == Auth::user()->id)
-                            <a href="{{ route('donation.approved', $product->id) }}">
+                            <a href="{{ route('donation.pending', $product->id) }}">
                             @else
                                 <a href="{{ route('category.index', $product->category_id) }}">
                         @endif
@@ -25,7 +25,7 @@
                                 <p class="small my-0 text-uppercase text-dark">{{ $product->title }}</p>
                                 @auth
                                     @if ($product->user_id == Auth::user()->id)
-                                        <a href="{{ route('donation.approved', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">View</a>
+                                        <a href="{{ route('donation.pending', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">View</a>
                                     @else
                                         <a href="{{ route('my-order.buy.request', $product->id) }}" class="btn btn-sm rounded-0 btn-danger">Get Now</a>
                                     @endif
@@ -144,9 +144,11 @@
 @push('js')
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script>
-        $('.loop').owlCarousel({
-            dots: false,
+        $('.owl-carousel').owlCarousel({
+            dots: true,
+            nav: true,
             autoplay: true,
+            autoplayHoverPause: true,
             mergeFit: true,
             startPosition: 1,
             smartSpeed: 250,

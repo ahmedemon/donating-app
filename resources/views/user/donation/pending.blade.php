@@ -5,6 +5,7 @@
         #DataTables_Table_0_wrapper label {
             color: white !important;
         }
+
     </style>
 @endpush
 @section('content')
@@ -12,7 +13,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Donation List | Pending</h4>
+                    <h4 class="card-title">{{ $headerTitle }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -33,7 +34,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="border-0">
+                            <tbody class="table-bordered">
                             </tbody>
                         </table>
                     </div>

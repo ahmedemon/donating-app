@@ -15,14 +15,6 @@
                     </a>
                 </li>
 
-                @auth
-                @else
-                    <li class="nav-item">
-                        <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('register') }}">
-                            Register
-                        </a>
-                    </li>
-                @endauth
                 <li class="nav-item">
                     <a class="btn shadow-none btn-outline-dark text-light mx-1 btn-block" href="{{ route('donation.create') }}">
                         Donate

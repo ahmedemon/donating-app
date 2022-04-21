@@ -29,7 +29,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="border-0">
+                            <tbody class="table-bordered">
                             </tbody>
                         </table>
                     </div>
