@@ -170,6 +170,8 @@ class DonationRequestController extends Controller
         ]);
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
+        $donation->point = intval($request->price / 3);
+
         $input = $request->all();
         if ($input['cropimage64'] != null) {
             $parts = explode(";base64,", $input['cropimage64']);

@@ -297,6 +297,7 @@ class DonationController extends Controller
             'images' => 'required|mimes:png,jpg,jpeg,gif|max:2048'
         ]);
         $donation = new Donation($request->all());
+        $donation->point = intval($request->price / 3);
 
         $input = $request->all();
         if ($input['cropimage64'] == null) {
@@ -380,6 +381,7 @@ class DonationController extends Controller
         ]);
         $donation = Donation::find($id);
         $donation->update($request->except('_token', '_method'));
+        $donation->point = intval($request->price / 3);
 
         $input = $request->all();
         if ($input['cropimage64'] != null) {

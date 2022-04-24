@@ -98,6 +98,16 @@
                 </ul>
             </li>
             <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="nav-text">Banners</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.banner.create') }}">Add Banner</a></li>
+                    <li><a href="{{ route('admin.banner.index') }}">Banners List</a></li>
+                </ul>
+            </li>
+            <li>
                 <a href="#logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="ms-2">Logout </span>

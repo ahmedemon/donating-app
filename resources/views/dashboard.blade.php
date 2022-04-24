@@ -45,15 +45,23 @@
         </div>
         <div class="row justify-content-center px-3">
             <div class="col-md-2 mb-lg-auto mb-3">
-                <a href="" class="" target="_blank">
-                    <img class="" style="height: auto; width: 100%;" src="{{ asset('frontend/img/ad1.jpg') }}" alt="">
-                </a>
+                @foreach ($banners as $left_banner)
+                    @if ($left_banner->position == 'left')
+                        <a href="{{ $left_banner->url }}" class="" target="_blank">
+                            <img class="" style="height: auto; width: 100%;" src="{{ $left_banner->image ? asset('storage/banners/' . $left_banner->image) : asset('frontend/img/ad1.jpg') }}" alt="">
+                        </a>
+                    @endif
+                @endforeach
             </div>
             <div class="col-md-8">
                 <div class="col-md-12 mb-lg-4 mb-5 px-0">
-                    <a href="" class="" target="_blank">
-                        <img class="rounded-lg" style="height: 200px; width: 100%;" src="{{ asset('frontend/img/ad.jpg') }}" alt="">
-                    </a>
+                    @foreach ($banners as $banner)
+                        @if ($banner->position == 'middle')
+                            <a href="{{ $banner->url }}" class="" target="_blank">
+                                <img class="rounded-lg" style="height: 200px; width: 100%;" src="{{ $banner->image ? asset('storage/banners/' . $banner->image) : asset('frontend/img/ad.jpg') }}" alt="">
+                            </a>
+                        @endif
+                    @endforeach
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -117,9 +125,13 @@
                 </div>
             </div>
             <div class="col-md-2 mt-lg-0 mt-5">
-                <a href="" class="" target="_blank">
-                    <img class="" style="height: auto; width: 100%;" src="{{ asset('frontend/img/ad1.jpg') }}" alt="">
-                </a>
+                @foreach ($banners as $right_banner)
+                    @if ($right_banner->position == 'right')
+                        <a href="{{ $right_banner->url }}" class="" target="_blank">
+                            <img class="" style="height: auto; width: 100%;" src="{{ $right_banner->image ? asset('storage/banners/' . $right_banner->image) : asset('frontend/img/ad1.jpg') }}" alt="">
+                        </a>
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>

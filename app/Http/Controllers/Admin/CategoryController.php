@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+
 class CategoryController extends Controller
 {
     /**
@@ -60,7 +61,7 @@ class CategoryController extends Controller
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);
-        }        
+        }
         return view('admin.categories.index', compact('headerTitle'));
     }
 

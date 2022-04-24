@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Traits\TopBuyerTrait;
 use App\Helpers\Traits\TopDonatorTrait;
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Models\Donation;
 use App\Models\PurchasedProduct;
@@ -21,6 +22,7 @@ class DashboardController extends Controller
         $total_purchase = PurchasedProduct::count();
         $buyers = $this->topBuyer();
         $products = Donation::latest()->where('status', 1)->where('is_purchased', 0)->take(10)->get();
-        return view('dashboard', compact('products', 'donators', 'buyers', 'total_donation', 'total_purchase'));
+        $banners = Banner::all();
+        return view('dashboard', compact('products', 'donators', 'buyers', 'total_donation', 'total_purchase', 'banners'));
     }
 }

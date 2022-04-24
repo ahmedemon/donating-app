@@ -62,30 +62,28 @@
                                                 @enderror
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <label class="text-label form-label" for="validationPoint">Point</label> <span class="small text-danger">*</span>
-                                            <div class="input-group">
-                                                <span class="input-group-text"> <i class="fa fa-pencil-alt"></i> </span>
-                                                <input type="number" name="point" value="{{ old('point', $donation->point) ?? session('last_created_user.point') }}" class="form-control" id="validationPoint" placeholder="Enter Product point.." required>
-                                                @error('point')
-                                                    <div class="invalid-feedback">
-                                                        <strong>{{ $message }}</strong>
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="row">
                                         <div class="col-md-6">
                                             <label class="text-label form-label" for="validationPrice">Price</label> <span class="small text-danger">*</span>
                                             <div class="input-group">
                                                 <span class="input-group-text"> <i class="fa fa-pencil-alt"></i> </span>
                                                 <input type="number" name="price" value="{{ old('price', $donation->price) ?? session('last_created_user.price') }}" class="form-control" id="validationPrice" placeholder="Enter Product Price.." required>
                                                 @error('price')
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $message }}</strong>
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="text-label form-label" for="validationPoint">Point</label> <span class="small text-danger">*</span>
+                                            <div class="input-group">
+                                                <span class="input-group-text"> <i class="fa fa-pencil-alt"></i> </span>
+                                                <input type="number" name="point" value="{{ old('point', $donation->point) ?? session('last_created_user.point') }}" class="form-control" id="validationPoint" placeholder="Enter Product point.." required readonly>
+                                                @error('point')
                                                     <div class="invalid-feedback">
                                                         <strong>{{ $message }}</strong>
                                                     </div>
@@ -266,5 +264,22 @@
                 }
             });
         })
+    </script>
+
+    {{-- point from price / 3 --}}
+    <script>
+        var userInput = document.getElementById('validationPrice');
+        userInput.addEventListener('keyup', function(e) {
+            if (isNumeric(this.value) == true) {
+                var divide = Math.round(this.value / 3);
+                $("#validationPoint").val(divide);
+            } else {
+                $("#validationPoint").val('');
+            }
+        })
+
+        function isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
     </script>
 @endpush

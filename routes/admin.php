@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BuyerRequestController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SponsorController;
@@ -109,5 +110,16 @@ Route::group(['middleware' => 'admin'], function () {
         Route::get('create', [DurationController::class, 'create'])->name('create');
         Route::post('store', [DurationController::class, 'store'])->name('store');
         Route::delete('destroy/{id}', [DurationController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
+        Route::get('/', [BannerController::class, 'index'])->name('index');
+        Route::get('create', [BannerController::class, 'create'])->name('create');
+        Route::post('store', [BannerController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [BannerController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [BannerController::class, 'update'])->name('update');
+        Route::delete('destroy/{id}', [BannerController::class, 'destroy'])->name('destroy');
+        Route::get('active/{id}', [BannerController::class, 'active'])->name('active');
+        Route::get('deactive/{id}', [BannerController::class, 'deactive'])->name('deactive');
     });
 });
