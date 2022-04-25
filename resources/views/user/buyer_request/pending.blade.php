@@ -23,8 +23,8 @@
                                     <th>S.N</th>
                                     <th>Product</th>
                                     {{-- <th>User</th> --}}
-                                    <th>Status</th>
-                                    <th>Owner Approval</th>
+                                    <th>Admin Approval</th>
+                                    <th>Your Approval</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>

@@ -206,8 +206,9 @@ class BuyerRequestController extends Controller
         $approve_request->admin_approval = 2;
         $approve_request->save();
         $donation = Donation::find($approve_request->product_id);
-        $donation->status = 2;
-        $donation->is_purchased = 2;
+        $donation->status = 1;
+        $donation->is_purchased = 0;
+        $donation->requested_by = null;
         $donation->save();
         toastr()->error('Rejected!', 'Request rejected!');
         return redirect()->back();

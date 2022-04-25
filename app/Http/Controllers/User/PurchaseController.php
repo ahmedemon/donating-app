@@ -88,33 +88,51 @@ class PurchaseController extends Controller
                     if ($data->admin_approval == 1) {
                         return '<span class="badge badge-secondary">Approved</span>';
                     }
+                    if ($data->admin_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected</span>';
+                    }
                 })
                 ->addColumn('owner_approval', function ($data) {
-                    if ($data->owner_approval == 0) {
-                        return '<span class="badge badge-primary">Pending</span>';
-                    }
-                    if ($data->owner_approval == 1) {
-                        return '<span class="badge badge-secondary">Approved</span>';
+                    if ($data->admin_approval == 2) {
+                        return '<span class="badge badge-danger">Rejected by Admin</span>';
+                    } else {
+                        if ($data->owner_approval == 0) {
+                            return '<span class="badge badge-primary">Pending</span>';
+                        }
+                        if ($data->owner_approval == 1) {
+                            return '<span class="badge badge-secondary">Approved</span>';
+                        }
+                        if ($data->owner_approval == 2) {
+                            return '<span class="badge badge-danger">Rejected</span>';
+                        }
                     }
                 })
                 ->addColumn('action', function ($data) {
-                    if ($data->gotted == 0) {
-                        $actionBtn = '
-                            <a href="' . route("my-order.gotted.request", $data->id) . '" class="btn btn-secondary shadow btn-xs" onClick="' . "return confirm('Are you sure you`ve received your product?');" . '">
-                                Receive <i class="fa fa-check"></i>
+                    if ($data->status == 2 || $data->admin_approval == 2) {
+                        return '
+                            <a class="btn btn-dark shadow btn-xs sharp disabled" href="javascript:void();">
+                                <i class="fa fa-times"></i>
                             </a>
-                            <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->donation->title . '">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                            <form id="delete-form-' . $data->id . '" action="' . route("my-order.cancel.request", $data->id) . '" method="POST" class="d-none">
-                                ' . @csrf_field() . '
-                                ' . @method_field("DELETE") . '
-                            </form>
                         ';
                     } else {
-                        $actionBtn = '<span class="badge badge-secondary">Received</span>';
+                        if ($data->gotted == 0) {
+                            $actionBtn = '
+                                <a href="' . route("my-order.gotted.request", $data->id) . '" class="btn btn-secondary shadow btn-xs" onClick="' . "return confirm('Are you sure you`ve received your product?');" . '">
+                                    Receive <i class="fa fa-check"></i>
+                                </a>
+                                <a class="btn btn-danger shadow btn-xs sharp" href="#" onclick="noticeDelete(this);" data-id="' . $data->id . '" data-name="' . $data->donation->title . '">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                                <form id="delete-form-' . $data->id . '" action="' . route("my-order.cancel.request", $data->id) . '" method="POST" class="d-none">
+                                    ' . @csrf_field() . '
+                                    ' . @method_field("DELETE") . '
+                                </form>
+                            ';
+                        } else {
+                            $actionBtn = '<span class="badge badge-secondary">Received</span>';
+                        }
+                        return $actionBtn;
                     }
-                    return $actionBtn;
                 })
                 ->rawColumns(['action', 'admin_approval', 'product', 'user', 'owner_approval'])
                 ->make(true);
@@ -122,110 +140,6 @@ class PurchaseController extends Controller
         return view('user.ordered_items.pending', compact('headerTitle'));
     }
 
-    // public function approved()
-    // {
-    //     $current_user = Auth::user();
-    //     if (!$current_user->is_active) {
-    //         toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
-    //         return redirect()->back();
-    //     }
-    //     $user_id = Auth::user()->id;
-    //     $headerTitle = "Requested Product - Completed List";
-    //     if (request()->ajax()) {
-    //         $data = PurchasedProduct::where('user_id', $user_id)->where('admin_approval', 1)->where('gotted', 1)->with('donation')->latest()->get();
-    //         return DataTables::of($data)
-    //             ->addIndexColumn()
-    //             ->addColumn('product', function ($data) {
-    //                 $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $user_name = $data->donation->user->name ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $owner = 'Owner: ' . '<a class="btn btn-secondary btn-xs" href="' . route('buyer-request.buyer.profile', $data->donation->user->id) . '" onClick="' . "return confirm('You want to view owner profile?');" . '">View Owner Profile</a>' . '</span>';
-    //                 $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-    //                 return $title . '<br>' . $point . '<br>' . $owner . '<br><br>' . $image;
-    //             })
-    //             // ->addColumn('user', function ($data) {
-    //             //     return $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
-    //             // })
-    //             ->addColumn('admin_approval', function ($data) {
-    //                 if ($data->admin_approval == 0) {
-    //                     return '<span class="badge badge-primary">Pending</span>';
-    //                 }
-    //                 if ($data->admin_approval == 1) {
-    //                     return '<span class="badge badge-secondary">Approved</span>';
-    //                 }
-    //             })
-    //             ->addColumn('owner_approval', function ($data) {
-    //                 if ($data->owner_approval == 0) {
-    //                     return '<span class="badge badge-primary">Pending</span>';
-    //                 }
-    //                 if ($data->owner_approval == 1) {
-    //                     return '<span class="badge badge-secondary">Approved</span>';
-    //                 }
-    //             })
-    //             ->addColumn('action', function ($data) {
-    //                 if ($data->gotted == 0) {
-    //                     return '
-    //                         <a href="' . route("my-order.gotted.request", $data->id) . '" class="btn btn-secondary shadow btn-xs" onClick="' . "return confirm('Are you sure you`ve received your product?');" . '">
-    //                             Got It <i class="fa fa-check"></i>
-    //                         </a>
-    //                     ';
-    //                 } else {
-    //                     return '<span class="badge badge-secondary">Gotted</span>';
-    //                 }
-    //             })
-    //             ->rawColumns(['action', 'admin_approval', 'owner_approval', 'product', 'user'])
-    //             ->make(true);
-    //     }
-    //     return view('user.ordered_items.approved', compact('headerTitle'));
-    // }
-
-    // public function rejected()
-    // {
-    //     $current_user = Auth::user();
-    //     if (!$current_user->is_active) {
-    //         toastr()->error('Your account is not active! Please wait for admin confirmation!', 'Deactive account!');
-    //         return redirect()->back();
-    //     }
-    //     $user_id = Auth::user()->id;
-    //     $headerTitle = "Requested Product - Rejected List";
-    //     if (request()->ajax()) {
-    //         $data = PurchasedProduct::where('user_id', $user_id)->where('status', 2)->where('owner_approval', 2)->with('donation')->latest()->get();
-    //         return DataTables::of($data)
-    //             ->addIndexColumn()
-    //             ->addColumn('product', function ($data) {
-    //                 $title = 'Title: ' . $data->donation->title ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $price = 'Price: ' . $data->donation->price ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $point = 'Cost: ' . $data->donation->point ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $user_name = $data->donation->user->name ?? '<span class="badge badge-danger">Not Found</span>';
-    //                 $owner = 'Owner: ' . '<a class="btn btn-secondary btn-xs" href="' . route('buyer-request.buyer.profile', $data->donation->user->id) . '" onClick="' . "return confirm('You want to view owner profile?');" . '">View Owner Profile</a>' . '</span>';
-    //                 $image = '<img src="' . asset('storage/donation/' . $data->donation->images) . '" height="70" width="120">' ?? '-';
-    //                 return $title . '<br>' . $point . '<br>' . $owner . '<br><br>' . $image;
-    //             })
-    //             // ->addColumn('user', function ($data) {
-    //             //     return $data->user->name ?? '<span class="badge badge-danger">Not Found</span>';
-    //             // })
-    //             ->addColumn('admin_approval', function ($data) {
-    //                 if ($data->admin_approval == 0) {
-    //                     return '<span class="badge badge-primary">Pending</span>';
-    //                 }
-    //                 if ($data->admin_approval == 1) {
-    //                     return '<span class="badge badge-secondary">Approved</span>';
-    //                 }
-    //             })
-    //             ->addColumn('action', function ($data) {
-    //                 $actionBtn = '
-    //                     <a href="javascript:void();" class="btn btn-dark shadow btn-xs sharp disabled">
-    //                         <i class="fa fa-check"></i>
-    //                     </a>
-    //                 ';
-    //                 return $actionBtn;
-    //             })
-    //             ->rawColumns(['action', 'admin_approval', 'product', 'user'])
-    //             ->make(true);
-    //     }
-    //     return view('user.ordered_items.rejected', compact('headerTitle'));
-    // }
 
     public function cancel($id)
     {

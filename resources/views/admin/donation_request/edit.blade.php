@@ -95,7 +95,7 @@
                                             <div class="input-group">
                                                 <select class="input-group-text form-control" style="text-align: left" name="category_id" required id="Categories">
                                                     @foreach ($categories as $category)
-                                                        <option {{ $donation->category_id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                        <option {{ $donation->category_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
