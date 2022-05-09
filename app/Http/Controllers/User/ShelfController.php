@@ -16,6 +16,12 @@ class ShelfController extends Controller
         $categories = Category::paginate(20);
         return view('user.free_shelf.all_category', compact('categories', 'pageTitle'));
     }
+    public function allProducts()
+    {
+        $pageTitle = "All Products";
+        $products = Donation::where('user_id', '!=', Auth::user()->id)->where('status', 1)->where('requested_by', null)->paginate(20);
+        return view('user.free_shelf.all_products', compact('products', 'pageTitle'));
+    }
     public function index($id)
     {
         $current_user = Auth::user();

@@ -40,6 +40,7 @@
                         $categories = \App\Models\Category::where('status', 1)->get();
                     @endphp
                     <li><a href="{{ route('category.categories') }}">All Categories</a></li>
+                    <li><a href="{{ route('category.all.products') }}">All Products</a></li>
                     @foreach ($categories as $category)
                         <li><a href="{{ route('category.index', $category->id) }}">{{ $category->name }}</a></li>
                     @endforeach
